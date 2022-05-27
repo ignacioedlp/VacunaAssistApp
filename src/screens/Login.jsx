@@ -8,7 +8,7 @@ import {
   Text,
 } from "native-base";
 
-function Login() {
+function LoginScreen({ navigation }) {
   const [dni, setDni] = useState("");
   const [code, setCode] = useState(0);
   const [pass, setPass] = useState("");
@@ -17,8 +17,8 @@ function Login() {
   const handlerChangeCode = (code) => setCode(code);
   const handlerChangePass = (pass) => setPass(pass);
 
-  const handlerLogin = () => {
-    fetch("https://vacunassistservices-production.up.railway.app/auth/log_in", {
+  const handlerLogin = async () => {
+    response = await fetch("https://vacunassistservices-production.up.railway.app/auth/log_in", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,6 +29,11 @@ function Login() {
         password: pass,
       }),
     }).then((response) => response.json());
+    if (response.code == 200) {
+      navigation.navigate('Home')
+    }else{
+      alert("No esta registrado")
+    }
   };
 
   return (
@@ -55,7 +60,7 @@ function Login() {
             placeholder="Contraseña"
           />
           <Button onPress={() => handlerLogin()}>Iniciar Sesion</Button>
-          <Button onPress={() => console.log("hello world")}>
+          <Button onPress={() => navigation.navigate('Register')}>
             Registrarme
           </Button>
         </Stack>
@@ -64,4 +69,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginScreen;

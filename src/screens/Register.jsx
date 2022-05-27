@@ -7,42 +7,55 @@ import {
   NativeBaseProvider,
   Button,
   Text,
+  Menu, 
+  Select,
+  CheckIcon,
+  Checkbox
 } from "native-base";
 
-function Register() {
+function RegisterScreen({ navigation }) {
   const [dni, setDni] = useState("");
-  const [sexo, setCode] = useState("");
+  const [sexo, setSex] = useState("");
   const [nro_tramite, setNro_tramite] = useState("");
   const [pass, setPass] = useState("");
   const [pass_confirmation, setPass_confirmation] = useState("");
   const [email, setEmail] = useState("");
   const [vacunatorio, setVacunatorio] = useState("");
-  const [riesgo, setRiesgo] = useState("");
+  const [riesgo, setRiesgo] = useState(false);
   const handlerChangeDni = (dni) => setDni(dni);
   const handlerChangeSexo = (sexo) => setSex(sexo);
   const handlerChangeNro_Tramite = (nro_tramite) => setNro_tramite(nro_tramite);
   const handlerChangePass = (pass) => setPass(pass);
   const handlerChangePass_confirmation = (pass_confirmation) =>
-    set(pass_confirmation);
-  const handlerChangeEmail = (email) => set(email);
-  const handlerChangeVacunatorio = (vacunatorio) => set(vacunatorio);
-  const handlerChangeRiesgo = (riesgo) => set(riesgo);
+  setPass_confirmation(pass_confirmation);
+  const handlerChangeEmail = (email) => setEmail(email);
+  const handlerChangeVacunatorio = (vacunatorio) => setVacunatorio(vacunatorio);
+  const handlerChangeRiesgo = (riesgo) => setRiesgo(riesgo);
 
-  const handlerRegister = () => {
-    fetch("https://vacunassistservices-production.up.railway.app/auth/log_in", {
+  const handlerRegister = async () => {
+    response = await fetch("https://vacunassistservices-production.up.railway.app/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        dni: dni,
+        dni: parseInt(dni),
         sexo: sexo,
+        nro_tramite: nro_tramite,
         password: pass,
-        //falta aca, seguir
+        password_confirmation: pass_confirmation,
+        email: email, 
+        vacunatorio: parseInt(vacunatorio),
+        riesgo: riesgo
       }),
     }).then((response) => response.json());
+    if (response.code == 200) {
+      navigation.navigate('Login')
+    }else{
+      alert(response.JSON)
+    }
   };
-
+  
   return (
     <NativeBaseProvider>
       <Center>
@@ -54,11 +67,19 @@ function Register() {
             value={dni}
             placeholder="Dni"
           />
+          <Select minWidth="200" selectedValue={sexo} accessibilityLabel="Sex" onValueChange={itemValue => handlerChangeSexo(itemValue)} placeholder="Sexo" _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size={5} 
+              />
+            }} mt="1">
+            <Select.Item label="Masculino" value="M" />
+            <Select.Item label="Femenino" value="F" />
+          </Select>
           <Input
-            onChangeText={handlerChangeCode}
+            onChangeText={handlerChangeNro_Tramite}
             size="xs"
-            value={code}
-            placeholder="Codigo"
+            value={nro_tramite}
+            placeholder="Numero de tramite"
           />
           <Input
             onChangeText={handlerChangePass}
@@ -66,14 +87,35 @@ function Register() {
             value={pass}
             placeholder="Contraseña"
           />
-          <Button onPress={() => handlerLogin()}>Iniciar Sesion</Button>
-          <Button onPress={() => console.log("hello world")}>
-            Registrarme
-          </Button>
+          <Input
+            onChangeText={handlerChangePass_confirmation}
+            size="xs"
+            value={pass_confirmation}
+            placeholder="Confirmar contraseña"
+          />
+          <Input 
+            onChangeText={handlerChangeEmail}
+            size="xs"
+            value={email}
+            placeholder="Email"
+          />
+          <Select minWidth="200" selectedValue={vacunatorio} accessibilityLabel="Vacunatorio" onValueChange={itemValue => handlerChangeVacunatorio(itemValue)} placeholder="Vacunatorio" _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size={5} 
+              />
+            }} mt="1">
+            <Select.Item label="Hospital 9 Julio" value="1" />
+            <Select.Item label="Corralon municipal" value="2" />
+            <Select.Item label="Polideportivo" value="3" />
+          </Select>
+          <Checkbox value={riesgo} accessibilityLabel="Riesgo" onChange={handlerChangeRiesgo}>
+            Riesgo (Paciente oncológico, Persona trasplantada, Diabetes, Enfermedad Renal Crónica, Enfermedades Cardiovasculares, Enfermedades Respiratorias Crónicas)
+          </Checkbox>
+          <Button onPress={() => handlerRegister()}>Registrarme</Button>
         </Stack>
       </Center>
     </NativeBaseProvider>
   );
 }
 
-export default Login;
+export default RegisterScreen; 
