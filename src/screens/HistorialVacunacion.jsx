@@ -8,7 +8,8 @@ import {
     Button,
     Text,
     FlatList,
-    Box
+    Box,
+    Heading
   } from "native-base";
 
 
@@ -43,7 +44,7 @@ function HistorialVacunacion() {
 
   return (
     <NativeBaseProvider>
-
+      <Heading>Historial de vacunacion</Heading>
       <FlatList data={historial} renderItem={({item}) => 
         <Box>
           <Text>Campaña: {item.campania}</Text>

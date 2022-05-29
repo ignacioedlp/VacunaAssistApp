@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Input,
   Center,
@@ -7,36 +7,36 @@ import {
   Button,
   Text,
 } from "native-base";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function LogoutScreen({ navigation }) {
+  const handlerCerrarSesion = () => {
+    _storeData = async () => {
+      try {
+        await AsyncStorage.removeItem("@JWTUSER");
 
-    const handlerCerrarSesion = () => {
-        _storeData = async () => {
-            try {
-                await AsyncStorage.removeItem(
-                    '@JWTUSER'
-                );
-                console.log(await AsyncStorage.getItem('@JWTUSER'))
-                navigation.navigate('Login')
-            } catch (error) {
-              console.log(error);
-              // Error saving data
-            }
-          };
-          _storeData()
-    }
+        navigation.navigate("Login");
+      } catch (error) {
+        console.log(error);
+        // Error saving data
+      }
+    };
+    _storeData();
+  };
 
-
-    return (
-        <NativeBaseProvider>
-            <Center>
-                <Text>Quieres cerrar sesion?</Text>
-                <Button onPress={() => handlerCerrarSesion()}>Si</Button>
-                <Button onPress={() => navigation.navigate('Home')}>No</Button>
-            </Center>
-        </NativeBaseProvider>
-    )
+  return (
+    <NativeBaseProvider>
+      <Center>
+        <Text>Quieres cerrar sesion?</Text>
+        <Button colorScheme="green" onPress={() => handlerCerrarSesion()}>
+          Si
+        </Button>
+        <Button colorScheme="green" onPress={() => navigation.navigate("Home")}>
+          No
+        </Button>
+      </Center>
+    </NativeBaseProvider>
+  );
 }
 
-export default LogoutScreen
+export default LogoutScreen;
