@@ -31,7 +31,7 @@ function TurnosDelDiaScreen({ navigation }) {
     var raw = JSON.stringify({
       campania: campania,
       vacunatorio: 2,
-      date: "2023-05-28",
+      date: "2022-05-29",
     });
 
     var requestOptions = {
@@ -92,6 +92,8 @@ function TurnosDelDiaScreen({ navigation }) {
                   <Box>
                     <Text>Nombre: {item.nombreYApellido}</Text>
                     <Text>Dni: {item.dni}</Text>
+                    <Text>fecha: {item.fecha}</Text>
+                    <Text>Numero de turno: {item.nroTurno}</Text>
                   </Box>
                 </Pressable>
               )}
