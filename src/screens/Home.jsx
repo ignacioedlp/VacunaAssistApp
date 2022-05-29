@@ -7,56 +7,98 @@ import {
   Button,
   Text,
 } from "native-base";
-import HistorialVacunacionScreen from './HistorialVacunacion';
-import TurnosPendientesScreen from './TurnosPendientes';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const handlerSolicitarFiebre = async () => {
-  const response = await fetch("https://vacunassistservices-production.up.railway.app/turnos/fiebre_amarrilla", {
-    method: "GET",
-    headers: {
-      "X-Auth-Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjQzNzM4Mjc1LCJyb2wiOiJDaXVkYWRhbm8iLCJleHAiOjE2NTM4NTg3ODh9.xsiFOyZ3GWeLW1aUH10E1XxPm9tJC3Deb0aMwi72rko"
-    }
-  }).then((response) => response.json());
-  if (response.code == 200) {
-    alert('Turno solicitado')
-  }else{
-    alert("Error al solicitar turno")
-  }
+  var myHeaders = new Headers();
+  const value = await AsyncStorage.getItem('@JWTUSER');
+  const token = ('Bearer ' + value);
+  myHeaders.append("Authorization", token);
+
+  var raw = "";
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  const response = await fetch("https://vacunassistservices-production.up.railway.app/turnos/fiebre_amarrilla", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      if (result.code = 200) {
+        console.log(result.message);
+      } else {
+        console.log(result.message)
+      }
+    })
+    .catch(error => console.log('error', error));
 };
 
 const handlerSolicitarCovid = async () => {
-  const response = await fetch("https://vacunassistservices-production.up.railway.app/turnos/covid", {
-    method: "GET",
-    headers: {
-      "X-Auth-Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjQzNzM4Mjc1LCJyb2wiOiJDaXVkYWRhbm8iLCJleHAiOjE2NTM4NTg3ODh9.xsiFOyZ3GWeLW1aUH10E1XxPm9tJC3Deb0aMwi72rko"
-    }
-  }).then((response) => response.json());
-  if (response.code == 200) {
-    alert('Turno solicitado')
-  }else{
-    alert("Error al solicitar turno")
-  }
+  var myHeaders = new Headers();
+  const value = await AsyncStorage.getItem('@JWTUSER');
+  const token = ('Bearer ' + value);
+  myHeaders.append("Authorization", token);
+  var raw = "";
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  const response = await fetch("https://vacunassistservices-production.up.railway.app/turnos/covid", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      if (result.code = 200) {
+        console.log(result.message);
+      } else {
+        console.log(result.message)
+      }
+    })
+    .catch(error => console.log('error', error));
 };
 
 const handlerSolicitarGripe = async () => {
-  const response = await fetch("https://vacunassistservices-production.up.railway.app/turnos/gripe", {
-    method: "GET",
-    headers: {
-      "X-Auth-Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjQzNzM4Mjc1LCJyb2wiOiJDaXVkYWRhbm8iLCJleHAiOjE2NTM4NTg3ODh9.xsiFOyZ3GWeLW1aUH10E1XxPm9tJC3Deb0aMwi72rko"
-    }
-  }).then((response) => response.json());
-  if (response.code == 200) {
-    alert('Turno solicitado')
-  }else{
-    alert('Error al solicitar turno')
-  }
-};
+  var myHeaders = new Headers();
+  const value = await AsyncStorage.getItem('@JWTUSER');
+  const token = ('Bearer ' + value);
+  myHeaders.append("Authorization", token);
+  var raw = "";
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  const response = await fetch("https://vacunassistservices-production.up.railway.app/turnos/gripe", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      if (result.code = 200) {
+        console.log(result.message);
+      } else {
+        console.log(result.message)
+      }
+    })
+    .catch(error => console.log('error', error));
+  };
+  
 
 
-function HomeScreen() {
+function HomeScreen({navigation}) {
   return (
     <NativeBaseProvider>
+      <Center>
+        <Button onPress={() => navigation.navigate('Turnos pendientes')}>Turnos pendientes</Button>
+        <Button onPress={() => navigation.navigate('Historial')}>Mis vacunas</Button>
+        <Button onPress={() => navigation.navigate('Logout')}>Cerrar sesion</Button>
+        <Button onPress={() => navigation.navigate('Listado de turnos')}>Ver listado</Button>
+      </Center>
       <Center>
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Text fontSize="md">Home</Text>
