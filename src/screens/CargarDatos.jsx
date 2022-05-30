@@ -22,38 +22,42 @@ function CargarDatosScreen({ route, navigation }) {
   const handlerMarca = (marca) => setMarca(marca);
 
   const cargarDatos = async () => {
-    setIsLoading(true);
-    var myHeaders = new Headers();
-    const value = await AsyncStorage.getItem("@JWTUSER");
-    const token =
-      "Bearer " +
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJleHAiOjE2NTM5NTE3NDd9.vGYrg0LMRTJM-8goY6rlDg1xFySBjErtkT49sg3hfgg";
-    myHeaders.append("Authorization", token);
-    myHeaders.append("Content-Type", "application/json");
+    if (marca != '' && nro_lote != '') {
+      setIsLoading(true);
+      var myHeaders = new Headers();
+      const value = await AsyncStorage.getItem("@JWTUSER");
+      const token =
+        "Bearer " +
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ";
+      myHeaders.append("Authorization", token);
+      myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({
-      id_campania: id_campania,
-      id_usuario: dni,
-      nro_lote: parseInt(nro_lote),
-      marca: marca,
-      desconocido: false,
-      id_turno: idTurno,
-    });
+      var raw = JSON.stringify({
+        id_campania: id_campania,
+        id_usuario: dni,
+        nro_lote: parseInt(nro_lote),
+        marca: marca,
+        desconocido: false,
+        id_turno: idTurno,
+      });
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
 
-    const result = await fetch(
-      "https://vacunassistservices-production.up.railway.app/vacunador/cargar_datos",
-      requestOptions
-    ).catch((error) => console.log("error", error));
-    const res = await result.json();
-    setCargado(true);
-    setIsLoading(false);
+      const result = await fetch(
+        "https://vacunassistservices-production.up.railway.app/vacunador/cargar_datos",
+        requestOptions
+      ).catch((error) => console.log("error", error));
+      const res = await result.json();
+      setCargado(true);
+      setIsLoading(false);
+    } else {
+        alert("Faltan rellenar campos");
+    }
   };
 
   return (

@@ -15,25 +15,29 @@ import {
   Heading,
 } from "native-base";
 import TurnoDelDia from "../components/TurnoDeHoyTarjeta";
+import jwt_decode from "jwt-decode";
 
 function TurnosDelDiaScreen({ navigation }) {
   const [turnos, setTurnos] = useState([]);
   const [campania, setCampania] = useState("");
   const [cargado, setCargado] = useState(false);
   const handlerChangeCampania = (campania) => setCampania(campania);
+  const [dni, setDni] = useState();
+  const handlerChangeDni = (dni) => setDni(dni);
 
   const ObtenerListaVacunar = async () => {
     var myHeaders = new Headers();
     const value = await AsyncStorage.getItem("@JWTUSER");
     const token =
       "Bearer " +
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJleHAiOjE2NTM5NTE3NDd9.vGYrg0LMRTJM-8goY6rlDg1xFySBjErtkT49sg3hfgg";
-    myHeaders.append("Authorization", token);
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ";
+      var decoded = jwt_decode("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ");
+      console.log(decoded);
+      myHeaders.append("Authorization", token);
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
       campania: campania,
-      vacunatorio: 2,
-      date: "2022-05-29",
+      vacunatorio: decoded.vacunatorio,
     });
 
     var requestOptions = {
@@ -54,7 +58,7 @@ function TurnosDelDiaScreen({ navigation }) {
 
   return (
     <NativeBaseProvider>
-      <Center>
+      <Center pt="150px">
         <Center>
           <Heading size="lg" ml="-1" p="10px">
             Turnos del dia
@@ -81,29 +85,52 @@ function TurnosDelDiaScreen({ navigation }) {
             Obtener listado
           </Button>
         </Stack>
+        <Input m="20px" placeholder="Buscar por dni" value={dni} onChangeText={handlerChangeDni} type="number"/>
         {cargado != false ? (
           turnos.length > 0 ? (
-            <FlatList
-              data={turnos}
-              renderItem={({ item }) => (
-                <Pressable
-                  onPress={() =>
-                    navigation.navigate("Cargar datos", {
-                      dni: item.dni,
-                      id_campania: campania,
-                      idTurno: item.nroTurno,
-                    })
-                  }
-                >
-                  <TurnoDelDia
-                    fecha={item.fecha}
-                    nroTurno={item.nroTurno}
-                    nombreYApellido={item.nombreYApellido}
-                    dni={item.dni}
-                  />
-                </Pressable>
-              )}
-            />
+            <Stack px="10px">
+              <FlatList
+                data={turnos}
+                renderItem={({ item }) => (
+                  dni == null ? (
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate("Cargar datos", {
+                          dni: item.dni,
+                          id_campania: campania,
+                          idTurno: item.nroTurno,
+                        })
+                      }
+                    >
+                      <TurnoDelDia
+                        fecha={item.fecha}
+                        nroTurno={item.nroTurno}
+                        nombreYApellido={item.nombreYApellido}
+                        dni={item.dni}
+                      />
+                    </Pressable>
+                  ) : (
+                    item.dni.toString().includes(dni.toString()) &&
+                      <Pressable
+                      onPress={() =>
+                        navigation.navigate("Cargar datos", {
+                          dni: item.dni,
+                          id_campania: campania,
+                          idTurno: item.nroTurno,
+                        })
+                      }
+                    >
+                      <TurnoDelDia
+                        fecha={item.fecha}
+                        nroTurno={item.nroTurno}
+                        nombreYApellido={item.nombreYApellido}
+                        dni={item.dni}
+                      />
+                    </Pressable>
+                  )
+                )}
+              />
+            </Stack>
           ) : (
             <Text>No hay turnos para esa campaña</Text>
           )

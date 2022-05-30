@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Center, NativeBaseProvider, FlatList, Heading } from "native-base";
+import { Center, NativeBaseProvider, FlatList, Heading, Text } from "native-base";
 import Historial from "../components/HistorialTarjeta";
 
 function HistorialVacunacion() {
@@ -39,17 +39,23 @@ function HistorialVacunacion() {
           Historial de vacunacion
         </Heading>
       </Center>
-      <FlatList
-        data={historial}
-        renderItem={({ item }) => (
-          <Historial
-            campania={item.campania}
-            fecha={item.fecha}
-            marca={item.marca}
-            lote={item.lote}
-          />
-        )}
-      />
+      {historial.length > 0 ?( 
+        <FlatList
+          data={historial}
+          renderItem={({ item }) => (
+            <Historial
+              campania={item.campania}
+              fecha={item.fecha}
+              marca={item.marca}
+              lote={item.lote}
+            />
+          )}
+        />
+      ) : (
+        <Center>
+          <Text>No posee vacunas aplicadas</Text>
+        </Center>
+      )}
     </NativeBaseProvider>
   );
 }

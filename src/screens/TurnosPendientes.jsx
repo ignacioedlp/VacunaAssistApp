@@ -6,6 +6,7 @@ import {
   FlatList,
   Box,
   Heading,
+  Text,
 } from "native-base";
 import Pendiente from "../components/PendienteTarjeta";
 
@@ -45,16 +46,24 @@ function TurnosPendientes() {
           Turnos pendientes
         </Heading>
       </Center>
-      <FlatList
-        data={pendientes}
-        renderItem={({ item }) => (
-          <Pendiente
-            campania={item.campania}
-            fecha={item.fecha}
-            vacunatorio={item.vacunatorio}
-          />
-        )}
-      />
+      {pendientes.length > 0 ? (
+
+      
+        <FlatList
+          data={pendientes}
+          renderItem={({ item }) => (
+            <Pendiente
+              campania={item.campania}
+              fecha={item.fecha}
+              vacunatorio={item.vacunatorio}
+            />
+          )}
+        />
+      ) : (
+        <Center>
+          <Text>No posee turnos pendientes</Text>
+        </Center>
+      )}
     </NativeBaseProvider>
   );
 }
