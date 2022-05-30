@@ -1,11 +1,12 @@
-import React from "react";
+ import React from "react";
 import {
   Input,
   Center,
-  Stack,
   NativeBaseProvider,
   Button,
   Text,
+  HStack,
+  Box
 } from "native-base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -26,14 +27,24 @@ function LogoutScreen({ navigation }) {
 
   return (
     <NativeBaseProvider>
-      <Center>
+      <Center top={4}>
         <Text>Quieres cerrar sesion?</Text>
-        <Button colorScheme="green" onPress={() => handlerCerrarSesion()}>
-          Si
-        </Button>
-        <Button colorScheme="green" onPress={() => navigation.navigate("Home")}>
-          No
-        </Button>
+        <HStack mt={3} space={4} w="100%" maxW="300px">
+          <Box w="50%">
+            <Center>
+              <Button w="150px"colorScheme="red" onPress={() => handlerCerrarSesion()}>
+                Si
+              </Button>
+            </Center>
+          </Box>
+          <Box w="50%">
+            <Center>
+              <Button w="150px" colorScheme="green" onPress={() => navigation.navigate("Home")}>
+                No
+              </Button>
+            </Center>
+          </Box>
+        </HStack>
       </Center>
     </NativeBaseProvider>
   );

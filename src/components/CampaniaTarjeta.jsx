@@ -13,7 +13,7 @@ import {
 
 function Campania({ campania, action }) {
   return (
-    <Box width="200px" p="2">
+    <Box mx="45px" p="2">
       <Box
         maxW="100%"
         rounded="lg"
@@ -47,7 +47,7 @@ function Campania({ campania, action }) {
               justifyContent="space-between"
             >
               <HStack alignItems="center">
-                <Button colorScheme="green" size="md" onPress={action}>
+                <Button w="150px" colorScheme="green" size="md" onPress={action}>
                   Solicitar
                 </Button>
               </HStack>

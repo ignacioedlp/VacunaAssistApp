@@ -8,6 +8,7 @@ import {
   Heading,
   FlatList,
   Spinner,
+  View,
 } from "native-base";
 import Campania from "../components/CampaniaTarjeta";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -126,57 +127,71 @@ function HomeScreen({ navigation }) {
     },
   ];
 
+  const nav = [
+    {
+      id: 1,
+      nombre: "Turnos pendientes",
+      action: () => navigation.navigate("Turnos pendientes"),
+    },
+    {
+      nombre: "Mis vacunas",
+      id: 2,
+      action: () => navigation.navigate("Historial"),
+    },
+    {
+      id: 3,
+      nombre: "Ver listado",
+      action: () => navigation.navigate("Listado de turnos"),
+    },
+    {
+      id: 4,
+      nombre: "Cerrar sesion",
+      action: () => navigation.navigate("Logout"),
+    }
+  ];
+
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider> 
       <Center>
-        <Button
-          onPress={() => navigation.navigate("Turnos pendientes")}
-          colorScheme="green"
-        >
-          Turnos pendientes
-        </Button>
-        <Button
-          onPress={() => navigation.navigate("Historial")}
-          colorScheme="green"
-        >
-          Mis vacunas
-        </Button>
-        <Button
-          onPress={() => navigation.navigate("Logout")}
-          colorScheme="green"
-        >
-          Cerrar sesion
-        </Button>
-        <Button
-          onPress={() => navigation.navigate("Listado de turnos")}
-          colorScheme="green"
-        >
-          Ver listado
-        </Button>
+        <FlatList
+              top={1} 
+              padding={"2px"}
+              data={nav}
+              horizontal={true}
+              renderItem={({ item }) => (
+                <Button margin={1} w="95.9px"
+                onPress={item.action}
+                colorScheme= {item.nombre == "Cerrar sesion" ? "red" : "green"} >
+                {item.nombre}
+              </Button>
+              )}
+              keyExtractor={(item) => item.id}
+            />
       </Center>
       <Center>
-        <Stack mt={3} space={4} w="100%" maxW="100%">
-          <Heading size="md" ml="-1" pl={"5"}>
-            Campañas
-          </Heading>
-          <FlatList
-            padding={"4px"}
-            horizontal={true}
-            data={campanias}
-            renderItem={({ item }) => (
-              <Campania campania={item.nombre} action={item.action} />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        </Stack>
-        {isLoading ?? (
-          <HStack space={2} justifyContent="center">
-            <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
-            <Heading color="emerald.500" fontSize="md">
-              Solicitando
-            </Heading>
-          </HStack>
-        )}
+          <Stack mt={3} space={4} w="100%" maxW="100%">
+              <Center>
+              <Heading pt="27px" size="md" ml="-1">
+                Campañas
+              </Heading>
+            </Center>
+            <FlatList
+              padding={"4px"}
+              data={campanias}
+              renderItem={({ item }) => (
+                <Campania campania={item.nombre} action={item.action} />
+              )}
+              keyExtractor={(item) => item.id}
+            />
+          </Stack>
+          {isLoading ?? (
+            <HStack space={2} justifyContent="center">
+              <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
+              <Heading color="emerald.500" fontSize="md">
+                Solicitando
+              </Heading>
+            </HStack>
+          )}
       </Center>
     </NativeBaseProvider>
   );

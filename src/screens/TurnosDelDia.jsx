@@ -32,7 +32,7 @@ function TurnosDelDiaScreen({ navigation }) {
       "Bearer " +
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ";
       var decoded = jwt_decode("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ");
-      console.log(decoded);
+   
       myHeaders.append("Authorization", token);
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
@@ -96,9 +96,10 @@ function TurnosDelDiaScreen({ navigation }) {
                     <Pressable
                       onPress={() =>
                         navigation.navigate("Cargar datos", {
-                          dni: item.dni,
+                          nombre: item.nombreYApellido,
                           id_campania: campania,
                           idTurno: item.nroTurno,
+                          dni: item.dni,
                         })
                       }
                     >
@@ -114,9 +115,10 @@ function TurnosDelDiaScreen({ navigation }) {
                       <Pressable
                       onPress={() =>
                         navigation.navigate("Cargar datos", {
-                          dni: item.dni,
+                          nombre: item.nombreYApellido,
                           id_campania: campania,
                           idTurno: item.nroTurno,
+                          dni: item.dni,
                         })
                       }
                     >

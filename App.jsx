@@ -54,16 +54,17 @@ export default function App() {
         initialRouteName={isUser ? "Home" : "Login"}
       >
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Historial" component={HistorialVacunacionScreen} />
+        <Stack.Screen name="Historial" options={{gestureEnabled:true}} component={HistorialVacunacionScreen} />
         <Stack.Screen
           name="Turnos pendientes"
           component={TurnosPendientesScreen}
+          options={{gestureEnabled:true}}
         />
         <Stack.Screen name="Logout" component={LogoutScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Listado de turnos" component={TurnosDelDiaScreen} />
-        <Stack.Screen name="Cargar datos" component={CargarDatosScreen} />
+        <Stack.Screen name="Register" options={{gestureEnabled:true}} component={RegisterScreen} />
+        <Stack.Screen name="Listado de turnos" options={{gestureEnabled:true}} component={TurnosDelDiaScreen} />
+        <Stack.Screen name="Cargar datos" options={{gestureEnabled:true}} component={CargarDatosScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

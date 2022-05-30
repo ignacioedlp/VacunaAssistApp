@@ -13,7 +13,7 @@ import {
 } from "native-base";
 
 function CargarDatosScreen({ route, navigation }) {
-  const { dni, id_campania, idTurno } = route.params;
+  const { dni, nombre, id_campania, idTurno } = route.params;
   const [nro_lote, setNro_lote] = useState("");
   const [marca, setMarca] = useState("");
   const [cargado, setCargado] = useState(false);
@@ -66,19 +66,20 @@ function CargarDatosScreen({ route, navigation }) {
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
             <Heading size="lg" ml="-1" p="10px">
-              Cargar datos del ciudadano {dni}
+              Cargar datos del ciudadano {nombre}
             </Heading>
           </Center>
 
           <Input
             onChangeText={handlerNro_lote}
-            size="xs"
+            size="md"
             value={nro_lote}
+         
             placeholder="Numero del lote"
           />
           <Input
             onChangeText={handlerMarca}
-            size="xs"
+            size="md"
             value={marca}
             placeholder="Marca de la vacuna"
           />
@@ -98,10 +99,13 @@ function CargarDatosScreen({ route, navigation }) {
             </HStack>
           )}
           {cargado && (
+            <Center>
             <Box>
-              <Heading size="lg" ml="-1" p="10px">
-                Datos cargados
-              </Heading>
+              
+                <Heading size="lg" ml="-1" p="10px">
+                  Datos cargados
+                </Heading>
+              
               <Button
                 colorScheme="green"
                 onPress={() => navigation.navigate("Listado de turnos")}
@@ -109,6 +113,7 @@ function CargarDatosScreen({ route, navigation }) {
                 Volver
               </Button>
             </Box>
+          </Center>
           )}
         </Stack>
       </Center>

@@ -78,21 +78,21 @@ function LoginScreen({ navigation }) {
 
           <Input
             onChangeText={handlerChangeDni}
-            size="xs"
+            size="md"
             value={dni}
             placeholder="Dni"
             type="number"
           />
           <Input
             onChangeText={handlerChangeCode}
-            size="xs"
+            size="md"
             value={code}
             placeholder="Codigo"
             type="number"
           />
           <Input
             onChangeText={handlerChangePass}
-            size="xs"
+            size="md"
             value={pass}
             placeholder="Contraseña"
           />

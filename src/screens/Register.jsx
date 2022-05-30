@@ -69,11 +69,12 @@ function RegisterScreen({ navigation }) {
           <Heading fontSize="md">Bienvenido a VacunAssist</Heading>
           <Input
             onChangeText={handlerChangeDni}
-            size="xs"
+            size="md"
             value={dni}
             placeholder="Dni"
           />
           <Select
+            size="md"
             minWidth="200"
             selectedValue={sexo}
             accessibilityLabel="Sex"
@@ -90,29 +91,30 @@ function RegisterScreen({ navigation }) {
           </Select>
           <Input
             onChangeText={handlerChangeNro_Tramite}
-            size="xs"
+            size="md"
             value={nro_tramite}
             placeholder="Numero de tramite"
           />
           <Input
             onChangeText={handlerChangePass}
-            size="xs"
+            size="md"
             value={pass}
             placeholder="Contraseña"
           />
           <Input
             onChangeText={handlerChangePass_confirmation}
-            size="xs"
+            size="md"
             value={pass_confirmation}
             placeholder="Confirmar contraseña"
           />
           <Input
             onChangeText={handlerChangeEmail}
-            size="xs"
+            size="md"
             value={email}
             placeholder="Email"
           />
           <Select
+            size="md"
             minWidth="200"
             selectedValue={vacunatorio}
             accessibilityLabel="Vacunatorio"
