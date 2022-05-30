@@ -13,6 +13,7 @@
     "@mile-hi-labs/react-native-session": "^2.1.1",
     "@native-base/icons": "^0.0.11",
     "@react-native-async-storage/async-storage": "^1.17.5",
+    "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/drawer": "^6.4.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",

@@ -64,7 +64,7 @@ function LoginScreen({ navigation }) {
 
   return (
     <NativeBaseProvider>
-      <Center>
+      <Center py="15">
         <Image
           source={require("../../assets/icon.png")}
           width={100}
@@ -72,7 +72,10 @@ function LoginScreen({ navigation }) {
           alt="logo"
         />
         <Stack mt={3} space={4} w="75%" maxW="300px">
-          <Heading fontSize="md">Bienvenido de nuevo</Heading>
+          <Center>
+            <Heading fontSize="lg">Bienvenido de nuevo</Heading>
+          </Center>
+
           <Input
             onChangeText={handlerChangeDni}
             size="xs"

@@ -13,9 +13,9 @@ import {
 
 function Campania({ campania, action }) {
   return (
-    <Box alignItems="center" p="4">
+    <Box width="200px" p="2">
       <Box
-        maxW="400px"
+        maxW="100%"
         rounded="lg"
         overflow="hidden"
         borderColor="coolGray.200"
@@ -34,17 +34,25 @@ function Campania({ campania, action }) {
       >
         <Stack p="4" space={5}>
           <Stack space={2}>
-            <Heading size="md" ml="-1">
-              {campania}
-            </Heading>
+            <Center>
+              <Heading size="md" ml="-1">
+                {campania}
+              </Heading>
+            </Center>
           </Stack>
-          <HStack alignItems="center" space={4} justifyContent="space-between">
-            <HStack alignItems="center">
-              <Button colorScheme="green" onPress={action}>
-                Solicitar
-              </Button>
+          <Center>
+            <HStack
+              alignItems="center"
+              space={4}
+              justifyContent="space-between"
+            >
+              <HStack alignItems="center">
+                <Button colorScheme="green" size="md" onPress={action}>
+                  Solicitar
+                </Button>
+              </HStack>
             </HStack>
-          </HStack>
+          </Center>
         </Stack>
       </Box>
     </Box>
