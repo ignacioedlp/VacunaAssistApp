@@ -12,12 +12,14 @@ import {
   Box,
   CheckIcon,
   Pressable,
-  Heading
+  Heading,
 } from "native-base";
+import TurnoDelDia from "../components/TurnoDeHoyTarjeta";
 
 function TurnosDelDiaScreen({ navigation }) {
   const [turnos, setTurnos] = useState([]);
   const [campania, setCampania] = useState("");
+  const [cargado, setCargado] = useState(false);
   const handlerChangeCampania = (campania) => setCampania(campania);
 
   const ObtenerListaVacunar = async () => {
@@ -47,12 +49,17 @@ function TurnosDelDiaScreen({ navigation }) {
     ).catch((error) => console.log("error", error));
     const res = await result.json();
     setTurnos(res);
+    setCargado(true);
   };
 
   return (
     <NativeBaseProvider>
       <Center>
-        <Heading>Turnos del dia</Heading>
+        <Center>
+          <Heading size="lg" ml="-1" p="10px">
+            Turnos del dia
+          </Heading>
+        </Center>
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Select
             minWidth="200"
@@ -74,8 +81,7 @@ function TurnosDelDiaScreen({ navigation }) {
             Obtener listado
           </Button>
         </Stack>
-
-        {campania != "" ? (
+        {cargado != false ? (
           turnos.length > 0 ? (
             <FlatList
               data={turnos}
@@ -85,16 +91,16 @@ function TurnosDelDiaScreen({ navigation }) {
                     navigation.navigate("Cargar datos", {
                       dni: item.dni,
                       id_campania: campania,
-                      idTurno: 46,
+                      idTurno: item.nroTurno,
                     })
                   }
                 >
-                  <Box>
-                    <Text>Nombre: {item.nombreYApellido}</Text>
-                    <Text>Dni: {item.dni}</Text>
-                    <Text>fecha: {item.fecha}</Text>
-                    <Text>Numero de turno: {item.nroTurno}</Text>
-                  </Box>
+                  <TurnoDelDia
+                    fecha={item.fecha}
+                    nroTurno={item.nroTurno}
+                    nombreYApellido={item.nombreYApellido}
+                    dni={item.dni}
+                  />
                 </Pressable>
               )}
             />

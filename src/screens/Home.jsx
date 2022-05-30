@@ -156,7 +156,7 @@ function HomeScreen({ navigation }) {
       </Center>
       <Center>
         <Stack mt={3} space={4} w="100%" maxW="100%">
-          <Heading size="md" ml="-1" padding={"10px"}>
+          <Heading size="md" ml="-1" pl={"5"}>
             Campañas
           </Heading>
           <FlatList
