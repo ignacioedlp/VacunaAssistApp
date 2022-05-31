@@ -11,7 +11,7 @@ import {
   Box,
 } from "native-base";
 
-function Campania({ campania, action }) {
+function Campania({ campania, action, stateButton }) {
   return (
     <Box mx="45px" p="2">
       <Box
@@ -47,8 +47,14 @@ function Campania({ campania, action }) {
               justifyContent="space-between"
             >
               <HStack alignItems="center">
-                <Button w="150px" colorScheme="green" size="md" onPress={action}>
-                  Solicitar
+                <Button
+                  w="150px"
+                  colorScheme={stateButton ? "red" : "green"}
+                  size="md"
+                  onPress={action}
+                  disabled={stateButton}
+                >
+                  {stateButton ? "Cancelar" : "Solicitar"}
                 </Button>
               </HStack>
             </HStack>

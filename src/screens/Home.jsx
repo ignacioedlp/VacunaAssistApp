@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Center,
   Stack,
@@ -12,8 +12,17 @@ import {
 } from "native-base";
 import Campania from "../components/CampaniaTarjeta";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  desactivateCovid,
+  desactivateGripe,
+  desactivateFiebre,
+} from "../context/slices/campaniasSlice";
 
 function HomeScreen({ navigation }) {
+  const dispatch = useDispatch();
+  const campaniasData = useSelector((state) => state.campanias);
+
   const handlerSolicitarFiebre = async () => {
     setIsLoading(true);
     var myHeaders = new Headers();
@@ -38,6 +47,7 @@ function HomeScreen({ navigation }) {
       .then((result) => {
         if ((result.code = 200)) {
           alert(result.message);
+          dispatch(desactivateFiebre());
         } else {
           alert(result.message);
         }
@@ -69,6 +79,7 @@ function HomeScreen({ navigation }) {
       .then((result) => {
         if ((result.code = 200)) {
           alert(result.message);
+          dispatch(desactivateGripe());
         } else {
           alert(result.message);
         }
@@ -100,6 +111,7 @@ function HomeScreen({ navigation }) {
       .then((result) => {
         if ((result.code = 200)) {
           alert(result.message);
+          dispatch(desactivateCovid());
         } else {
           alert(result.message);
         }
@@ -165,6 +177,7 @@ function HomeScreen({ navigation }) {
               w="90px"
               onPress={item.action}
               colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
+
             >
               {item.nombre}
             </Button>
@@ -179,13 +192,20 @@ function HomeScreen({ navigation }) {
               Campañas
             </Heading>
           </Center>
-          <FlatList
-            padding={"4px"}
-            data={campanias}
-            renderItem={({ item }) => (
-              <Campania campania={item.nombre} action={item.action} />
-            )}
-            keyExtractor={(item) => item.id}
+          <Campania
+            campania={campanias[0].nombre}
+            action={campanias[0].action}
+            stateButton={campaniasData.gripe}
+          />
+          <Campania
+            campania={campanias[1].nombre}
+            action={campanias[1].action}
+            stateButton={campaniasData.fiebre}
+          />
+          <Campania
+            campania={campanias[2].nombre}
+            action={campanias[2].action}
+            stateButton={campaniasData.covid}
           />
         </Stack>
         {isLoading ?? (
