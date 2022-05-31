@@ -3,15 +3,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  gripe: false,
-  fiebre: false,
-  covid: false,
+  gripe: true,
+  fiebre: true,
+  covid: true,
 };
+
 
 export const campaniasSlice = createSlice({
   name: "campanias",
   initialState: initialState,
   reducers: {
+
+    initCampania: (state = initialState, action) => {
+      return {
+        ...state, //
+        gripe: action.payload.gripe,
+        fiebre: action.payload.fiebre,
+        covid: action.payload.covid
+      };
+    },
     desactivateGripe: (state = initialState, action) => {
       console.log("desactivando gripe");
       return {
@@ -34,6 +44,6 @@ export const campaniasSlice = createSlice({
   },
 });
 
-export const { desactivateCovid, desactivateFiebre, desactivateGripe } =
+export const { desactivateCovid, desactivateFiebre, desactivateGripe, initCampania } =
   campaniasSlice.actions;
 export default campaniasSlice.reducer;
