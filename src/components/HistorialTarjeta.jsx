@@ -12,6 +12,8 @@ import {
 } from "native-base";
 
 function Historial({ campania, marca, fecha, lote }) {
+  const fechaTurno = new Date(fecha);
+  fechaTurno.setMonth(fechaTurno.getMonth() + 1);
   return (
     <Box p="20px">
       <Box
@@ -40,7 +42,7 @@ function Historial({ campania, marca, fecha, lote }) {
           </Stack>
           <VStack space={4} justifyContent="space-between">
             <Text>
-              Fecha: {new Date(fecha).getUTCDate() +"/"+ new Date(fecha).getMonth() +"/"+  new Date(fecha).getUTCFullYear() }
+              Fecha:{new Date(fecha).getUTCDate() +"/"+ fechaTurno.getMonth() +"/"+  new Date(fecha).getUTCFullYear() }
             </Text>
             <Text>Marca: {marca}</Text>
             <Text>Nro lote: {lote}</Text>

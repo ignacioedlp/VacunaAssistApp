@@ -12,6 +12,8 @@ import {
 } from "native-base";
 
 function Pendiente({ campania, vacunatorio, fecha, estado }) {
+  const fechaTurno = new Date(fecha);
+  fechaTurno.setMonth(fechaTurno.getMonth() + 1);
   return (
     <Box p="20px">
       <Box
@@ -41,11 +43,7 @@ function Pendiente({ campania, vacunatorio, fecha, estado }) {
           <VStack space={4} justifyContent="space-between">
             {estado == "Asignado" ? (
               <Text> 
-                Fecha: {new Date(fecha).toLocaleDateString("es-ES", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
+                Fecha:{new Date(fecha).getUTCDate() +"/"+ fechaTurno.getMonth() +"/"+  new Date(fecha).getUTCFullYear() }
               </Text>
             ): (
               <Text>
