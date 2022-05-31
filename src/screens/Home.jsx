@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Center,
   Stack,
@@ -8,11 +8,21 @@ import {
   Heading,
   FlatList,
   Spinner,
+  View,
 } from "native-base";
 import Campania from "../components/CampaniaTarjeta";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  desactivateCovid,
+  desactivateGripe,
+  desactivateFiebre,
+} from "../context/slices/campaniasSlice";
 
 function HomeScreen({ navigation }) {
+  const dispatch = useDispatch();
+  const campaniasData = useSelector((state) => state.campanias);
+
   const handlerSolicitarFiebre = async () => {
     setIsLoading(true);
     var myHeaders = new Headers();
@@ -37,6 +47,7 @@ function HomeScreen({ navigation }) {
       .then((result) => {
         if ((result.code = 200)) {
           alert(result.message);
+          dispatch(desactivateFiebre());
         } else {
           alert(result.message);
         }
@@ -68,6 +79,7 @@ function HomeScreen({ navigation }) {
       .then((result) => {
         if ((result.code = 200)) {
           alert(result.message);
+          dispatch(desactivateGripe());
         } else {
           alert(result.message);
         }
@@ -99,6 +111,7 @@ function HomeScreen({ navigation }) {
       .then((result) => {
         if ((result.code = 200)) {
           alert(result.message);
+          dispatch(desactivateCovid());
         } else {
           alert(result.message);
         }
@@ -126,47 +139,73 @@ function HomeScreen({ navigation }) {
     },
   ];
 
+  const nav = [
+    {
+      id: 1,
+      nombre: "Turnos pendientes",
+      action: () => navigation.navigate("Turnos pendientes"),
+    },
+    {
+      nombre: "Mis vacunas",
+      id: 2,
+      action: () => navigation.navigate("Historial"),
+    },
+    {
+      id: 3,
+      nombre: "Ver listado",
+      action: () => navigation.navigate("Listado de turnos"),
+    },
+    {
+      id: 4,
+      nombre: "Cerrar sesion",
+      action: () => navigation.navigate("Logout"),
+    },
+  ];
+
   return (
     <NativeBaseProvider>
       <Center>
-        <Button
-          onPress={() => navigation.navigate("Turnos pendientes")}
-          colorScheme="green"
-        >
-          Turnos pendientes
-        </Button>
-        <Button
-          onPress={() => navigation.navigate("Historial")}
-          colorScheme="green"
-        >
-          Mis vacunas
-        </Button>
-        <Button
-          onPress={() => navigation.navigate("Logout")}
-          colorScheme="green"
-        >
-          Cerrar sesion
-        </Button>
-        <Button
-          onPress={() => navigation.navigate("Listado de turnos")}
-          colorScheme="green"
-        >
-          Ver listado
-        </Button>
+        <FlatList
+          top={1}
+          padding={"2px"}
+          data={nav}
+          horizontal={true}
+          renderItem={({ item }) => (
+            <Button
+              margin={1}
+              _text={{ fontSize: 12 }}
+              w="90px"
+              onPress={item.action}
+              colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
+
+            >
+              {item.nombre}
+            </Button>
+          )}
+          keyExtractor={(item) => item.id}
+        />
       </Center>
       <Center>
         <Stack mt={3} space={4} w="100%" maxW="100%">
-          <Heading size="md" ml="-1" padding={"10px"}>
-            Campañas
-          </Heading>
-          <FlatList
-            padding={"4px"}
-            horizontal={true}
-            data={campanias}
-            renderItem={({ item }) => (
-              <Campania campania={item.nombre} action={item.action} />
-            )}
-            keyExtractor={(item) => item.id}
+          <Center>
+            <Heading pt="27px" size="md" ml="-1">
+              Campañas
+            </Heading>
+          </Center>
+          <Campania
+            campania={campanias[0].nombre}
+            action={campanias[0].action}
+            stateButton={campaniasData.gripe}
+          />
+          <Campania
+            campania={campanias[1].nombre}
+            action={campanias[1].action}
+            stateButton={campaniasData.fiebre}
+          />
+          <Campania
+            campania={campanias[2].nombre}
+            action={campanias[2].action}
+            stateButton={campaniasData.covid}
           />
         </Stack>
         {isLoading ?? (

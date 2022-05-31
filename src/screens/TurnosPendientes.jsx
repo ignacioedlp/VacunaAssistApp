@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NativeBaseProvider, Text, FlatList, Box, Heading } from "native-base";
+import {
+  NativeBaseProvider,
+  Center,
+  FlatList,
+  Box,
+  Heading,
+  Text,
+} from "native-base";
+import Pendiente from "../components/PendienteTarjeta";
 
 function TurnosPendientes() {
   const [pendientes, setPendientes] = useState([]);
@@ -33,19 +41,29 @@ function TurnosPendientes() {
 
   return (
     <NativeBaseProvider>
-      <Heading size="xl" mb="4">
-        Turnos pendientes
-      </Heading>
-      <FlatList
-        data={pendientes}
-        renderItem={({ item }) => (
-          <Box>
-            <Text>Campaña: {item.campania}</Text>
-            <Text>Vacunatorio: {item.vacunatorio}</Text>
-            <Text>Fecha: {item.fecha}</Text>
-          </Box>
-        )}
-      />
+      <Center>
+        <Heading size="lg" ml="-1" p="10px">
+          Turnos pendientes
+        </Heading>
+      </Center>
+      {pendientes.length > 0 ? (
+
+      
+        <FlatList
+          data={pendientes}
+          renderItem={({ item }) => (
+            <Pendiente
+              campania={item.campania}
+              fecha={item.fecha}
+              vacunatorio={item.vacunatorio}
+            />
+          )}
+        />
+      ) : (
+        <Center>
+          <Text>No posee turnos pendientes</Text>
+        </Center>
+      )}
     </NativeBaseProvider>
   );
 }
