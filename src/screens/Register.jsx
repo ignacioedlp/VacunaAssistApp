@@ -134,6 +134,7 @@ function RegisterScreen({ navigation }) {
             value={riesgo}
             accessibilityLabel="Riesgo"
             onChange={handlerChangeRiesgo}
+            _text={{ fontSize: 12 }}
           >
             Riesgo (Paciente oncológico, Persona trasplantada, Diabetes,
             Enfermedad Renal Crónica, Enfermedades Cardiovasculares,

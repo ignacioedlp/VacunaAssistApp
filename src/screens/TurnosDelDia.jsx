@@ -31,9 +31,11 @@ function TurnosDelDiaScreen({ navigation }) {
     const token =
       "Bearer " +
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ";
-      var decoded = jwt_decode("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ");
-   
-      myHeaders.append("Authorization", token);
+    var decoded = jwt_decode(
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ"
+    );
+
+    myHeaders.append("Authorization", token);
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
       campania: campania,
@@ -84,14 +86,22 @@ function TurnosDelDiaScreen({ navigation }) {
           <Button colorScheme="green" onPress={() => ObtenerListaVacunar()}>
             Obtener listado
           </Button>
+          <Input
+            mb={5}
+            size={"lg"}
+            placeholder="Buscar por dni"
+            value={dni}
+            onChangeText={handlerChangeDni}
+            type="number"
+          />
         </Stack>
-        <Input m="20px" placeholder="Buscar por dni" value={dni} onChangeText={handlerChangeDni} type="number"/>
+
         {cargado != false ? (
           turnos.length > 0 ? (
             <Stack px="10px">
               <FlatList
                 data={turnos}
-                renderItem={({ item }) => (
+                renderItem={({ item }) =>
                   dni == null ? (
                     <Pressable
                       onPress={() =>
@@ -111,26 +121,27 @@ function TurnosDelDiaScreen({ navigation }) {
                       />
                     </Pressable>
                   ) : (
-                    item.dni.toString().includes(dni.toString()) &&
+                    item.dni.toString().includes(dni.toString()) && (
                       <Pressable
-                      onPress={() =>
-                        navigation.navigate("Cargar datos", {
-                          nombre: item.nombreYApellido,
-                          id_campania: campania,
-                          idTurno: item.nroTurno,
-                          dni: item.dni,
-                        })
-                      }
-                    >
-                      <TurnoDelDia
-                        fecha={item.fecha}
-                        nroTurno={item.nroTurno}
-                        nombreYApellido={item.nombreYApellido}
-                        dni={item.dni}
-                      />
-                    </Pressable>
+                        onPress={() =>
+                          navigation.navigate("Cargar datos", {
+                            nombre: item.nombreYApellido,
+                            id_campania: campania,
+                            idTurno: item.nroTurno,
+                            dni: item.dni,
+                          })
+                        }
+                      >
+                        <TurnoDelDia
+                          fecha={item.fecha}
+                          nroTurno={item.nroTurno}
+                          nombreYApellido={item.nombreYApellido}
+                          dni={item.dni}
+                        />
+                      </Pressable>
+                    )
                   )
-                )}
+                }
               />
             </Stack>
           ) : (

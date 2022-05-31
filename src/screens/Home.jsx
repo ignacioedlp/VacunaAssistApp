@@ -147,51 +147,55 @@ function HomeScreen({ navigation }) {
       id: 4,
       nombre: "Cerrar sesion",
       action: () => navigation.navigate("Logout"),
-    }
+    },
   ];
 
   return (
-    <NativeBaseProvider> 
+    <NativeBaseProvider>
       <Center>
         <FlatList
-              top={1} 
-              padding={"2px"}
-              data={nav}
-              horizontal={true}
-              renderItem={({ item }) => (
-                <Button margin={1} w="95.9px"
-                onPress={item.action}
-                colorScheme= {item.nombre == "Cerrar sesion" ? "red" : "green"} >
-                {item.nombre}
-              </Button>
-              )}
-              keyExtractor={(item) => item.id}
-            />
+          top={1}
+          padding={"2px"}
+          data={nav}
+          horizontal={true}
+          renderItem={({ item }) => (
+            <Button
+              margin={1}
+              _text={{ fontSize: 12 }}
+              w="90px"
+              onPress={item.action}
+              colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
+            >
+              {item.nombre}
+            </Button>
+          )}
+          keyExtractor={(item) => item.id}
+        />
       </Center>
       <Center>
-          <Stack mt={3} space={4} w="100%" maxW="100%">
-              <Center>
-              <Heading pt="27px" size="md" ml="-1">
-                Campañas
-              </Heading>
-            </Center>
-            <FlatList
-              padding={"4px"}
-              data={campanias}
-              renderItem={({ item }) => (
-                <Campania campania={item.nombre} action={item.action} />
-              )}
-              keyExtractor={(item) => item.id}
-            />
-          </Stack>
-          {isLoading ?? (
-            <HStack space={2} justifyContent="center">
-              <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
-              <Heading color="emerald.500" fontSize="md">
-                Solicitando
-              </Heading>
-            </HStack>
-          )}
+        <Stack mt={3} space={4} w="100%" maxW="100%">
+          <Center>
+            <Heading pt="27px" size="md" ml="-1">
+              Campañas
+            </Heading>
+          </Center>
+          <FlatList
+            padding={"4px"}
+            data={campanias}
+            renderItem={({ item }) => (
+              <Campania campania={item.nombre} action={item.action} />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </Stack>
+        {isLoading ?? (
+          <HStack space={2} justifyContent="center">
+            <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
+            <Heading color="emerald.500" fontSize="md">
+              Solicitando
+            </Heading>
+          </HStack>
+        )}
       </Center>
     </NativeBaseProvider>
   );
