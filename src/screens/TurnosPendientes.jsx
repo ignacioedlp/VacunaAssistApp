@@ -56,6 +56,7 @@ function TurnosPendientes() {
               campania={item.campania}
               fecha={item.fecha}
               vacunatorio={item.vacunatorio}
+              estado={item.estado}
             />
           )}
         />

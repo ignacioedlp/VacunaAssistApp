@@ -11,7 +11,7 @@ import {
   Box,
 } from "native-base";
 
-function Pendiente({ campania, vacunatorio, fecha }) {
+function Pendiente({ campania, vacunatorio, fecha, estado }) {
   return (
     <Box p="20px">
       <Box
@@ -39,13 +39,19 @@ function Pendiente({ campania, vacunatorio, fecha }) {
             </Heading>
           </Stack>
           <VStack space={4} justifyContent="space-between">
-            <Text>
-              Fecha: {new Date(fecha).toLocaleDateString("es-ES", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </Text>
+            {estado == "Asignado" ? (
+              <Text> 
+                Fecha: {new Date(fecha).toLocaleDateString("es-ES", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </Text>
+            ): (
+              <Text>
+                Pendiente de asignacion
+              </Text> 
+            ) }   
             <Text>Vacunatorio: {vacunatorio}</Text>
           </VStack>
         </Stack>

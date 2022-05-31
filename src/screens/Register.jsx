@@ -93,7 +93,7 @@ function RegisterScreen({ navigation }) {
             onChangeText={handlerChangeNro_Tramite}
             size="md"
             value={nro_tramite}
-            placeholder="Numero de tramite"
+            placeholder="Cuil/Cuit"
           />
           <Input
             onChangeText={handlerChangePass}

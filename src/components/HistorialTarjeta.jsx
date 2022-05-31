@@ -40,11 +40,7 @@ function Historial({ campania, marca, fecha, lote }) {
           </Stack>
           <VStack space={4} justifyContent="space-between">
             <Text>
-              Fecha: {new Date(fecha).toLocaleDateString("es-ES", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
+              Fecha: {new Date(fecha).getUTCDate() +"/"+ new Date(fecha).getMonth() +"/"+  new Date(fecha).getUTCFullYear() }
             </Text>
             <Text>Marca: {marca}</Text>
             <Text>Nro lote: {lote}</Text>
