@@ -12,6 +12,7 @@ import {
   CheckIcon,
   Checkbox,
 } from "native-base";
+import {Alert} from 'react-native';
 
 function RegisterScreen({ navigation }) {
   const [dni, setDni] = useState("");
@@ -35,30 +36,34 @@ function RegisterScreen({ navigation }) {
 
   const handlerRegister = async () => {
     setIsLoading(true);
-    response = await fetch(
-      "https://vacunassistservices-production.up.railway.app/auth/register",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          dni: parseInt(dni),
-          sexo: sexo,
-          nro_tramite: nro_tramite,
-          password: pass,
-          password_confirmation: pass_confirmation,
-          email: email,
-          vacunatorio: parseInt(vacunatorio),
-          riesgo: riesgo,
-        }),
+    if (dni != "" && sexo != "" && nro_tramite != "" && pass != "" && pass_confirmation != "" && email != "" && vacunatorio != "") {
+      const response = await fetch(
+        "https://vacunassistservices-production.up.railway.app/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            dni: parseInt(dni),
+            sexo: sexo,
+            nro_tramite: nro_tramite,
+            password: pass,
+            password_confirmation: pass_confirmation,
+            email: email,
+            vacunatorio: parseInt(vacunatorio),
+            riesgo: riesgo,
+          }),
+        }
+      ).then((response) => response.json());
+      if (response.code == 200) {
+        navigation.navigate("Login");
+      } else {
+        Alert.alert("VacunAssist",response.message);
       }
-    ).then((response) => response.json());
-    if (response.code == 200) {
-      navigation.navigate("Login");
     } else {
-      alert(response.JSON);
-    }
+      Alert.alert("VacunAssist","Completar los campos");
+    } 
     setIsLoading(false);
   };
 
@@ -93,19 +98,22 @@ function RegisterScreen({ navigation }) {
             onChangeText={handlerChangeNro_Tramite}
             size="md"
             value={nro_tramite}
-            placeholder="Cuil/Cuit"
+            placeholder="numero de tramite"
+            type="password"
           />
           <Input
             onChangeText={handlerChangePass}
             size="md"
             value={pass}
             placeholder="Contraseña"
+            type="password"
           />
           <Input
             onChangeText={handlerChangePass_confirmation}
             size="md"
             value={pass_confirmation}
             placeholder="Confirmar contraseña"
+            type="password"
           />
           <Input
             onChangeText={handlerChangeEmail}
@@ -136,9 +144,9 @@ function RegisterScreen({ navigation }) {
             onChange={handlerChangeRiesgo}
             _text={{ fontSize: 12 }}
           >
-            Riesgo (Paciente oncológico, Persona trasplantada, Diabetes,
+            ¿Tiene alguno de estos riesgos:(Paciente oncológico, Persona trasplantada, Diabetes,
             Enfermedad Renal Crónica, Enfermedades Cardiovasculares,
-            Enfermedades Respiratorias Crónicas)
+            Enfermedades Respiratorias Crónicas)?
           </Checkbox>
           <Button colorScheme="green" onPress={() => handlerRegister()}>
             Registrarme

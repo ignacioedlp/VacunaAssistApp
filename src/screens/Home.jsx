@@ -11,6 +11,7 @@ import {
   View,
 } from "native-base";
 import Campania from "../components/CampaniaTarjeta";
+import TarjetaAdmin from "../components/TarjetaAdmin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -158,7 +159,7 @@ function HomeScreen({ navigation }) {
     },
   ];
 
-  const nav_vacunador = [
+  const nav_personal = [
     {
       id: 1,
       nombre: "Turnos pendientes",
@@ -187,7 +188,7 @@ function HomeScreen({ navigation }) {
         <FlatList
           top={1}
           padding={"2px"}
-          data={userData.rol == "Ciudadano" ? nav_ciudadano : nav_vacunador}
+          data={userData.rol == "Ciudadano" ? nav_ciudadano : nav_personal}
           horizontal={true}
           renderItem={({ item }) => (
             <Button
@@ -225,6 +226,9 @@ function HomeScreen({ navigation }) {
             action={campanias[2].action}
             stateButton={campaniasData.covid}
           />
+          {userData.rol == "Admin" &&
+            <TarjetaAdmin />
+          }
         </Stack>
         {isLoading ?? (
           <HStack space={2} justifyContent="center">

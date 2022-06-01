@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import {Alert} from 'react-native';
 import {
   Input,
   Center,
@@ -108,7 +108,7 @@ function LoginScreen({ navigation }) {
           try {
             await AsyncStorage.setItem("@JWTUSER", response.message);
           } catch (error) {
-            alert("Error del sistema reinicie la aplicación");
+            Alert.alert("VacunAssist","Error del sistema reinicie la aplicación");
             // Error saving data
           }
         };
@@ -117,10 +117,10 @@ function LoginScreen({ navigation }) {
         dispatch(initCampania(objCampania));
         navigation.navigate("Home");
       } else {
-        alert(response.message);
+        Alert.alert("VacunAssist",response.message);
       }
     } else {
-      alert("Complete los campos");
+      Alert.alert("VacunAssist","Complete los campos");
     }
     setIsLoading(false);
   };
@@ -151,13 +151,14 @@ function LoginScreen({ navigation }) {
             size="md"
             value={code}
             placeholder="Codigo"
-            type="number"
+            type="password"
           />
           <Input
             onChangeText={handlerChangePass}
             size="md"
             value={pass}
             placeholder="Contraseña"
+            type="password"
           />
           <Button onPress={() => handlerLogin()} colorScheme="green">
             Iniciar Sesion

@@ -54,7 +54,7 @@ function Campania({ campania, action, stateButton }) {
                     size="md"
                     onPress={action}
                   >
-                    "Solicitar"
+                    Solicitar
                   </Button>
                 </HStack>
               </HStack>

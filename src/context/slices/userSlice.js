@@ -10,7 +10,6 @@ export const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUser: (state = initialState, action) => {
-      console.log("Inicializando usuario");
       return {
         ...state, //
         rol: action.payload.rol,

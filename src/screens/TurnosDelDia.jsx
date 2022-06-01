@@ -31,7 +31,6 @@ function TurnosDelDiaScreen({ navigation }) {
     var myHeaders = new Headers();
     const value = userData.token;
     const token = "Bearer " + value;
-    console.log(token);
     var decoded = jwt_decode(value);
 
     myHeaders.append("Authorization", token);
@@ -78,8 +77,8 @@ function TurnosDelDiaScreen({ navigation }) {
             }}
             mt="1"
           >
-            <Select.Item label="Fiebre amarilla" value="1" />
-            <Select.Item label="Gripe" value="2" />
+            {/* <Select.Item label="Fiebre amarilla" value="1" /> */}
+            {/* <Select.Item label="Gripe" value="2" /> */}
             <Select.Item label="Covid-19" value="3" />
           </Select>
           <Button colorScheme="green" onPress={() => ObtenerListaVacunar()}>
@@ -94,7 +93,6 @@ function TurnosDelDiaScreen({ navigation }) {
             type="number"
           />
         </Stack>
-
         {cargado != false ? (
           turnos.length > 0 ? (
             <Stack px="10px">

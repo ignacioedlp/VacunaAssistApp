@@ -11,17 +11,14 @@ import {
   Box,
 } from "native-base";
 
-function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
-  const fechaTurno = new Date(fecha);
-  fechaTurno.setMonth(fechaTurno.getMonth() + 1);
-
+function TarjetaAdministrador() {
   return (
     <Box p="20px">
       <Box
         maxW="100%"
         rounded="lg"
         overflow="hidden"
-        borderColor="emerald.500"
+        borderColor="red.500"
         borderWidth="3"
         _dark={{
           borderColor: "coolGray.600",
@@ -37,16 +34,20 @@ function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
       >
         <Stack p="4" space={5}>
           <Stack space={2}>
-            <Heading size="md" ml="-1">
-              {nombreYApellido}
-            </Heading>
+            <Center>
+
+            
+                <Heading size="md" ml="-1">
+                Sos administrador
+                </Heading>
+            </Center>
           </Stack>
           <VStack space={4} justifyContent="space-between">
-            <Text>
-              Fecha: {new Date(fecha).getUTCDate() +"/"+ fechaTurno.getMonth() +"/"+  new Date(fecha).getUTCFullYear() }
-            </Text>
-            <Text>Dni: {dni}</Text>
-            <Text>Turno: {nroTurno}</Text>
+            <Center>
+                <Text>
+                    Proximamente más funcionalidades.
+                </Text>
+            </Center>
           </VStack>
         </Stack>
       </Box>
@@ -54,4 +55,4 @@ function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
   );
 }
 
-export default TurnoDelDia;
+export default TarjetaAdministrador;
