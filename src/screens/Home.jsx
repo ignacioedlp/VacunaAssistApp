@@ -47,7 +47,7 @@ function HomeScreen({ navigation }) {
     )
       .then((response) => response.json())
       .then((result) => {
-        if ((result.code = 200)) {
+        if ((result.code == 200)) {
           alert(result.message);
           dispatch(desactivateFiebre());
         } else {
@@ -111,7 +111,7 @@ function HomeScreen({ navigation }) {
     )
       .then((response) => response.json())
       .then((result) => {
-        if ((result.code = 200)) {
+        if ((result.code == 200)) {
           alert(result.message);
           dispatch(desactivateCovid());
         } else {

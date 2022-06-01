@@ -70,7 +70,7 @@ function TurnosDelDiaScreen({ navigation }) {
             selectedValue={campania}
             accessibilityLabel="Campaña"
             onValueChange={(itemValue) => handlerChangeCampania(itemValue)}
-            placeholder="Vacunatorio"
+            placeholder="Campaña"
             _selectedItem={{
               bg: "teal.600",
               endIcon: <CheckIcon size={5} />,
