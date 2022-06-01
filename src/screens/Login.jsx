@@ -11,10 +11,10 @@ import {
   Heading,
 } from "native-base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux" 
-import {
-  initCampania
-} from "../context/slices/campaniasSlice";
+import { useDispatch } from "react-redux";
+import jwt_decode from "jwt-decode";
+import { initCampania } from "../context/slices/campaniasSlice";
+import { setUser } from "../context/slices/userSlice";
 
 function LoginScreen({ navigation }) {
   const [dni, setDni] = useState();
@@ -31,52 +31,49 @@ function LoginScreen({ navigation }) {
   const ObtenerPendientes = async () => {
     var myHeaders = new Headers();
     const value = await AsyncStorage.getItem("@JWTUSER");
-    if (value == 'null') {
+    if (value == "null") {
       return {
         gripe: false,
         fiebre: false,
         covid: false,
       };
-    }  
-      const token = "Bearer " + value;
-      myHeaders.append("Authorization", token);
-      var raw = "";
-  
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-      };
-  
-      const result = await fetch(
-        "https://vacunassistservices-production.up.railway.app/turnos/pendientes",
-        requestOptions
-      ).catch((error) => console.log("error", error));
-      const res = await result.json();
-      initialState = {
-        gripe: false,
-        fiebre: false,
-        covid: false,
-      };
-      for (const turno in res) {
-        switch (res[turno].campania) {
-          case "Fiebre amarilla":
-              initialState.fiebre = true;
-              break;
-          case "Gripe":
-              initialState.gripe = true;
-              break;
-          case "Covid-19":
-              initialState.covid = true;
-              break;
-        }
+    }
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    var raw = "";
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/turnos/pendientes",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    initialState = {
+      gripe: false,
+      fiebre: false,
+      covid: false,
+    };
+    for (const turno in res) {
+      switch (res[turno].campania) {
+        case "Fiebre amarilla":
+          initialState.fiebre = true;
+          break;
+        case "Gripe":
+          initialState.gripe = true;
+          break;
+        case "Covid-19":
+          initialState.covid = true;
+          break;
       }
-      return initialState;
+    }
+    return initialState;
   };
-
-
-
 
   const handlerLogin = async () => {
     setIsLoading(true);
@@ -99,6 +96,14 @@ function LoginScreen({ navigation }) {
         /* con esta función guardamos y mantenemos el token
       del usuario*/
 
+        const token = jwt_decode(response.message).rol;
+        dispatch(
+          setUser({
+            token: response.message,
+            rol: token,
+          })
+        );
+
         const storeData = async () => {
           try {
             await AsyncStorage.setItem("@JWTUSER", response.message);
@@ -108,7 +113,7 @@ function LoginScreen({ navigation }) {
           }
         };
         storeData();
-        const objCampania  = await ObtenerPendientes();
+        const objCampania = await ObtenerPendientes();
         dispatch(initCampania(objCampania));
         navigation.navigate("Home");
       } else {

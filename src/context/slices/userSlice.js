@@ -2,9 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   rol: "",
-  nombre: "",
-  apellido: "",
-  dni: "",
   token: "",
 };
 
@@ -13,18 +10,18 @@ export const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUser: (state = initialState, action) => {
-      console.log("desactivando gripe");
+      console.log("Inicializando usuario");
       return {
         ...state, //
         rol: action.payload.rol,
-        nombre: action.payload.nombre,
-        apellido: action.payload.apellido,
+        token: action.payload.token
       };
     },
     logout: (state = initialState, action) => {
       return {
         ...state, //
-        fiebre: true,
+        rol: "",
+        token: ""
       };
     },
   },

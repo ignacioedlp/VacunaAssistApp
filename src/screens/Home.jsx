@@ -22,6 +22,7 @@ import {
 function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const campaniasData = useSelector((state) => state.campanias);
+  const userData = useSelector((state) => state.user);
 
   const handlerSolicitarFiebre = async () => {
     setIsLoading(true);
@@ -139,7 +140,25 @@ function HomeScreen({ navigation }) {
     },
   ];
 
-  const nav = [
+  const nav_ciudadano = [
+    {
+      id: 1,
+      nombre: "Turnos pendientes",
+      action: () => navigation.navigate("Turnos pendientes"),
+    },
+    {
+      nombre: "Mis vacunas",
+      id: 2,
+      action: () => navigation.navigate("Historial"),
+    },
+    {
+      id: 3,
+      nombre: "Cerrar sesion",
+      action: () => navigation.navigate("Logout"),
+    },
+  ];
+
+  const nav_vacunador = [
     {
       id: 1,
       nombre: "Turnos pendientes",
@@ -168,7 +187,7 @@ function HomeScreen({ navigation }) {
         <FlatList
           top={1}
           padding={"2px"}
-          data={nav}
+          data={userData.rol == "Ciudadano" ? nav_ciudadano : nav_vacunador}
           horizontal={true}
           renderItem={({ item }) => (
             <Button
@@ -177,7 +196,6 @@ function HomeScreen({ navigation }) {
               w="90px"
               onPress={item.action}
               colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
-
             >
               {item.nombre}
             </Button>

@@ -4,7 +4,7 @@ import {
   Center,
   Stack,
   AspectRatio,
-  Image,
+  Text,
   Button,
   Heading,
   HStack,
@@ -40,25 +40,38 @@ function Campania({ campania, action, stateButton }) {
               </Heading>
             </Center>
           </Stack>
-          <Center>
-            <HStack
-              alignItems="center"
-              space={4}
-              justifyContent="space-between"
-            >
-              <HStack alignItems="center">
-                <Button
-                  w="150px"
-                  colorScheme={stateButton ? "red" : "green"}
-                  size="md"
-                  onPress={action}
-                  disabled={stateButton}
-                >
-                  {stateButton ? "Cancelar" : "Solicitar"}
-                </Button>
+          {!stateButton ? (
+            <Center>
+              <HStack
+                alignItems="center"
+                space={4}
+                justifyContent="space-between"
+              >
+                <HStack alignItems="center">
+                  <Button
+                    w="150px"
+                    colorScheme={"green"}
+                    size="md"
+                    onPress={action}
+                  >
+                    "Solicitar"
+                  </Button>
+                </HStack>
               </HStack>
-            </HStack>
-          </Center>
+            </Center>
+          ) : (
+            <Center>
+              <HStack
+                alignItems="center"
+                space={4}
+                justifyContent="space-between"
+              >
+                <HStack alignItems="center">
+                  <Text>Usted ya posee un turno</Text>
+                </HStack>
+              </HStack>
+            </Center>
+          )}
         </Stack>
       </Box>
     </Box>
