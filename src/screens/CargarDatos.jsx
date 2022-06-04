@@ -26,9 +26,7 @@ function CargarDatosScreen({ route, navigation }) {
       setIsLoading(true);
       var myHeaders = new Headers();
       const value = await AsyncStorage.getItem("@JWTUSER");
-      const token =
-        "Bearer " +
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ";
+      const token = "Bearer " + value;
       myHeaders.append("Authorization", token);
       myHeaders.append("Content-Type", "application/json");
 

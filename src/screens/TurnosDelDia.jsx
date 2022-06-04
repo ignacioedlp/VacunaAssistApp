@@ -16,6 +16,7 @@ import {
 } from "native-base";
 import TurnoDelDia from "../components/TurnoDeHoyTarjeta";
 import jwt_decode from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
 
 function TurnosDelDiaScreen({ navigation }) {
   const [turnos, setTurnos] = useState([]);
@@ -24,16 +25,13 @@ function TurnosDelDiaScreen({ navigation }) {
   const handlerChangeCampania = (campania) => setCampania(campania);
   const [dni, setDni] = useState();
   const handlerChangeDni = (dni) => setDni(dni);
+  const userData = useSelector((state) => state.user);
 
   const ObtenerListaVacunar = async () => {
     var myHeaders = new Headers();
-    const value = await AsyncStorage.getItem("@JWTUSER");
-    const token =
-      "Bearer " +
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ";
-    var decoded = jwt_decode(
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkbmkiOjExMTExMTEyLCJyb2wiOiJWYWN1bmFkb3IiLCJ2YWN1bmF0b3JpbyI6MiwiZXhwIjoxNjU0MTA3NDQ3fQ.n5at2_XmsfPLsm--mypsRlSiD6EHUYp28lhVuZNotaQ"
-    );
+    const value = userData.token;
+    const token = "Bearer " + value;
+    var decoded = jwt_decode(value);
 
     myHeaders.append("Authorization", token);
     myHeaders.append("Content-Type", "application/json");
@@ -72,15 +70,15 @@ function TurnosDelDiaScreen({ navigation }) {
             selectedValue={campania}
             accessibilityLabel="Campaña"
             onValueChange={(itemValue) => handlerChangeCampania(itemValue)}
-            placeholder="Vacunatorio"
+            placeholder="Campaña"
             _selectedItem={{
               bg: "teal.600",
               endIcon: <CheckIcon size={5} />,
             }}
             mt="1"
           >
-            <Select.Item label="Fiebre amarilla" value="1" />
-            <Select.Item label="Gripe" value="2" />
+            {/* <Select.Item label="Fiebre amarilla" value="1" /> */}
+            {/* <Select.Item label="Gripe" value="2" /> */}
             <Select.Item label="Covid-19" value="3" />
           </Select>
           <Button colorScheme="green" onPress={() => ObtenerListaVacunar()}>
@@ -95,7 +93,6 @@ function TurnosDelDiaScreen({ navigation }) {
             type="number"
           />
         </Stack>
-
         {cargado != false ? (
           turnos.length > 0 ? (
             <Stack px="10px">

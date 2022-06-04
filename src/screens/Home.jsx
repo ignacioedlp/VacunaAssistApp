@@ -11,6 +11,7 @@ import {
   View,
 } from "native-base";
 import Campania from "../components/CampaniaTarjeta";
+import TarjetaAdmin from "../components/TarjetaAdmin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,6 +23,7 @@ import {
 function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const campaniasData = useSelector((state) => state.campanias);
+  const userData = useSelector((state) => state.user);
 
   const handlerSolicitarFiebre = async () => {
     setIsLoading(true);
@@ -45,7 +47,7 @@ function HomeScreen({ navigation }) {
     )
       .then((response) => response.json())
       .then((result) => {
-        if ((result.code = 200)) {
+        if ((result.code == 200)) {
           alert(result.message);
           dispatch(desactivateFiebre());
         } else {
@@ -109,7 +111,7 @@ function HomeScreen({ navigation }) {
     )
       .then((response) => response.json())
       .then((result) => {
-        if ((result.code = 200)) {
+        if ((result.code == 200)) {
           alert(result.message);
           dispatch(desactivateCovid());
         } else {
@@ -139,7 +141,25 @@ function HomeScreen({ navigation }) {
     },
   ];
 
-  const nav = [
+  const nav_ciudadano = [
+    {
+      id: 1,
+      nombre: "Turnos pendientes",
+      action: () => navigation.navigate("Turnos pendientes"),
+    },
+    {
+      nombre: "Mis vacunas",
+      id: 2,
+      action: () => navigation.navigate("Historial"),
+    },
+    {
+      id: 3,
+      nombre: "Cerrar sesion",
+      action: () => navigation.navigate("Logout"),
+    },
+  ];
+
+  const nav_personal = [
     {
       id: 1,
       nombre: "Turnos pendientes",
@@ -168,7 +188,7 @@ function HomeScreen({ navigation }) {
         <FlatList
           top={1}
           padding={"2px"}
-          data={nav}
+          data={userData.rol == "Ciudadano" ? nav_ciudadano : nav_personal}
           horizontal={true}
           renderItem={({ item }) => (
             <Button
@@ -177,7 +197,6 @@ function HomeScreen({ navigation }) {
               w="90px"
               onPress={item.action}
               colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
-
             >
               {item.nombre}
             </Button>
@@ -207,6 +226,9 @@ function HomeScreen({ navigation }) {
             action={campanias[2].action}
             stateButton={campaniasData.covid}
           />
+          {userData.rol == "Admin" &&
+            <TarjetaAdmin />
+          }
         </Stack>
         {isLoading ?? (
           <HStack space={2} justifyContent="center">

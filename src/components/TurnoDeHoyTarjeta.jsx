@@ -12,6 +12,9 @@ import {
 } from "native-base";
 
 function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
+  const fechaTurno = new Date(fecha);
+  fechaTurno.setMonth(fechaTurno.getMonth() + 1);
+
   return (
     <Box p="20px">
       <Box
@@ -40,12 +43,7 @@ function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
           </Stack>
           <VStack space={4} justifyContent="space-between">
             <Text>
-              Fecha:{" "}
-              {new Date(fecha).toLocaleDateString("es-ES", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
+              Fecha: {new Date(fecha).getUTCDate() +"/"+ fechaTurno.getMonth() +"/"+  new Date(fecha).getUTCFullYear() }
             </Text>
             <Text>Dni: {dni}</Text>
             <Text>Turno: {nroTurno}</Text>

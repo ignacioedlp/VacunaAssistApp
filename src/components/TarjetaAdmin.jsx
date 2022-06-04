@@ -11,16 +11,14 @@ import {
   Box,
 } from "native-base";
 
-function Pendiente({ campania, vacunatorio, fecha, estado }) {
-  const fechaTurno = new Date(fecha);
-  fechaTurno.setMonth(fechaTurno.getMonth() + 1);
+function TarjetaAdministrador() {
   return (
     <Box p="20px">
       <Box
         maxW="100%"
         rounded="lg"
         overflow="hidden"
-        borderColor="emerald.500"
+        borderColor="red.500"
         borderWidth="3"
         _dark={{
           borderColor: "coolGray.600",
@@ -36,21 +34,20 @@ function Pendiente({ campania, vacunatorio, fecha, estado }) {
       >
         <Stack p="4" space={5}>
           <Stack space={2}>
-            <Heading size="md" ml="-1">
-              {campania}
-            </Heading>
+            <Center>
+
+            
+                <Heading size="md" ml="-1">
+                Sos administrador
+                </Heading>
+            </Center>
           </Stack>
           <VStack space={4} justifyContent="space-between">
-            {estado == "Asignado" ? (
-              <Text> 
-                Fecha:{new Date(fecha).getUTCDate() +"/"+ fechaTurno.getMonth() +"/"+  new Date(fecha).getUTCFullYear() }
-              </Text>
-            ): (
-              <Text>
-                Pendiente de asignacion
-              </Text> 
-            ) }   
-            <Text>Vacunatorio: {vacunatorio}</Text>
+            <Center>
+                <Text>
+                    Proximamente más funcionalidades.
+                </Text>
+            </Center>
           </VStack>
         </Stack>
       </Box>
@@ -58,4 +55,4 @@ function Pendiente({ campania, vacunatorio, fecha, estado }) {
   );
 }
 
-export default Pendiente;
+export default TarjetaAdministrador;
