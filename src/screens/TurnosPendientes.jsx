@@ -9,13 +9,14 @@ import {
   Text,
 } from "native-base";
 import Pendiente from "../components/PendienteTarjeta";
+import { useDispatch, useSelector } from "react-redux";
 
 function TurnosPendientes() {
   const [pendientes, setPendientes] = useState([]);
-
+  const userData = useSelector((state) => state.user);
   const ObtenerPendientes = async () => {
     var myHeaders = new Headers();
-    const value = await AsyncStorage.getItem("@JWTUSER");
+    const value = userData.token;
     const token = "Bearer " + value;
     myHeaders.append("Authorization", token);
     var raw = "";
