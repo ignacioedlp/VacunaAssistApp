@@ -11,6 +11,7 @@ import {
   Spinner,
   Box,
 } from "native-base";
+import { useDispatch, useSelector } from "react-redux";
 
 function CargarDatosScreen({ route, navigation }) {
   const { dni, nombre, id_campania, idTurno } = route.params;
@@ -20,12 +21,13 @@ function CargarDatosScreen({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const handlerNro_lote = (nro) => setNro_lote(nro);
   const handlerMarca = (marca) => setMarca(marca);
+  const userData = useSelector((state) => state.user);
 
   const cargarDatos = async () => {
     if (marca != '' && nro_lote != '') {
       setIsLoading(true);
       var myHeaders = new Headers();
-      const value = await AsyncStorage.getItem("@JWTUSER");
+      const value = userData.token;
       const token = "Bearer " + value;
       myHeaders.append("Authorization", token);
       myHeaders.append("Content-Type", "application/json");
