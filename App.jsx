@@ -15,6 +15,8 @@ import jwt_decode from "jwt-decode";
 import * as React from "react";
 import { store } from "./src/context/store";
 import { Provider } from "react-redux";
+import VerStockScreen from "./src/screens/VerStock";
+import SumarStockScreen from "./src/screens/SumarStock";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -25,7 +27,6 @@ export default function App() {
       const value = await AsyncStorage.getItem("@JWTUSER");
       console.log(value);
       if (value != null) {
-        console.log("dsas");
         return true;
       }
 
@@ -82,6 +83,16 @@ export default function App() {
             name="Cargar datos"
             options={{ gestureEnabled: true }}
             component={CargarDatosScreen}
+          />
+          <Stack.Screen
+            name="Ver stocks"
+            options={{ gestureEnabled: true }}
+            component={VerStockScreen}
+          />
+          <Stack.Screen
+            name="Sumar stock"
+            options={{ gestureEnabled: true }}
+            component={SumarStockScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

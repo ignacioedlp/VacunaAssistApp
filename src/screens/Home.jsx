@@ -47,7 +47,7 @@ function HomeScreen({ navigation }) {
     )
       .then((response) => response.json())
       .then((result) => {
-        if ((result.code == 200)) {
+        if (result.code == 200) {
           alert(result.message);
           dispatch(desactivateFiebre());
         } else {
@@ -111,7 +111,7 @@ function HomeScreen({ navigation }) {
     )
       .then((response) => response.json())
       .then((result) => {
-        if ((result.code == 200)) {
+        if (result.code == 200) {
           alert(result.message);
           dispatch(desactivateCovid());
         } else {
@@ -180,7 +180,51 @@ function HomeScreen({ navigation }) {
       nombre: "Cerrar sesion",
       action: () => navigation.navigate("Logout"),
     },
+    userData.rol == "Admin" ?? {
+      id: 5,
+      nombre: "Ver stocks",
+      action: () => navigation.navigate("Ver stocks"),
+    },
   ];
+
+  const nav_admin = [
+    {
+      id: 1,
+      nombre: "Turnos pendientes",
+      action: () => navigation.navigate("Turnos pendientes"),
+    },
+    {
+      nombre: "Mis vacunas",
+      id: 2,
+      action: () => navigation.navigate("Historial"),
+    },
+    {
+      id: 3,
+      nombre: "Ver listado",
+      action: () => navigation.navigate("Listado de turnos"),
+    },
+    {
+      id: 4,
+      nombre: "Ver stocks",
+      action: () => navigation.navigate("Ver stocks"),
+    },
+    {
+      id: 5,
+      nombre: "Cerrar sesion",
+      action: () => navigation.navigate("Logout"),
+    },
+  ];
+
+  const typeofNav = (rol) => {
+    switch (rol) {
+      case "Admin":
+        return nav_admin;
+      case "Vacunador":
+        return nav_personal;
+      default:
+        return nav_ciudadano;
+    }
+  };
 
   return (
     <NativeBaseProvider>
@@ -188,7 +232,7 @@ function HomeScreen({ navigation }) {
         <FlatList
           top={1}
           padding={"2px"}
-          data={userData.rol == "Ciudadano" ? nav_ciudadano : nav_personal}
+          data={typeofNav(userData.rol)}
           horizontal={true}
           renderItem={({ item }) => (
             <Button
@@ -226,9 +270,7 @@ function HomeScreen({ navigation }) {
             action={campanias[2].action}
             stateButton={campaniasData.covid}
           />
-          {userData.rol == "Admin" &&
-            <TarjetaAdmin />
-          }
+          {userData.rol == "Admin" && <TarjetaAdmin />}
         </Stack>
         {isLoading ?? (
           <HStack space={2} justifyContent="center">
