@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Center, NativeBaseProvider, FlatList, Heading, Text } from "native-base";
 import Historial from "../components/HistorialTarjeta";
 import { useDispatch, useSelector } from "react-redux";
+
 function HistorialVacunacion() {
   const [historial, setHistorial] = useState([]);
   const userData = useSelector((state) => state.user);

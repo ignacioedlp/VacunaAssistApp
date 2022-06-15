@@ -9,11 +9,35 @@ import {
   Heading,
   HStack,
   Box,
+  Button
 } from "native-base";
+
+import { printToFileAsync } from 'expo-print'
+import { shareAsync } from 'expo-sharing'
 
 function Historial({ campania, marca, fecha, lote }) {
   const fechaTurno = new Date(fecha);
   fechaTurno.setMonth(fechaTurno.getMonth() + 1);
+  const html = `
+  <html>
+    <body>
+      <h1>Certificado fiebre amarilla</h1>
+      <h3> Usted se ha vacunado contra la fiebre amarilla el dia
+        ${new Date(fecha).getUTCDate() +"/"+ fechaTurno.getMonth() +"/"+  new Date(fecha).getUTCFullYear() } </h3>
+      <h3>Datos de la vacuna: marca: ${marca}. lote: ${lote}</h3>
+    </body>
+  </html>
+`;
+
+let generatePdf = async() => {
+  const file = await printToFileAsync({
+    html:html,
+    base64: false
+
+  });
+
+await shareAsync(file.uri);
+}
   return (
     <Box p="20px">
       <Box
@@ -46,6 +70,8 @@ function Historial({ campania, marca, fecha, lote }) {
             </Text>
             <Text>Marca: {marca}</Text>
             <Text>Nro lote: {lote}</Text>
+            {(campania == "Fiebre amarilla") && (marca != "N/A") ?
+            <Button onPress={generatePdf}>Descargar certificado</Button>: null }
           </VStack>
         </Stack>
       </Box>
