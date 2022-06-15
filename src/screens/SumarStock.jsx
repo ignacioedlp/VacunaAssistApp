@@ -23,7 +23,7 @@ function SumarStockScreen({ route, navigation }) {
   const userData = useSelector((state) => state.user);
 
   const cargarDatos = async () => {
-    if (stock != 0) {
+    if (stock > 0) {
       setIsLoading(true);
       var myHeaders = new Headers();
       const value = userData.token;
@@ -52,7 +52,7 @@ function SumarStockScreen({ route, navigation }) {
       setCargado(true);
       setIsLoading(false);
     } else {
-      alert("Faltan rellenar campos");
+      alert("No puede ingresar una cantidad inferior a 0");
     }
   };
 
