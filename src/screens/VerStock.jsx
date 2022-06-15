@@ -42,13 +42,6 @@ function VerStockScreen({ navigation }) {
     console.log(stocks);
   }, []);
 
-  const actualizarDatos = (campania, vacunatorio) => {
-    navigation.navigate("Sumar stock", {
-      campania: campania,
-      vacunatorio: vacunatorio,
-    });
-  };
-
   return (
     <NativeBaseProvider>
       <Center>
@@ -60,14 +53,14 @@ function VerStockScreen({ navigation }) {
         <Center>
           <Stack mt={3} space={4} w="100%" maxW="100%">
             <Center></Center>
-            <Stock data={stocks[0]} navigation={() => actualizarDatos} />
-            <Stock data={stocks[1]} navigation={() => actualizarDatos} />
-            <Stock data={stocks[2]} navigation={() => actualizarDatos} />
+            <Stock data={stocks[0]} navigation={navigation} />
+            <Stock data={stocks[1]} navigation={navigation} />
+            <Stock data={stocks[2]} navigation={navigation} />
           </Stack>
         </Center>
       ) : (
         <Center>
-          <Text>No se posee stock</Text>
+          <Text>Cargando datos...</Text>
         </Center>
       )}
     </NativeBaseProvider>

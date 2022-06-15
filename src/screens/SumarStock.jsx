@@ -14,7 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 function SumarStockScreen({ route, navigation }) {
-  const { campania, vacunatorio } = route.params;
+  const { id_campania, id_vacunatorio } = route.params;
   const [stock, setStock] = useState(0);
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,9 +32,9 @@ function SumarStockScreen({ route, navigation }) {
       myHeaders.append("Content-Type", "application/json");
 
       var raw = JSON.stringify({
-        id_vacunatorio: campania,
+        id_vacunatorio: id_vacunatorio,
         stock: stock,
-        id_campania: vacunatorio,
+        id_campania: id_campania,
       });
 
       var requestOptions = {
@@ -56,13 +56,34 @@ function SumarStockScreen({ route, navigation }) {
     }
   };
 
+const getVacunatorio  = (data) => {
+    switch (data) {
+      case 1:
+        return "Hospital 9 de Julio";
+      case 2:
+        return "Corralon Municipal";
+      case 3:
+        return "Polideportivo";
+    }
+  };
+const getCampania  = (data) => {
+    switch (data) {
+      case 1:
+        return "Fiebre Amarilla";
+      case 2:
+        return "Gripe";
+      case 3:
+        return "Covid";
+    }
+  };
   return (
     <NativeBaseProvider>
       <Center>
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
             <Heading size="lg" ml="-1" p="10px">
-              {route.params.campania}
+              Vacunatorio: {getVacunatorio(route.params.id_vacunatorio)}.
+              Campaña: {getCampania(route.params.id_campania)}
             </Heading>
           </Center>
 
@@ -74,7 +95,7 @@ function SumarStockScreen({ route, navigation }) {
           />
 
           <Button colorScheme="green" onPress={() => cargarDatos()}>
-            Cargar datos
+            Sumar Stock
           </Button>
           {isLoading ?? (
             <HStack space={2} justifyContent="center">
@@ -93,7 +114,7 @@ function SumarStockScreen({ route, navigation }) {
 
                 <Button
                   colorScheme="green"
-                  onPress={() => navigation.navigate("Listado de turnos")}
+                  onPress={() => navigation.navigate("Home")}
                 >
                   Volver
                 </Button>
