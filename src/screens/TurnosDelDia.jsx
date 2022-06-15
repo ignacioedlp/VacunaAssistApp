@@ -77,8 +77,8 @@ function TurnosDelDiaScreen({ navigation }) {
             }}
             mt="1"
           >
-            {/* <Select.Item label="Fiebre amarilla" value="1" /> */}
-            {/* <Select.Item label="Gripe" value="2" /> */}
+            <Select.Item label="Fiebre amarilla" value="1" />
+            <Select.Item label="Gripe" value="2" />
             <Select.Item label="Covid-19" value="3" />
           </Select>
           <Button colorScheme="green" onPress={() => ObtenerListaVacunar()}>
