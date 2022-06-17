@@ -62,9 +62,10 @@ function Perfil({ navigation }) {
       const value = userData.token;
       const token = "Bearer " + value;
       myHeaders.append("Authorization", token);
+      myHeaders.append("Content-Type", "application/json");
 
       var raw = JSON.stringify({
-        fecha: date.toISOString(),
+        fecha: date,
       });
 
       var requestOptions = {
@@ -75,12 +76,12 @@ function Perfil({ navigation }) {
       };
 
       const result = await fetch(
-        "https://vacunassistservices-production.up.railway.app/user/ingresar_vacuna_covid",
+        "https://vacunassistservices-production.up.railway.app/user/ingresar_vacuna_" + campania,
         requestOptions
       ).catch((error) => console.log("error", error));
       const res = await result.json();
       if (res.code == 200) {
-        Alert.alert("VacunAssist", res.code);
+        Alert.alert("VacunAssist", res.message);
       } else {
         Alert.alert("VacunAssist", "Se produjo un error");
       }
@@ -101,7 +102,7 @@ function Perfil({ navigation }) {
     //Quiero ver la fecha con un dia menos
     const fecha = new Date(date);
     const fecha2 = new Date(fecha.setDate(fecha.getDate() - 1));
-    setDate(fecha2);
+    setDate(fecha2.toISOString());
     console.log(fecha2);
     hideDatePicker();
   };
@@ -183,7 +184,7 @@ function Perfil({ navigation }) {
                   colorScheme={"green"}
                   onPress={() => {
                     setIdCampania(3);
-                    setCampania("covid-19");
+                    setCampania("covid");
                     setModalVisible(!modalVisible);
                   }}
                 >
@@ -196,7 +197,7 @@ function Perfil({ navigation }) {
                   w="90px"
                   onPress={() => {
                     setIdCampania(1);
-                    setCampania("fiebre amarilla");
+                    setCampania("fiebre");
                     setModalVisible(!modalVisible);
                   }}
                   colorScheme={"green"}
