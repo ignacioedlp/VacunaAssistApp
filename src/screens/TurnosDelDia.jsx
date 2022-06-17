@@ -147,6 +147,13 @@ function TurnosDelDiaScreen({ navigation }) {
         ) : (
           <Text>Selecciona una campaña</Text>
         )}
+        <Button
+          mt={3}
+          colorScheme="green"
+          onPress={() => navigation.navigate("No registrada")}
+        >
+          Ingresar persona no registrada
+        </Button>
       </Center>
     </NativeBaseProvider>
   );

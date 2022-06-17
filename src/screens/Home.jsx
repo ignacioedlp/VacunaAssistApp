@@ -153,7 +153,12 @@ function HomeScreen({ navigation }) {
       action: () => navigation.navigate("Historial"),
     },
     {
+      nombre: "Mi perfil",
       id: 3,
+      action: () => navigation.navigate("Mi perfil"),
+    },
+    {
+      id: 4,
       nombre: "Cerrar sesion",
       action: () => navigation.navigate("Logout"),
     },
@@ -176,14 +181,15 @@ function HomeScreen({ navigation }) {
       action: () => navigation.navigate("Listado de turnos"),
     },
     {
+      nombre: "Mi perfil",
       id: 4,
+      action: () => navigation.navigate("Mi perfil"),
+    },
+
+    {
+      id: 5,
       nombre: "Cerrar sesion",
       action: () => navigation.navigate("Logout"),
-    },
-    userData.rol == "Admin" ?? {
-      id: 5,
-      nombre: "Ver stocks",
-      action: () => navigation.navigate("Ver stocks"),
     },
   ];
 
@@ -209,7 +215,17 @@ function HomeScreen({ navigation }) {
       action: () => navigation.navigate("Ver stocks"),
     },
     {
+      nombre: "Mi perfil",
       id: 5,
+      action: () => navigation.navigate("Mi perfil"),
+    },
+    {
+      nombre: "Registrar personal",
+      id: 6,
+      action: () => navigation.navigate("Registrar personal"),
+    },
+    {
+      id: 7,
       nombre: "Cerrar sesion",
       action: () => navigation.navigate("Logout"),
     },

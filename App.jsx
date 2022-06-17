@@ -17,6 +17,9 @@ import { store } from "./src/context/store";
 import { Provider } from "react-redux";
 import VerStockScreen from "./src/screens/VerStock";
 import SumarStockScreen from "./src/screens/SumarStock";
+import NoRegistrada from "./src/screens/NoRegistrada";
+import Perfil from "./src/screens/Perfil";
+import RegistrarPersonal from "./src/screens/RegistrarPersonal";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -93,6 +96,21 @@ export default function App() {
             name="Sumar stock"
             options={{ gestureEnabled: true }}
             component={SumarStockScreen}
+          />
+          <Stack.Screen
+            name="No registrada"
+            options={{ gestureEnabled: true }}
+            component={NoRegistrada}
+          />
+          <Stack.Screen
+            name="Mi perfil"
+            options={{ gestureEnabled: true }}
+            component={Perfil}
+          />
+          <Stack.Screen
+            name="Registrar personal"
+            options={{ gestureEnabled: true }}
+            component={RegistrarPersonal}
           />
         </Stack.Navigator>
       </NavigationContainer>

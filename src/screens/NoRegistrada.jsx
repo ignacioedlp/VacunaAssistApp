@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 import {
   Input,
   Center,
@@ -10,36 +10,65 @@ import {
   HStack,
   Spinner,
   Box,
+  Select,
+  CheckIcon,
 } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
+import jwt_decode from "jwt-decode";
 
-function CargarDatosScreen({ route, navigation }) {
-  const { dni, nombre, id_campania, idTurno } = route.params;
+function NoRegistrada({ navigation }) {
+  const [campania, setCampania] = useState("");
+  const [dni, setDni] = useState("");
   const [nro_lote, setNro_lote] = useState("");
   const [marca, setMarca] = useState("");
+  const [email, setEmail] = useState("");
+
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const handlerCampania = (campania) => setCampania(campania);
+  const handlerDni = (dni) => setDni(dni);
+  const handlerEmail = (email) => setEmail(email);
   const handlerNro_lote = (nro) => setNro_lote(nro);
   const handlerMarca = (marca) => setMarca(marca);
   const userData = useSelector((state) => state.user);
 
+  const rutaCampania = (id) => {
+    switch (id) {
+      case "1":
+        return "https://vacunassistservices-production.up.railway.app/vacunador/vacuna_fiebre_no_registrado";
+      case "2":
+        return "https://vacunassistservices-production.up.railway.app/vacunador/vacuna_gripe_no_registrado";
+      case "3":
+        return "https://vacunassistservices-production.up.railway.app/vacunador/vacuna_covid_no_registrado";
+    }
+  };
+
   const cargarDatos = async () => {
-    if (marca != "" && nro_lote != "") {
+    if (
+      marca != "" &&
+      nro_lote != "" &&
+      dni != "" &&
+      campania != "" &&
+      email != ""
+    ) {
       setIsLoading(true);
       var myHeaders = new Headers();
       const value = userData.token;
       const token = "Bearer " + value;
       myHeaders.append("Authorization", token);
       myHeaders.append("Content-Type", "application/json");
+      var decoded = jwt_decode(value);
 
       var raw = JSON.stringify({
-        id_campania: id_campania,
-        id_usuario: dni,
-        nro_lote: parseInt(nro_lote),
+        dni: dni,
+        email: email,
+        campania: parseInt(campania),
+        lote: nro_lote,
         marca: marca,
-        desconocido: false,
-        id_turno: idTurno,
+        vacunatorio: parseInt(decoded.vacunatorio),
       });
+
+      console.log(raw);
 
       var requestOptions = {
         method: "POST",
@@ -48,12 +77,19 @@ function CargarDatosScreen({ route, navigation }) {
         redirect: "follow",
       };
 
-      const result = await fetch(
-        "https://vacunassistservices-production.up.railway.app/vacunador/cargar_datos",
-        requestOptions
-      ).catch((error) => console.log("error", error));
+      const result = await fetch(rutaCampania(campania), requestOptions).catch(
+        (error) => console.log("error", error)
+      );
       const res = await result.json();
-      setCargado(true);
+      if (res.code == 200) {
+        /* con esta función guardamos y mantenemos el token
+      del usuario*/
+        Alert.alert("VacunAssist", "Carga y registro exitoso");
+        setCargado(true);
+      } else {
+        Alert.alert("VacunAssist", res.message);
+      }
+
       setIsLoading(false);
     } else {
       alert("Faltan rellenar campos");
@@ -66,10 +102,37 @@ function CargarDatosScreen({ route, navigation }) {
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
             <Heading size="lg" ml="-1" p="10px">
-              Cargar datos del ciudadano {nombre}
+              Registrar vacuna a persona no registrada
             </Heading>
           </Center>
-
+          <Input
+            onChangeText={handlerDni}
+            size="md"
+            value={dni}
+            placeholder="Dni"
+          />
+          <Input
+            onChangeText={handlerEmail}
+            size="md"
+            value={email}
+            placeholder="Email"
+          />
+          <Select
+            minWidth="200"
+            selectedValue={campania}
+            accessibilityLabel="Campaña"
+            onValueChange={(itemValue) => handlerCampania(itemValue)}
+            placeholder="Campaña"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size={5} />,
+            }}
+            mt="1"
+          >
+            <Select.Item label="Fiebre amarilla" value="1" />
+            <Select.Item label="Gripe" value="2" />
+            <Select.Item label="Covid-19" value="3" />
+          </Select>
           <Input
             onChangeText={handlerNro_lote}
             size="md"
@@ -119,4 +182,4 @@ function CargarDatosScreen({ route, navigation }) {
   );
 }
 
-export default CargarDatosScreen;
+export default NoRegistrada;

@@ -86,7 +86,6 @@ const getCampania  = (data) => {
               Campaña: {getCampania(route.params.id_campania)}
             </Heading>
           </Center>
-
           <Input
             onChangeText={handlerStock}
             size="md"

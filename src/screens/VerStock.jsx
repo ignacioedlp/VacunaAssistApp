@@ -39,7 +39,7 @@ function VerStockScreen({ navigation }) {
 
   useEffect(() => {
     ObtenerStocks();
-    console.log(stocks);
+
   }, []);
 
   return (
