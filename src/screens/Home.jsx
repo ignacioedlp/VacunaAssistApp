@@ -14,6 +14,7 @@ import Campania from "../components/CampaniaTarjeta";
 import TarjetaAdmin from "../components/TarjetaAdmin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   desactivateCovid,
   desactivateGripe,
@@ -21,9 +22,11 @@ import {
 } from "../context/slices/campaniasSlice";
 
 function HomeScreen({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const campaniasData = useSelector((state) => state.campanias);
   const userData = useSelector((state) => state.user);
+  const [rol, setRol] = useState("");
 
   const handlerSolicitarFiebre = async () => {
     setIsLoading(true);
@@ -122,7 +125,6 @@ function HomeScreen({ navigation }) {
     setIsLoading(false);
   };
 
-  const [isLoading, setIsLoading] = useState(false);
   const campanias = [
     {
       id: 1,
@@ -185,7 +187,6 @@ function HomeScreen({ navigation }) {
       id: 4,
       action: () => navigation.navigate("Mi perfil"),
     },
-
     {
       id: 5,
       nombre: "Cerrar sesion",
@@ -232,13 +233,16 @@ function HomeScreen({ navigation }) {
   ];
 
   const typeofNav = (rol) => {
-    switch (rol) {
-      case "Admin":
-        return nav_admin;
-      case "Vacunador":
+    var user = rol;
+
+    if (user.includes("Ciudadano")) {
+      return nav_ciudadano;
+    } else {
+      if (user.includes("Vacunador")) {
         return nav_personal;
-      default:
-        return nav_ciudadano;
+      } else {
+        return nav_admin;
+      }
     }
   };
 
@@ -264,6 +268,7 @@ function HomeScreen({ navigation }) {
           keyExtractor={(item) => item.id}
         />
       </Center>
+
       <Center>
         <Stack mt={3} space={4} w="100%" maxW="100%">
           <Center>
