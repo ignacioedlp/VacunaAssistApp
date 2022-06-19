@@ -3,10 +3,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   NativeBaseProvider,
   Center,
-  FlatList,
+  Spinner,
   Stack,
   Heading,
   Text,
+  HStack,
 } from "native-base";
 import Stock from "../components/StockTarjeta";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,8 +40,7 @@ function VerStockScreen({ navigation }) {
 
   useEffect(() => {
     ObtenerStocks();
-
-  }, []);
+  });
 
   return (
     <NativeBaseProvider>
@@ -59,9 +59,12 @@ function VerStockScreen({ navigation }) {
           </Stack>
         </Center>
       ) : (
-        <Center>
-          <Text>Cargando datos...</Text>
-        </Center>
+        <HStack space={2} justifyContent="center" marginTop={5}>
+          <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
+          <Heading color="emerald.500" fontSize="md">
+            Cargando datos
+          </Heading>
+        </HStack>
       )}
     </NativeBaseProvider>
   );

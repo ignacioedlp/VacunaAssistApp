@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Center, NativeBaseProvider, FlatList, Heading, Text } from "native-base";
+import {
+  Center,
+  NativeBaseProvider,
+  FlatList,
+  Heading,
+  Text,
+  HStack,
+  Spinner,
+} from "native-base";
 import Historial from "../components/HistorialTarjeta";
 import { useDispatch, useSelector } from "react-redux";
 
 function HistorialVacunacion() {
   const [historial, setHistorial] = useState([]);
   const userData = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(true);
   const ObtenerHistorial = async () => {
     var myHeaders = new Headers();
     const value = userData.token;
@@ -27,6 +36,8 @@ function HistorialVacunacion() {
     ).catch((error) => console.log("error", error));
     const res = await result.json();
     setHistorial(res);
+    setIsLoading(false);
+    console.log(res);
   };
 
   useEffect(() => {
@@ -36,27 +47,29 @@ function HistorialVacunacion() {
   return (
     <NativeBaseProvider>
       <Center>
-        <Heading size="lg" ml="-1" p="10px">
-          Historial de vacunacion
-        </Heading>
-      </Center>
-      {historial.length > 0 ?( 
-        <FlatList
-          data={historial}
-          renderItem={({ item }) => (
-            <Historial
-              campania={item.campania}
-              fecha={item.fecha}
-              marca={item.marca}
-              lote={item.lote}
-            />
-          )}
-        />
-      ) : (
         <Center>
-          <Text>No posee vacunas aplicadas</Text>
+          <Heading size="lg" ml="-1" p="10px">
+            Historial de vacunacion
+          </Heading>
         </Center>
-      )}
+        {historial.length > 0 ? (
+          <FlatList
+            data={historial}
+            renderItem={({ item }) => (
+              <Historial
+                campania={item.campania}
+                fecha={item.fecha}
+                marca={item.marca}
+                lote={item.lote}
+              />
+            )}
+          />
+        ) : (
+          <Center>
+            <Text>No posee vacunas aplicadas</Text>
+          </Center>
+        )}
+      </Center>
     </NativeBaseProvider>
   );
 }

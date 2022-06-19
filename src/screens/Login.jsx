@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import {Alert} from 'react-native';
+import { Alert } from "react-native";
 import {
   Input,
   Center,
   Stack,
   NativeBaseProvider,
   Button,
-  Text,
+  HStack,
   Image,
   Heading,
+  Spinner,
 } from "native-base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
@@ -108,7 +109,10 @@ function LoginScreen({ navigation }) {
           try {
             await AsyncStorage.setItem("@JWTUSER", response.message);
           } catch (error) {
-            Alert.alert("VacunAssist","Error del sistema reinicie la aplicación");
+            Alert.alert(
+              "VacunAssist",
+              "Error del sistema reinicie la aplicación"
+            );
             // Error saving data
           }
         };
@@ -117,10 +121,10 @@ function LoginScreen({ navigation }) {
         dispatch(initCampania(objCampania));
         navigation.navigate("Home");
       } else {
-        Alert.alert("VacunAssist",response.message);
+        Alert.alert("VacunAssist", response.message);
       }
     } else {
-      Alert.alert("VacunAssist","Complete los campos");
+      Alert.alert("VacunAssist", "Complete los campos");
     }
     setIsLoading(false);
   };
@@ -160,9 +164,11 @@ function LoginScreen({ navigation }) {
             placeholder="Contraseña"
             type="password"
           />
-          <Button onPress={() => handlerLogin()} colorScheme="green">
-            Iniciar Sesion
-          </Button>
+          {!isLoading && (
+            <Button onPress={() => handlerLogin()} colorScheme="green">
+              Iniciar Sesion
+            </Button>
+          )}
           <Button
             onPress={() => navigation.navigate("Register")}
             colorScheme="green"
@@ -170,8 +176,8 @@ function LoginScreen({ navigation }) {
             Registrarme
           </Button>
         </Stack>
-        {isLoading ?? (
-          <HStack space={2} justifyContent="center">
+        {isLoading && (
+          <HStack space={2} justifyContent="center" marginTop={5}>
             <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
             <Heading color="emerald.500" fontSize="md">
               Cargando

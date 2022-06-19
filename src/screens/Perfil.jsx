@@ -15,9 +15,16 @@ import {
   VStack,
 } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
+
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {
+  desactivateCovid,
+  desactivateGripe,
+  desactivateFiebre,
+} from "../context/slices/campaniasSlice";
 
 function Perfil({ navigation }) {
+  const stateFiebre = useSelector((state) => state.campanias.fiebre);
   const userData = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({});
@@ -76,12 +83,21 @@ function Perfil({ navigation }) {
       };
 
       const result = await fetch(
-        "https://vacunassistservices-production.up.railway.app/user/ingresar_vacuna_" + campania,
+        "https://vacunassistservices-production.up.railway.app/user/ingresar_vacuna_" +
+          campania,
         requestOptions
       ).catch((error) => console.log("error", error));
       const res = await result.json();
       if (res.code == 200) {
         Alert.alert("VacunAssist", res.message);
+        switch (campania) {
+          case "fiebre":
+            dispatch(desactivateFiebre());
+          case "gripe":
+            dispatch(desactivateGripe());
+          case "covid":
+            dispatch(desactivateCovid());
+        }
       } else {
         Alert.alert("VacunAssist", "Se produjo un error");
       }
@@ -118,7 +134,7 @@ function Perfil({ navigation }) {
       <Center>
         <Stack mt={3} space={4} w="75%" maxW="300px">
           {isLoading ? (
-            <HStack space={2} justifyContent="center">
+            <HStack space={2} justifyContent="center" marginTop={5}>
               <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
               <Heading color="emerald.500" fontSize="md">
                 Cargando datos
@@ -191,19 +207,21 @@ function Perfil({ navigation }) {
                   Cargar vacuna covid
                 </Button>
 
-                <Button
-                  margin={1}
-                  _text={{ fontSize: 12, textAlign: "center" }}
-                  w="90px"
-                  onPress={() => {
-                    setIdCampania(1);
-                    setCampania("fiebre");
-                    setModalVisible(!modalVisible);
-                  }}
-                  colorScheme={"green"}
-                >
-                  Cargar vacuna fiebre
-                </Button>
+                {stateFiebre ?? (
+                  <Button
+                    margin={1}
+                    _text={{ fontSize: 12, textAlign: "center" }}
+                    w="90px"
+                    onPress={() => {
+                      setIdCampania(1);
+                      setCampania("fiebre");
+                      setModalVisible(!modalVisible);
+                    }}
+                    colorScheme={"green"}
+                  >
+                    Cargar vacuna fiebre
+                  </Button>
+                )}
 
                 <Button
                   margin={1}

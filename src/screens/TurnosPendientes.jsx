@@ -4,15 +4,17 @@ import {
   NativeBaseProvider,
   Center,
   FlatList,
-  Box,
+  HStack,
   Heading,
   Text,
+  Spinner,
 } from "native-base";
 import Pendiente from "../components/PendienteTarjeta";
 import { useDispatch, useSelector } from "react-redux";
 
 function TurnosPendientes() {
   const [pendientes, setPendientes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const userData = useSelector((state) => state.user);
   const ObtenerPendientes = async () => {
     var myHeaders = new Headers();
@@ -34,6 +36,7 @@ function TurnosPendientes() {
     ).catch((error) => console.log("error", error));
     const res = await result.json();
     setPendientes(res);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -42,29 +45,38 @@ function TurnosPendientes() {
 
   return (
     <NativeBaseProvider>
-      <Center>
-        <Heading size="lg" ml="-1" p="10px">
-          Turnos pendientes
-        </Heading>
-      </Center>
-      {pendientes.length > 0 ? (
-
-      
-        <FlatList
-          data={pendientes}
-          renderItem={({ item }) => (
-            <Pendiente
-              campania={item.campania}
-              fecha={item.fecha}
-              vacunatorio={item.vacunatorio}
-              estado={item.estado}
-            />
-          )}
-        />
-      ) : (
+      {isLoading != true ? (
         <Center>
-          <Text>No posee turnos pendientes</Text>
+          <Center>
+            <Heading size="lg" ml="-1" p="10px">
+              Turnos pendientes
+            </Heading>
+          </Center>
+          {pendientes.length > 0 ? (
+            <FlatList
+              data={pendientes}
+              renderItem={({ item }) => (
+                <Pendiente
+                  campania={item.campania}
+                  fecha={item.fecha}
+                  vacunatorio={item.vacunatorio}
+                  estado={item.estado}
+                />
+              )}
+            />
+          ) : (
+            <Center>
+              <Text>No posee turnos pendientes</Text>
+            </Center>
+          )}
         </Center>
+      ) : (
+        <HStack space={2} justifyContent="center" marginTop={5}>
+          <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
+          <Heading color="emerald.500" fontSize="md">
+            Cargando datos
+          </Heading>
+        </HStack>
       )}
     </NativeBaseProvider>
   );

@@ -56,7 +56,7 @@ function SumarStockScreen({ route, navigation }) {
     }
   };
 
-const getVacunatorio  = (data) => {
+  const getVacunatorio = (data) => {
     switch (data) {
       case 1:
         return "Hospital 9 de Julio";
@@ -66,7 +66,7 @@ const getVacunatorio  = (data) => {
         return "Polideportivo";
     }
   };
-const getCampania  = (data) => {
+  const getCampania = (data) => {
     switch (data) {
       case 1:
         return "Fiebre Amarilla";
@@ -96,8 +96,8 @@ const getCampania  = (data) => {
           <Button colorScheme="green" onPress={() => cargarDatos()}>
             Sumar Stock
           </Button>
-          {isLoading ?? (
-            <HStack space={2} justifyContent="center">
+          {isLoading && (
+            <HStack space={2} justifyContent="center" marginTop={5}>
               <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
               <Heading color="emerald.500" fontSize="md">
                 Cargando datos

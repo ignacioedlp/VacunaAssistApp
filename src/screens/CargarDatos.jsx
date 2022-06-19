@@ -82,15 +82,17 @@ function CargarDatosScreen({ route, navigation }) {
             value={marca}
             placeholder="Marca de la vacuna"
           />
-          <Button
-            colorScheme="green"
-            onPress={() => cargarDatos()}
-            isDisabled={cargado ? true : false}
-          >
-            Cargar datos
-          </Button>
-          {isLoading ?? (
-            <HStack space={2} justifyContent="center">
+          {!isLoading && (
+            <Button
+              colorScheme="green"
+              onPress={() => cargarDatos()}
+              isDisabled={cargado ? true : false}
+            >
+              Cargar datos
+            </Button>
+          )}
+          {isLoading && (
+            <HStack space={2} justifyContent="center" marginTop={5}>
               <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
               <Heading color="emerald.500" fontSize="md">
                 Cargando datos

@@ -70,7 +70,6 @@ function RegistrarPersonal({ navigation }) {
       } else {
         Alert.alert("VacunAssist", res.message);
       }
-
       setIsLoading(false);
     } else {
       alert("Faltan rellenar campos");
@@ -130,15 +129,17 @@ function RegistrarPersonal({ navigation }) {
             <Select.Item label="Corralon municipal" value="2" />
             <Select.Item label="Polideportivo" value="3" />
           </Select>
-          <Button
-            colorScheme="green"
-            onPress={() => cargarDatos()}
-            isDisabled={cargado ? true : false}
-          >
-            Continuar
-          </Button>
-          {isLoading ?? (
-            <HStack space={2} justifyContent="center">
+          {!isLoading && (
+            <Button
+              colorScheme="green"
+              onPress={() => cargarDatos()}
+              isDisabled={cargado ? true : false}
+            >
+              Continuar
+            </Button>
+          )}
+          {isLoading && (
+            <HStack space={2} justifyContent="center" marginTop={5}>
               <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
               <Heading color="emerald.500" fontSize="md">
                 Cargando datos

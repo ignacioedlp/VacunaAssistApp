@@ -12,7 +12,7 @@ import {
   CheckIcon,
   Checkbox,
 } from "native-base";
-import {Alert} from 'react-native';
+import { Alert } from "react-native";
 
 function RegisterScreen({ navigation }) {
   const [dni, setDni] = useState("");
@@ -36,7 +36,15 @@ function RegisterScreen({ navigation }) {
 
   const handlerRegister = async () => {
     setIsLoading(true);
-    if (dni != "" && sexo != "" && nro_tramite != "" && pass != "" && pass_confirmation != "" && email != "" && vacunatorio != "") {
+    if (
+      dni != "" &&
+      sexo != "" &&
+      nro_tramite != "" &&
+      pass != "" &&
+      pass_confirmation != "" &&
+      email != "" &&
+      vacunatorio != ""
+    ) {
       const response = await fetch(
         "https://vacunassistservices-production.up.railway.app/auth/register",
         {
@@ -59,11 +67,11 @@ function RegisterScreen({ navigation }) {
       if (response.code == 200) {
         navigation.navigate("Login");
       } else {
-        Alert.alert("VacunAssist",response.message);
+        Alert.alert("VacunAssist", response.message);
       }
     } else {
-      Alert.alert("VacunAssist","Completar los campos");
-    } 
+      Alert.alert("VacunAssist", "Completar los campos");
+    }
     setIsLoading(false);
   };
 
@@ -144,16 +152,16 @@ function RegisterScreen({ navigation }) {
             onChange={handlerChangeRiesgo}
             _text={{ fontSize: 12 }}
           >
-            ¿Tiene alguno de estos riesgos:(Paciente oncológico, Persona trasplantada, Diabetes,
-            Enfermedad Renal Crónica, Enfermedades Cardiovasculares,
-            Enfermedades Respiratorias Crónicas)?
+            ¿Tiene alguno de estos riesgos:(Paciente oncológico, Persona
+            trasplantada, Diabetes, Enfermedad Renal Crónica, Enfermedades
+            Cardiovasculares, Enfermedades Respiratorias Crónicas)?
           </Checkbox>
           <Button colorScheme="green" onPress={() => handlerRegister()}>
             Registrarme
           </Button>
         </Stack>
-        {isLoading ?? (
-          <HStack space={2} justifyContent="center">
+        {isLoading && (
+          <HStack space={2} justifyContent="center" marginTop={5}>
             <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
             <Heading color="emerald.500" fontSize="md">
               Cargando datos
