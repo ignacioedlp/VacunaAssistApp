@@ -16,7 +16,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import jwt_decode from "jwt-decode";
 
-function NoRegistrada({ navigation }) {
+function NoRegistrada({ route, navigation }) {
+  const {id_campania} = route.params;
   const [campania, setCampania] = useState("");
   const [dni, setDni] = useState("");
   const [nro_lote, setNro_lote] = useState("");
@@ -48,7 +49,6 @@ function NoRegistrada({ navigation }) {
       marca != "" &&
       nro_lote != "" &&
       dni != "" &&
-      campania != "" &&
       email != ""
     ) {
       setIsLoading(true);
@@ -62,7 +62,7 @@ function NoRegistrada({ navigation }) {
       var raw = JSON.stringify({
         dni: dni,
         email: email,
-        campania: parseInt(campania),
+        campania: id_campania.toString(),
         lote: nro_lote,
         marca: marca,
         vacunatorio: parseInt(decoded.vacunatorio),
@@ -76,8 +76,8 @@ function NoRegistrada({ navigation }) {
         body: raw,
         redirect: "follow",
       };
-
-      const result = await fetch(rutaCampania(campania), requestOptions).catch(
+      console.log(typeof(id_campania));
+      const result = await fetch(rutaCampania(id_campania), requestOptions).catch(
         (error) => console.log("error", error)
       );
       const res = await result.json();
@@ -102,7 +102,7 @@ function NoRegistrada({ navigation }) {
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
             <Heading size="lg" ml="-1" p="10px">
-              Registrar vacuna a persona no registrada
+              Registrar vacuna  de {id_campania} a persona no registrada
             </Heading>
           </Center>
           <Input
@@ -117,22 +117,6 @@ function NoRegistrada({ navigation }) {
             value={email}
             placeholder="Email"
           />
-          <Select
-            minWidth="200"
-            selectedValue={campania}
-            accessibilityLabel="Campaña"
-            onValueChange={(itemValue) => handlerCampania(itemValue)}
-            placeholder="Campaña"
-            _selectedItem={{
-              bg: "teal.600",
-              endIcon: <CheckIcon size={5} />,
-            }}
-            mt="1"
-          >
-            <Select.Item label="Fiebre amarilla" value="1" />
-            <Select.Item label="Gripe" value="2" />
-            <Select.Item label="Covid-19" value="3" />
-          </Select>
           <Input
             onChangeText={handlerNro_lote}
             size="md"

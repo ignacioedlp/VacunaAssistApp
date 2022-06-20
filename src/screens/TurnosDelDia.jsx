@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 import {
   Input,
   Center,
@@ -27,6 +28,40 @@ function TurnosDelDiaScreen({ navigation }) {
   const handlerChangeDni = (dni) => setDni(dni);
   const userData = useSelector((state) => state.user);
 
+
+  const verificar_stock = async () => {
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    var decoded = jwt_decode(value);
+
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      campania: parseInt(campania),
+      vacunatorio: decoded.vacunatorio,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/vacunador/verificar_stock",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    if (res.code == 200) {
+      navigation.navigate("No registrada", {
+        id_campania: campania})
+    } else{
+     Alert.alert("VacunAsisst", res.message);
+    }
+  }
+
   const ObtenerListaVacunar = async () => {
     var myHeaders = new Headers();
     const value = userData.token;
@@ -36,7 +71,7 @@ function TurnosDelDiaScreen({ navigation }) {
     myHeaders.append("Authorization", token);
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
-      campania: campania,
+      campania: parseInt(campania),
       vacunatorio: decoded.vacunatorio,
     });
 
@@ -150,7 +185,10 @@ function TurnosDelDiaScreen({ navigation }) {
         <Button
           mt={3}
           colorScheme="green"
-          onPress={() => navigation.navigate("No registrada")}
+          onPress={(
+            (campania == "") ? (Alert.alert("VacunAssist", "Seleccione una campaña")) : 
+            ( () => verificar_stock())
+          )}
         >
           Ingresar persona no registrada
         </Button>
