@@ -17,8 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import jwt_decode from "jwt-decode";
 
 function NoRegistrada({ route, navigation }) {
-  const {id_campania} = route.params;
-  const [campania, setCampania] = useState("");
+  const { id_campania } = route.params;
+
   const [dni, setDni] = useState("");
   const [nro_lote, setNro_lote] = useState("");
   const [marca, setMarca] = useState("");
@@ -26,7 +26,7 @@ function NoRegistrada({ route, navigation }) {
 
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const handlerCampania = (campania) => setCampania(campania);
+
   const handlerDni = (dni) => setDni(dni);
   const handlerEmail = (email) => setEmail(email);
   const handlerNro_lote = (nro) => setNro_lote(nro);
@@ -45,12 +45,7 @@ function NoRegistrada({ route, navigation }) {
   };
 
   const cargarDatos = async () => {
-    if (
-      marca != "" &&
-      nro_lote != "" &&
-      dni != "" &&
-      email != ""
-    ) {
+    if (marca != "" && nro_lote != "" && dni != "" && email != "") {
       setIsLoading(true);
       var myHeaders = new Headers();
       const value = userData.token;
@@ -68,18 +63,17 @@ function NoRegistrada({ route, navigation }) {
         vacunatorio: parseInt(decoded.vacunatorio),
       });
 
-     
-
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
         body: raw,
         redirect: "follow",
       };
-      console.log(typeof(id_campania));
-      const result = await fetch(rutaCampania(id_campania), requestOptions).catch(
-        (error) => console.log("error", error)
-      );
+      console.log(typeof id_campania);
+      const result = await fetch(
+        rutaCampania(id_campania),
+        requestOptions
+      ).catch((error) => console.log("error", error));
       const res = await result.json();
       if (res.code == 200) {
         /* con esta función guardamos y mantenemos el token
@@ -102,7 +96,13 @@ function NoRegistrada({ route, navigation }) {
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
             <Heading size="lg" ml="-1" p="10px">
-              Registrar vacuna  de {id_campania} a persona no registrada
+              Registrar vacuna de{" "}
+              {id_campania == 1
+                ? "fiebre amarilla"
+                : id_campania == 2
+                ? "gripe"
+                : "covid"}{" "}
+              a persona no registrada
             </Heading>
           </Center>
           <Input

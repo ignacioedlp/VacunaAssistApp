@@ -28,7 +28,6 @@ function TurnosDelDiaScreen({ navigation }) {
   const handlerChangeDni = (dni) => setDni(dni);
   const userData = useSelector((state) => state.user);
 
-
   const verificar_stock = async () => {
     var myHeaders = new Headers();
     const value = userData.token;
@@ -56,11 +55,12 @@ function TurnosDelDiaScreen({ navigation }) {
     const res = await result.json();
     if (res.code == 200) {
       navigation.navigate("No registrada", {
-        id_campania: campania})
-    } else{
-     Alert.alert("VacunAsisst", res.message);
+        id_campania: campania,
+      });
+    } else {
+      Alert.alert("VacunAsisst", res.message);
     }
-  }
+  };
 
   const ObtenerListaVacunar = async () => {
     var myHeaders = new Headers();
@@ -185,10 +185,11 @@ function TurnosDelDiaScreen({ navigation }) {
         <Button
           mt={3}
           colorScheme="green"
-          onPress={(
-            (campania == "") ? (Alert.alert("VacunAssist", "Seleccione una campaña")) : 
-            ( () => verificar_stock())
-          )}
+          onPress={
+            campania == ""
+              ? Alert.alert("VacunAssist", "Seleccione una campaña")
+              : () => verificar_stock()
+          }
         >
           Ingresar persona no registrada
         </Button>
