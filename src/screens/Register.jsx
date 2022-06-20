@@ -11,6 +11,8 @@ import {
   Select,
   CheckIcon,
   Checkbox,
+  HStack, 
+  Spinner
 } from "native-base";
 import { Alert } from "react-native";
 

@@ -25,6 +25,7 @@ import {
 
 function Perfil({ navigation }) {
   const stateFiebre = useSelector((state) => state.campanias.fiebre);
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({});
@@ -90,13 +91,17 @@ function Perfil({ navigation }) {
       const res = await result.json();
       if (res.code == 200) {
         Alert.alert("VacunAssist", res.message);
-        switch (campania) {
-          case "fiebre":
-            dispatch(desactivateFiebre());
-          case "gripe":
+        if (campania.includes("fiebre")) {
+          dispatch(desactivateFiebre());
+          console.log("Desactivando fiebre");
+        } else {
+          if (campania.includes("gripe")) {
             dispatch(desactivateGripe());
-          case "covid":
-            dispatch(desactivateCovid());
+          } else {
+            if (campania.includes("covid")) {
+              dispatch(desactivateCovid());
+            }
+          }
         }
       } else {
         Alert.alert("VacunAssist", "Se produjo un error");
@@ -207,7 +212,7 @@ function Perfil({ navigation }) {
                   Cargar vacuna covid
                 </Button>
 
-                {stateFiebre ?? (
+                {!stateFiebre && (
                   <Button
                     margin={1}
                     _text={{ fontSize: 12, textAlign: "center" }}

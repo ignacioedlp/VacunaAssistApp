@@ -293,7 +293,7 @@ function HomeScreen({ navigation }) {
           />
           {userData.rol == "Admin" && <TarjetaAdmin />}
         </Stack>
-        {isLoading ?? (
+        {isLoading && (
           <HStack space={2} justifyContent="center">
             <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
             <Heading color="emerald.500" fontSize="md">
