@@ -34,6 +34,7 @@ function Perfil({ navigation }) {
   const [idCampania, setIdCampania] = useState(0);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState();
+  const [dateSelected, setDateSelected] = useState();
 
   const VerPerfil = async () => {
     var myHeaders = new Headers();
@@ -65,7 +66,7 @@ function Perfil({ navigation }) {
 
   const cargarVacunaPropia = async () => {
     console.log("Cargando datos");
-    if (date != null && date != undefined) {
+    if (dateSelected != null && dateSelected != undefined) {
       var myHeaders = new Headers();
       const value = userData.token;
       const token = "Bearer " + value;
@@ -73,7 +74,7 @@ function Perfil({ navigation }) {
       myHeaders.append("Content-Type", "application/json");
 
       var raw = JSON.stringify({
-        fecha: date,
+        fecha: dateSelected,
       });
 
       var requestOptions = {
@@ -120,12 +121,19 @@ function Perfil({ navigation }) {
   };
 
   const handleConfirm = async (date) => {
-    //Quiero ver la fecha con un dia menos
-    const fecha = new Date(date);
-    const fecha2 = new Date(fecha.setDate(fecha.getDate() - 1));
-    setDate(fecha2.toISOString());
-    console.log(fecha2);
-    hideDatePicker();
+    //Si la fecha seleccionada que hoy no inicializa la fecha y lanza un mensaje
+    const fecha = new Date(); //fecha de hoy
+    // acomodar la fecha que seleccionada
+    if (
+      date.getTime() > fecha.getTime() ||
+      (fecha.getDay() == date.getDay() && fecha.getMonth() == date.getMonth())
+    ) {
+      Alert.alert("Error", "Seleccione una fecha anterior a hoy");
+      hideDatePicker();
+    } else {
+      setDateSelected(date);
+      hideDatePicker();
+    }
   };
 
   return (
@@ -266,11 +274,25 @@ function Perfil({ navigation }) {
               <Button colorScheme={"green"} onPress={showDatePicker}>
                 Selecciona un dia
               </Button>
+              {dateSelected && (
+                <Heading mt={1}>
+                  Fecha seleccionada:{" "}
+                  {
+                    /* {Muestro la fecha si selecciono una fecha} */
+                    dateSelected.getUTCDate() +
+                      " - " +
+                      (dateSelected.getMonth() + 1) +
+                      " - " +
+                      dateSelected.getFullYear()
+                  }
+                </Heading>
+              )}
             </Modal.Body>
             <Modal.Footer>
               <Button
                 colorScheme={"green"}
                 flex="1"
+                isDisabled={dateSelected ? false : true}
                 onPress={() => {
                   cargarVacunaPropia();
                   setModalVisible(false);
