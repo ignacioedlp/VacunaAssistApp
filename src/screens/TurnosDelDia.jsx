@@ -182,16 +182,15 @@ function TurnosDelDiaScreen({ navigation }) {
         ) : (
           <Text>Selecciona una campaña</Text>
         )}
-        {
-          <Button
-            mt={3}
-            colorScheme="green"
-            isDisabled={campania == "" ? true : false}
-            onPress={verificar_stock()}
-          >
-            Ingresar persona no registrada
-          </Button>
-        }
+
+        <Button
+          mt={3}
+          colorScheme="green"
+          isDisabled={campania == "" ? true : false}
+          onPress={() => verificar_stock()}
+        >
+          Ingresar persona no registrada
+        </Button>
       </Center>
     </NativeBaseProvider>
   );

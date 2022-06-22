@@ -35,6 +35,36 @@ function Perfil({ navigation }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState();
   const [dateSelected, setDateSelected] = useState();
+  const [fiebreActive, setFiebreActive] = useState(true);
+
+  const ObtenerHistorial = async () => {
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    var raw = "";
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/turnos/historial",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+
+    for (const turno in res) {
+      if (res[turno].campania == "Fiebre amarilla") {
+        setFiebreActive(false);
+      }
+    }
+
+    console.log(res);
+  };
 
   const VerPerfil = async () => {
     var myHeaders = new Headers();
@@ -62,6 +92,7 @@ function Perfil({ navigation }) {
 
   useEffect(() => {
     VerPerfil();
+    ObtenerHistorial();
   }, []);
 
   const cargarVacunaPropia = async () => {
@@ -94,6 +125,7 @@ function Perfil({ navigation }) {
         Alert.alert("VacunAssist", res.message);
         if (campania.includes("fiebre")) {
           dispatch(desactivateFiebre());
+          setFiebreActive(false);
           console.log("Desactivando fiebre");
         } else {
           if (campania.includes("gripe")) {
@@ -220,7 +252,7 @@ function Perfil({ navigation }) {
                   Cargar vacuna covid
                 </Button>
 
-                {!stateFiebre && (
+                {fiebreActive && (
                   <Button
                     margin={1}
                     _text={{ fontSize: 12, textAlign: "center" }}
