@@ -16,7 +16,7 @@ import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
 import jwt_decode from "jwt-decode";
 
-function Historial({ campania, marca, fecha, lote }) {
+function Historial({ campania, marca, fecha, lote, estado }) {
   const fechaTurno = new Date(fecha);
   const userData = useSelector((state) => state.user);
   var decoded = jwt_decode(userData.token);
@@ -84,8 +84,14 @@ function Historial({ campania, marca, fecha, lote }) {
                 "/" +
                 new Date(fecha).getUTCFullYear()}
             </Text>
-            <Text>Marca: {marca}</Text>
-            <Text>Nro lote: {lote}</Text>
+            {estado !== "Cancelado" ? (
+              <Stack>
+                <Text>Marca: {marca}</Text>
+                <Text>Nro lote: {lote}</Text>
+              </Stack>
+            ) : (
+              <Text>Cancelado</Text>
+            )}
             {campania == "Fiebre amarilla" && marca != "N/A" ? (
               <Button colorScheme={"green"} onPress={generatePdf}>
                 Descargar certificado

@@ -61,6 +61,7 @@ function HistorialVacunacion() {
                 fecha={item.fecha}
                 marca={item.marca}
                 lote={item.lote}
+                estado={item.estado}
               />
             )}
           />

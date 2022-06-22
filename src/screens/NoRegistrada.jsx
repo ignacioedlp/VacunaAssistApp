@@ -23,7 +23,7 @@ function NoRegistrada({ route, navigation }) {
   const [nro_lote, setNro_lote] = useState("");
   const [marca, setMarca] = useState("");
   const [email, setEmail] = useState("");
-
+  const [verificado, setVerificado] = useState(false);
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,6 +41,51 @@ function NoRegistrada({ route, navigation }) {
         return "https://vacunassistservices-production.up.railway.app/vacunador/vacuna_gripe_no_registrado";
       case "3":
         return "https://vacunassistservices-production.up.railway.app/vacunador/vacuna_covid_no_registrado";
+    }
+  };
+
+  const verificarDatos = async () => {
+    if (dni != "" && email != "") {
+      setIsLoading(true);
+      var myHeaders = new Headers();
+      const value = userData.token;
+      const token = "Bearer " + value;
+      myHeaders.append("Authorization", token);
+      myHeaders.append("Content-Type", "application/json");
+      var decoded = jwt_decode(value);
+
+      var dniAux = parseInt(dni);
+      var idAux = parseInt(id_campania);
+
+      var raw = JSON.stringify({
+        dni: dniAux,
+        campania: idAux,
+      });
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      const result = await fetch(
+        "https://vacunassistservices-production.up.railway.app/vacunador/verificar_persona",
+        requestOptions
+      ).catch((error) => console.log("error", error));
+      const res = await result.json();
+      console.log(res);
+      if (res.code == 200) {
+        /* con esta función guardamos y mantenemos el token
+      del usuario*/
+        setVerificado(true);
+      } else {
+        Alert.alert("VacunAssist", res.message);
+      }
+
+      setIsLoading(false);
+    } else {
+      alert("Faltan rellenar campos");
     }
   };
 
@@ -117,23 +162,32 @@ function NoRegistrada({ route, navigation }) {
             value={email}
             placeholder="Email"
           />
+          <Button
+            colorScheme="green"
+            onPress={() => verificarDatos()}
+            isDisabled={verificado ? true : false}
+          >
+            Verificar datos
+          </Button>
           <Input
             onChangeText={handlerNro_lote}
             size="md"
             value={nro_lote}
+            isDisabled={!verificado ? true : false}
             placeholder="Numero del lote"
           />
           <Input
             onChangeText={handlerMarca}
             size="md"
             value={marca}
+            isDisabled={!verificado ? true : false}
             placeholder="Marca de la vacuna"
           />
           {!isLoading && (
             <Button
               colorScheme="green"
               onPress={() => cargarDatos()}
-              isDisabled={cargado ? true : false}
+              isDisabled={!verificado ? true : false}
             >
               Cargar datos
             </Button>
