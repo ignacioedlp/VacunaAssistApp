@@ -11,12 +11,19 @@ import {
   Box,
 } from "native-base";
 
-function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
+function TurnoTarjeta({
+  dni,
+  nombreYApellido,
+  nroTurno,
+  fecha,
+  vacunatorio,
+  campania,
+}) {
   const fechaTurno = new Date(fecha);
   fechaTurno.setMonth(fechaTurno.getMonth() + 1);
 
   return (
-    <Box p="20px">
+    <Box p="20px" >
       <Box
         maxW="100%"
         rounded="lg"
@@ -35,7 +42,7 @@ function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
           backgroundColor: "gray.50",
         }}
       >
-        <Stack p="4" space={5}>
+        <Stack p="4" space={5} >
           <Stack space={2}>
             <Heading size="md" ml="-1">
               {nombreYApellido}
@@ -52,6 +59,8 @@ function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
             </Text>
             <Text>Dni: {dni}</Text>
             <Text>Turno: {nroTurno}</Text>
+            <Text>Vacunatorio: {vacunatorio}</Text>
+            <Text>Campania: {campania}</Text>
           </VStack>
         </Stack>
       </Box>
@@ -59,4 +68,4 @@ function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
   );
 }
 
-export default TurnoDelDia;
+export default TurnoTarjeta;

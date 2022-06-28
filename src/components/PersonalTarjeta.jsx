@@ -11,14 +11,25 @@ import {
   Box,
 } from "native-base";
 
-function TarjetaAdministrador() {
+function PersonalTarjeta({ dni, nombre, apellido, rol, vacunatorio }) {
+  const nombreDeVacunatorio = (id) => {
+    switch (id) {
+      case "1":
+        return "Hospital 9 de Julio";
+      case "2":
+        return "Corralon municipal";
+      case "3":
+        return "Polideportivo";
+    }
+  };
+
   return (
     <Box p="20px">
       <Box
         maxW="100%"
         rounded="lg"
         overflow="hidden"
-        borderColor="red.500"
+        borderColor="emerald.500"
         borderWidth="3"
         _dark={{
           borderColor: "coolGray.600",
@@ -34,20 +45,14 @@ function TarjetaAdministrador() {
       >
         <Stack p="4" space={5}>
           <Stack space={2}>
-            <Center>
-
-            
-                <Heading size="md" ml="-1">
-                Sos administrador
-                </Heading>
-            </Center>
+            <Heading size="md" ml="-1">
+              {nombre + " " + apellido}
+            </Heading>
           </Stack>
           <VStack space={4} justifyContent="space-between">
-            <Center>
-                <Text>
-                    Proximamente más funcionalidades.
-                </Text>
-            </Center>
+            <Text>Dni: {dni}</Text>
+            <Text>Rol: {rol}</Text>
+            <Text>Vacunatorio: {nombreDeVacunatorio(vacunatorio)}</Text>
           </VStack>
         </Stack>
       </Box>
@@ -55,4 +60,4 @@ function TarjetaAdministrador() {
   );
 }
 
-export default TarjetaAdministrador;
+export default PersonalTarjeta;

@@ -8,12 +8,23 @@ import {
   Heading,
   Text,
   HStack,
+  FlatList,
 } from "native-base";
 
 import { useDispatch, useSelector } from "react-redux";
+import TurnoCanceladoTarjeta from "../../../components/TurnoCanceladoTarjeta";
 
 function TurnosCancelados() {
-  const [turnosCancelados, setTurnosCancelados] = useState([]);
+  const [turnosCancelados, setTurnosCancelados] = useState([
+    {
+      dni: "44444443",
+      vacunatorio: "Corralon",
+      campania: "Covid",
+      nombreYApellido: "Nova",
+      fecha: Date.now(),
+      nroTurno: 333,
+    },
+  ]);
   const userData = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,8 +60,29 @@ function TurnosCancelados() {
       {isLoading != true ? (
         <Center>
           <Heading size="lg" ml="-1" p="10px">
-            Turnos cancelado
+            Turnos cancelados
           </Heading>
+          {turnosCancelados.length > 0 ? (
+            <FlatList
+              w="75%"
+              maxW="300px"
+              data={turnosCancelados}
+              renderItem={({ item }) => (
+                <TurnoCanceladoTarjeta
+                  nombreYApellido={item.nombreYApellido}
+                  nroTurno={item.nroTurno}
+                  fecha={item.fecha}
+                  vacunatorio={item.vacunatorio}
+                  dni={item.dni}
+                  campania={item.campania}
+                />
+              )}
+            />
+          ) : (
+            <Center>
+              <Text>No posee vacunas aplicadas</Text>
+            </Center>
+          )}
         </Center>
       ) : (
         <HStack space={2} justifyContent="center" marginTop={5}>

@@ -55,35 +55,35 @@ function ActualizarPersonal({ route, navigation }) {
     // }
   };
 
-  const actualizarRol = async () => {
-    setIsLoading(true);
-    // var myHeaders = new Headers();
-    // const value = userData.token;
-    // const token = "Bearer " + value;
-    // myHeaders.append("Authorization", token);
-    // myHeaders.append("Content-Type", "application/json");
+  // const actualizarRol = async () => {
+  //   setIsLoading(true);
+  //   // var myHeaders = new Headers();
+  //   // const value = userData.token;
+  //   // const token = "Bearer " + value;
+  //   // myHeaders.append("Authorization", token);
+  //   // myHeaders.append("Content-Type", "application/json");
 
-    // var raw = JSON.stringify({
-    //   dni: dni,
-    //   personalRol: personalRol,
-    // });
+  //   // var raw = JSON.stringify({
+  //   //   dni: dni,
+  //   //   personalRol: personalRol,
+  //   // });
 
-    // var requestOptions = {
-    //   method: "POST",
-    //   headers: myHeaders,
-    //   body: raw,
-    //   redirect: "follow",
-    // };
+  //   // var requestOptions = {
+  //   //   method: "POST",
+  //   //   headers: myHeaders,
+  //   //   body: raw,
+  //   //   redirect: "follow",
+  //   // };
 
-    // const result = await fetch(
-    //   "https://vacunassistservices-production.up.railway.app/vacunador/cargar_datos",
-    //   requestOptions
-    // ).catch((error) => console.log("error", error));
-    // const res = await result.json();
-    setCargado(true);
-    setIsLoading(false);
-    // }
-  };
+  //   // const result = await fetch(
+  //   //   "https://vacunassistservices-production.up.railway.app/vacunador/cargar_datos",
+  //   //   requestOptions
+  //   // ).catch((error) => console.log("error", error));
+  //   // const res = await result.json();
+  //   setCargado(true);
+  //   setIsLoading(false);
+  //   // }
+  // };
 
   return (
     <NativeBaseProvider>

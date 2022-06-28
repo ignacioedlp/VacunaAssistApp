@@ -11,7 +11,14 @@ import {
   Box,
 } from "native-base";
 
-function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
+function TurnoCanceladoTarjeta({
+  dni,
+  nombreYApellido,
+  nroTurno,
+  fecha,
+  vacunatorio,
+  campania,
+}) {
   const fechaTurno = new Date(fecha);
   fechaTurno.setMonth(fechaTurno.getMonth() + 1);
 
@@ -52,6 +59,8 @@ function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
             </Text>
             <Text>Dni: {dni}</Text>
             <Text>Turno: {nroTurno}</Text>
+            <Text>Vacunatorio: {vacunatorio}</Text>
+            <Text>Campania: {campania}</Text>
           </VStack>
         </Stack>
       </Box>
@@ -59,4 +68,4 @@ function TurnoDelDia({ dni, nombreYApellido, nroTurno, fecha }) {
   );
 }
 
-export default TurnoDelDia;
+export default TurnoCanceladoTarjeta;
