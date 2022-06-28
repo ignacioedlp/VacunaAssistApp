@@ -15,39 +15,30 @@ import { useDispatch, useSelector } from "react-redux";
 import TurnoTarjeta from "../../../components/TurnoTarjeta";
 
 function HistorialTurnos() {
-  const [turnos, setTurnos] = useState([
-    {
-      dni: "44444443",
-      vacunatorio: "Corralon",
-      campania: "Covid",
-      nombreYApellido: "Nova",
-      fecha: Date.now(),
-      nroTurno: 333,
-    },
-  ]);
+  const [turnos, setTurnos] = useState([]);
   const userData = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
 
   const ObtenerTurnos = async () => {
-    // var myHeaders = new Headers();
-    // const value = userData.token;
-    // const token = "Bearer " + value;
-    // myHeaders.append("Authorization", token);
-    // var raw = "";
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    var raw = "";
 
-    // var requestOptions = {
-    //   method: "GET",
-    //   headers: myHeaders,
-    //   body: raw,
-    //   redirect: "follow",
-    // };
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
 
-    // const result = await fetch(
-    //   "https://vacunassistservices-production.up.railway.app/admin/ver_stock",
-    //   requestOptions
-    // ).catch((error) => console.log("error", error));
-    // const res = await result.json();
-    // setTurnos(res);
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/admin/ver_turnos",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    setTurnos(res);
     setIsLoading(false);
   };
 
@@ -69,8 +60,7 @@ function HistorialTurnos() {
               data={turnos}
               renderItem={({ item }) => (
                 <TurnoTarjeta
-                  nombreYApellido={item.nombreYApellido}
-                  nroTurno={item.nroTurno}
+                  nroTurno={item.id_turno}
                   fecha={item.fecha}
                   vacunatorio={item.vacunatorio}
                   dni={item.dni}

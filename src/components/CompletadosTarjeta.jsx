@@ -10,7 +10,7 @@ import {
   Box,
 } from "native-base";
 
-function StockTotales({ data }) {
+function CompletadosTarjeta({ data }) {
   return (
     <Box mx="45px" p="2">
       <Box
@@ -35,7 +35,7 @@ function StockTotales({ data }) {
           <Stack space={2}>
             <Center>
               <Heading size="md" ml="-1">
-                Totales por campaña
+                {data.vacunatorio.nombre}
               </Heading>
             </Center>
           </Stack>
@@ -48,7 +48,7 @@ function StockTotales({ data }) {
                     <Heading pt="15px" size="md" ml="-1">
                       {"Gripe"}
                     </Heading>
-                    <Text pt="10px">{data.stock_gripe.stock}</Text>
+                    <Text pt="10px">{data.completados_gripe.completados}</Text>
                   </Center>
                 </Stack>
               </HStack>
@@ -60,7 +60,7 @@ function StockTotales({ data }) {
                       {"Fiebre"}
                     </Heading>
 
-                    <Text pt="10px">{data.stock_fiebre.stock}</Text>
+                    <Text pt="10px">{data.completados_fiebre.completados}</Text>
                   </Center>
                 </Stack>
               </HStack>
@@ -71,7 +71,7 @@ function StockTotales({ data }) {
                     <Heading pt="15px" size="md" ml="-1">
                       {"Covid"}
                     </Heading>
-                    <Text pt="10px">{data.stock_covid.stock}</Text>
+                    <Text pt="10px">{data.completados_covid.completados}</Text>
                   </Center>
                 </Stack>
               </HStack>
@@ -83,4 +83,4 @@ function StockTotales({ data }) {
   );
 }
 
-export default StockTotales;
+export default CompletadosTarjeta;

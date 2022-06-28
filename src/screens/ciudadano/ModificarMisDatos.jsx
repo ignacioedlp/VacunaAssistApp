@@ -112,28 +112,23 @@ function Perfil({ navigation }) {
       }
     }
 
-    // const response = await fetch(
-    //   "https://vacunassistservices-production.up.railway.app/auth/log_in",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       email: email,
-    //       riesgo: riesgo,
-    //       password: password,
-    //     }),
-    //   }
-    // ).then((response) => response.json());
-    // if (response.code == 200) {
-    //   /* con esta función guardamos y mantenemos el token
-    // del usuario*/
-    //   Alert.alert("VacunAssist", "Datos actualizados");
-    //
-    // } else {
-    //   Alert.alert("VacunAssist", response.message);
-    // }
+    const response = await fetch(
+      "https://vacunassistservices-production.up.railway.app/user/modificar_perfil",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(raw),
+      }
+    ).then((response) => response.json());
+    if (response.code == 200) {
+      /* con esta función guardamos y mantenemos el token
+    del usuario*/
+      Alert.alert("VacunAssist", "Datos actualizados");
+    } else {
+      Alert.alert("VacunAssist", response.message);
+    }
 
     if (cerrar) {
       setIsLoading(false);

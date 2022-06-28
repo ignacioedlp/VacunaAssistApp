@@ -46,7 +46,7 @@ function TurnosPendientes() {
   return (
     <NativeBaseProvider>
       {isLoading != true ? (
-        <Center>
+        <Center w="100%">
           <Center>
             <Heading size="lg" ml="-1" p="10px">
               Turnos pendientes
@@ -54,6 +54,7 @@ function TurnosPendientes() {
           </Center>
           {pendientes.length > 0 ? (
             <FlatList
+              w="100%"
               data={pendientes}
               renderItem={({ item }) => (
                 <Pendiente

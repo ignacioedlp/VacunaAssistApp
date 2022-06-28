@@ -126,11 +126,74 @@ function HomeScreen({ navigation }) {
     setIsLoading(false);
   };
 
-  const handlerCancelarGripe = async () => {};
+  const handlerCancelarGripe = async () => {
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    var raw = "";
 
-  const handlerCancelarCovid = async () => {};
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
 
-  const handlerCancelarFiebre = async () => {};
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/turnos/cancelar_gripe",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    setPendientes(res);
+    setIsLoading(false);
+  };
+
+  const handlerCancelarCovid = async () => {
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    var raw = "";
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/turnos/cancelar_covid",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    setPendientes(res);
+    setIsLoading(false);
+  };
+
+  const handlerCancelarFiebre = async () => {
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    var raw = "";
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/turnos/cancelar_fiebre",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    setPendientes(res);
+    setIsLoading(false);
+  };
 
   const campanias = [
     {
@@ -239,7 +302,7 @@ function HomeScreen({ navigation }) {
           <Select
             mx="5"
             size="xl"
-            minWidth="200"
+            w="100%"
             selectedValue={uiRol}
             accessibilityLabel="UIRol"
             onValueChange={(itemValue) => handlerChangeUIRol(itemValue)}
@@ -261,7 +324,7 @@ function HomeScreen({ navigation }) {
           <Select
             mx="5"
             size="xl"
-            minWidth="200"
+            w="100%"
             selectedValue={uiRol}
             accessibilityLabel="UIRol"
             onValueChange={(itemValue) => handlerChangeUIRol(itemValue)}
@@ -284,7 +347,29 @@ function HomeScreen({ navigation }) {
   return (
     <NativeBaseProvider>
       {userData.rol != "Ciudadano" && typeOfSelector(userData.rol)}
-      {
+      {uiRol != "Ciudadano" ? (
+        <Center>
+          <FlatList
+            top={1}
+            padding={"2px"}
+            data={typeofNav(uiRol)}
+            horizontal={false}
+            renderItem={({ item }) => (
+              <Button
+                margin={1}
+                _text={{ fontSize: 12 }}
+                w="100%"
+                h="80px"
+                onPress={item.action}
+                colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
+              >
+                {item.nombre}
+              </Button>
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </Center>
+      ) : (
         <Center>
           <FlatList
             top={1}
@@ -305,7 +390,7 @@ function HomeScreen({ navigation }) {
             keyExtractor={(item) => item.id}
           />
         </Center>
-      }
+      )}
 
       {uiRol == "Ciudadano" && (
         <Center>
@@ -347,7 +432,7 @@ function HomeScreen({ navigation }) {
             <HStack space={2} justifyContent="center">
               <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
               <Heading color="emerald.500" fontSize="md">
-                Solicitando
+                Cargando
               </Heading>
             </HStack>
           )}

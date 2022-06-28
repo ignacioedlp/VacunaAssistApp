@@ -46,7 +46,7 @@ function HistorialVacunacion() {
 
   return (
     <NativeBaseProvider>
-      <Center>
+      <Center w="100%">
         <Center>
           <Heading size="lg" ml="-1" p="10px">
             Historial de vacunacion
@@ -54,6 +54,7 @@ function HistorialVacunacion() {
         </Center>
         {historial.length > 0 ? (
           <FlatList
+            w="100%"
             data={historial}
             renderItem={({ item }) => (
               <Historial

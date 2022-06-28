@@ -18,18 +18,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Slider from "@react-native-community/slider";
 import TurnoPendientesTarjeta from "../../../components/TurnoPendienteTarjeta";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import jwt_decode from "jwt-decode";
 
 function TurnosPendientes() {
-  const [turnosPendientes, setTurnosPendientes] = useState([
-    {
-      dni: "44444443",
-      vacunatorio: "Corralon",
-      campania: "1",
-      nombreYApellido: "Nova",
-      fecha: Date.now(),
-      nroTurno: 333,
-    },
-  ]);
+  const [turnosPendientes, setTurnosPendientes] = useState([]);
 
   const [dateSelected, setDateSelected] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -39,6 +31,17 @@ function TurnosPendientes() {
   const [campaniaSeleccionada, setCampaniaSeleccionada] = useState(null);
   const [turnosADar, setTurnosADar] = useState(0);
   const [turnoMaximos, setTurnoMaximos] = useState(0);
+
+  const getRouteCampania = (data) => {
+    switch (data) {
+      case "1":
+        return "https://vacunassistservices-production.up.railway.app/admin/asignar_fiebre";
+      case "2":
+        return "https://vacunassistservices-production.up.railway.app/admin/asignar_gripe";
+      case "3":
+        return "https://vacunassistservices-production.up.railway.app/admin/asignar_covid";
+    }
+  };
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -71,7 +74,9 @@ function TurnosPendientes() {
   const handleChangeCampania = (campania) => {
     //obtener la cantidad de turnos de la campania seleccionada
 
-    let filtrado = turnosPendientes.filter((item) => item.campania == campania);
+    let filtrado = turnosPendientes.filter(
+      (item) => item.id_campania.toString() == campania
+    );
 
     setTurnosFiltrados(filtrado);
 
@@ -80,35 +85,64 @@ function TurnosPendientes() {
     setCampaniaSeleccionada(campania);
   };
 
+  const enviarTurnos = async () => {
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    var decoded = jwt_decode(value);
+
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      num_turnos: turnosADar,
+      fecha: dateSelected,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const result = await fetch(
+      getRouteCampania(campaniaSeleccionada),
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    setTurnosPendientes(res);
+    setIsLoading(false);
+  };
+
   const ObtenerTurnosPendientes = async () => {
-    // var myHeaders = new Headers();
-    // const value = userData.token;
-    // const token = "Bearer " + value;
-    // var decoded = jwt_decode(value);
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    var decoded = jwt_decode(value);
 
-    // myHeaders.append("Authorization", token);
-    // myHeaders.append("Content-Type", "application/json");
-    // var raw = ""
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", "application/json");
+    var raw = "";
 
-    // var requestOptions = {
-    //   method: "GET",
-    //   headers: myHeaders,
-    //   body: raw,
-    //   redirect: "follow",
-    // };
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
 
-    // const result = await fetch(
-    //   "https://vacunassistservices-production.up.railway.app/vacunador/ver_listado",
-    //   requestOptions
-    // ).catch((error) => console.log("error", error));
-    // const res = await result.json();
-    // setTurnosCancelados(res);
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/admin/ver_pendientes",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    setTurnosPendientes(res);
     setIsLoading(false);
   };
 
   useEffect(() => {
     ObtenerTurnosPendientes();
-  });
+  }, []);
 
   return (
     <NativeBaseProvider>
@@ -119,7 +153,7 @@ function TurnosPendientes() {
         onCancel={hideDatePicker}
       />
       {isLoading != true ? (
-        <Center>
+        <Center w="100%">
           <Heading size="lg" ml="-1" py="10px">
             Turnos pendientes
           </Heading>
@@ -143,7 +177,7 @@ function TurnosPendientes() {
             <Stack w="100%">
               {campaniaSeleccionada != null ? (
                 turnosFiltrados.length > 0 ? (
-                  <Center>
+                  <Center w="100%">
                     <Heading mt="3">Turnos a dar : {turnosADar}</Heading>
                     <Slider
                       style={{ width: 200, height: 100 }}
@@ -180,6 +214,7 @@ function TurnosPendientes() {
                         </Button>
                         <Button
                           colorScheme="green"
+                          onPress={enviarTurnos}
                           isDisabled={dateSelected ? false : true}
                         >
                           Asignar turnos
@@ -193,7 +228,7 @@ function TurnosPendientes() {
                       renderItem={({ item }) => (
                         <TurnoPendientesTarjeta
                           nombreYApellido={item.nombreYApellido}
-                          nroTurno={item.nroTurno}
+                          nroTurno={item.id_turno}
                           fecha={item.fecha}
                           vacunatorio={item.vacunatorio}
                           dni={item.dni}
@@ -208,15 +243,15 @@ function TurnosPendientes() {
                   </Center>
                 )
               ) : (
-                <Center>
+                <Center w="100%">
                   <FlatList
-                    w="75%"
+                    w="100%"
                     maxW="300px"
                     data={turnosPendientes}
                     renderItem={({ item }) => (
                       <TurnoPendientesTarjeta
                         nombreYApellido={item.nombreYApellido}
-                        nroTurno={item.nroTurno}
+                        nroTurno={item.id_turno}
                         fecha={item.fecha}
                         vacunatorio={item.vacunatorio}
                         dni={item.dni}

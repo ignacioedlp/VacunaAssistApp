@@ -28,10 +28,31 @@ function VacunatorioPreferido() {
     setVacunatorioPreferido(vacunatorio);
   };
 
-  const modificarVacunatorio = () => {
+  const modificarVacunatorio = async () => {
     const idvacunatorio = decoded.vacunatorio.toString();
     if (idvacunatorio == vacunatorioPreferido) {
       Alert.alert("Vacunatorio", "Seleccione un vacunatorio diferente");
+      setIsLoading(false);
+      return;
+    }
+    const response = await fetch(
+      "https://vacunassistservices-production.up.railway.app/user/cambiar_vacunatorio",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id_vacunatorio: parseInt(vacunatorioPreferido),
+        }),
+      }
+    ).then((response) => response.json());
+    if (response.code == 200) {
+      /* con esta función guardamos y mantenemos el token
+    del usuario*/
+      Alert.alert("VacunAssist", "Datos actualizados");
+    } else {
+      Alert.alert("VacunAssist", response.message);
     }
     setIsLoading(false);
   };

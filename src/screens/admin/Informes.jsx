@@ -9,6 +9,7 @@ import {
   Stack,
   Spinner,
   Button,
+  HStack,
 } from "native-base";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -18,36 +19,50 @@ function Informes({ navigation }) {
     <NativeBaseProvider>
       <Center>
         <Center>
-          <Heading size="lg" ml="-1" p="10px">
+          <Heading size="xl" ml="-1" p="10px">
             Informes
           </Heading>
         </Center>
-        <Stack space="2">
-          <Button
-            colorScheme="green"
-            onPress={() => navigation.navigate("/admin/turnosCancelados")}
-          >
-            Turnos cancelados
-          </Button>
-          <Button
-            colorScheme="green"
-            onPress={() => navigation.navigate("/admin/turnosPendientes")}
-          >
-            Turnos pendientes
-          </Button>
-          <Button
-            colorScheme="green"
-            onPress={() => navigation.navigate("/admin/vacunasDadas")}
-          >
-            Vacunas dadas
-          </Button>
-          <Button
-            colorScheme="green"
-            onPress={() => navigation.navigate("/admin/historial")}
-          >
-            Historial de turnos
-          </Button>
-        </Stack>
+        <HStack space="2">
+          <Stack>
+            <Button
+              colorScheme="green"
+              w="150px"
+              h="100px"
+              onPress={() => navigation.navigate("/admin/turnosCancelados")}
+            >
+              Turnos cancelados
+            </Button>
+            <Button
+              mt="3"
+              w="150px"
+              h="100px"
+              colorScheme="green"
+              onPress={() => navigation.navigate("/admin/turnosPendientes")}
+            >
+              Turnos pendientes
+            </Button>
+          </Stack>
+          <Stack>
+            <Button
+              w="150px"
+              h="100px"
+              colorScheme="green"
+              onPress={() => navigation.navigate("/admin/vacunasDadas")}
+            >
+              Vacunas dadas
+            </Button>
+            <Button
+              mt="3"
+              w="150px"
+              h="100px"
+              colorScheme="green"
+              onPress={() => navigation.navigate("/admin/historial")}
+            >
+              Historial de turnos
+            </Button>
+          </Stack>
+        </HStack>
       </Center>
     </NativeBaseProvider>
   );

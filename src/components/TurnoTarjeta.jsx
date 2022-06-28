@@ -23,7 +23,7 @@ function TurnoTarjeta({
   fechaTurno.setMonth(fechaTurno.getMonth() + 1);
 
   return (
-    <Box p="20px" >
+    <Box p="20px">
       <Box
         maxW="100%"
         rounded="lg"
@@ -42,12 +42,7 @@ function TurnoTarjeta({
           backgroundColor: "gray.50",
         }}
       >
-        <Stack p="4" space={5} >
-          <Stack space={2}>
-            <Heading size="md" ml="-1">
-              {nombreYApellido}
-            </Heading>
-          </Stack>
+        <Stack p="4" space={5} w="100%">
           <VStack space={4} justifyContent="space-between">
             <Text>
               Fecha:{" "}

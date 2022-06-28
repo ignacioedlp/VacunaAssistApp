@@ -50,7 +50,7 @@ function Historial({ campania, marca, fecha, lote, estado }) {
     await shareAsync(file.uri);
   };
   return (
-    <Box p="20px">
+    <Box p="20px" w="100%">
       <Box
         maxW="100%"
         rounded="lg"
@@ -69,7 +69,7 @@ function Historial({ campania, marca, fecha, lote, estado }) {
           backgroundColor: "gray.50",
         }}
       >
-        <Stack p="4" space={5}>
+        <Stack p="4" space={5} w="100%">
           <Stack space={2}>
             <Heading size="md" ml="-1">
               {campania}

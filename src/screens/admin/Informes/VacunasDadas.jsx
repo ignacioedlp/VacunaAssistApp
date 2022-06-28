@@ -10,13 +10,15 @@ import {
   HStack,
   Box,
 } from "native-base";
-import Stock from "../../../components/StockTarjeta";
-import StockTotales from "../../../components/StockTotales";
+import CompletadosTarjeta from "../../../components/CompletadosTarjeta";
+import CompletadosTotales from "../../../components/CompletadosTotales";
 import { useDispatch, useSelector } from "react-redux";
 
-function VacunasDadas({ navigation }) {
+function VacunasDadas() {
   const [isLoading, setIsLoading] = useState(true);
   const [vacunasDadas, setVacunasDadas] = useState([]);
+  const [vacunasPorCampania, setVacunasPorCampania] = useState();
+
   const userData = useSelector((state) => state.user);
 
   const ObtenerStocks = async () => {
@@ -34,16 +36,31 @@ function VacunasDadas({ navigation }) {
     };
 
     const result = await fetch(
-      "https://vacunassistservices-production.up.railway.app/admin/ver_stock",
+      "https://vacunassistservices-production.up.railway.app/admin/mostrar_vacunas_dadas",
       requestOptions
     ).catch((error) => console.log("error", error));
     const res = await result.json();
     setVacunasDadas(res);
+    setVacunasPorCampania(CalcularTotalesCampania(res));
+    setIsLoading(false);
+  };
+
+  const CalcularTotalesCampania = (res) => {
+    let gripe = 0;
+    let covid = 0;
+    let fiebre = 0;
+    for (let index = 0; index < res.length; index++) {
+      fiebre += res[index].completados_fiebre.completados;
+      gripe += res[index].completados_gripe.completados;
+      covid += res[index].completados_covid.completados;
+    }
+
+    return { gripe, covid, fiebre };
   };
 
   useEffect(() => {
     ObtenerStocks();
-  });
+  }, []);
 
   return (
     <NativeBaseProvider>
@@ -52,13 +69,13 @@ function VacunasDadas({ navigation }) {
           Vacunas dadas
         </Heading>
       </Center>
-      {vacunasDadas.length > 0 ? (
+      {!isLoading ? (
         <Center>
           <Stack mt={3} space={4} w="100%" maxW="100%">
-            <Stock data={vacunasDadas[0]} navigation={navigation} />
-            <Stock data={vacunasDadas[1]} navigation={navigation} />
-            <Stock data={vacunasDadas[2]} navigation={navigation} />
-            <StockTotales data={vacunasDadas[2]} />
+            <CompletadosTarjeta data={vacunasDadas[0]} />
+            <CompletadosTarjeta data={vacunasDadas[1]} />
+            <CompletadosTarjeta data={vacunasDadas[2]} />
+            <CompletadosTotales vacunasPorCampania={vacunasPorCampania} />
             <Box mx="45px" p="2">
               <Box
                 maxW="100%"
@@ -90,7 +107,11 @@ function VacunasDadas({ navigation }) {
                   <Center>
                     <HStack alignItems="space-between" space={4}>
                       <HStack alignItems="center">
-                        <Text pt="10px">50000</Text>
+                        <Text pt="10px">
+                          {vacunasPorCampania.gripe +
+                            vacunasPorCampania.covid +
+                            vacunasPorCampania.fiebre}
+                        </Text>
                       </HStack>
                     </HStack>
                   </Center>

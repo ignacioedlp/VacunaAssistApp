@@ -15,7 +15,7 @@ function Pendiente({ campania, vacunatorio, fecha, estado }) {
   const fechaTurno = new Date(fecha);
   fechaTurno.setMonth(fechaTurno.getMonth() + 1);
   return (
-    <Box p="20px">
+    <Box p="20px" w="100%">
       <Box
         maxW="100%"
         rounded="lg"
@@ -34,7 +34,7 @@ function Pendiente({ campania, vacunatorio, fecha, estado }) {
           backgroundColor: "gray.50",
         }}
       >
-        <Stack p="4" space={5}>
+        <Stack p="4" space={5} w="100%">
           <Stack space={2}>
             <Heading size="md" ml="-1">
               {campania}
@@ -42,14 +42,17 @@ function Pendiente({ campania, vacunatorio, fecha, estado }) {
           </Stack>
           <VStack space={4} justifyContent="space-between">
             {estado == "Asignado" ? (
-              <Text> 
-                Fecha:{new Date(fecha).getUTCDate() +"/"+ fechaTurno.getMonth() +"/"+  new Date(fecha).getUTCFullYear() }
-              </Text>
-            ): (
               <Text>
-                Pendiente de asignacion
-              </Text> 
-            ) }   
+                Fecha:
+                {new Date(fecha).getUTCDate() +
+                  "/" +
+                  fechaTurno.getMonth() +
+                  "/" +
+                  new Date(fecha).getUTCFullYear()}
+              </Text>
+            ) : (
+              <Text>Pendiente de asignacion</Text>
+            )}
             <Text>Vacunatorio: {vacunatorio}</Text>
           </VStack>
         </Stack>
