@@ -1,4 +1,4 @@
- import React from "react";
+import React from "react";
 import {
   Input,
   Center,
@@ -6,7 +6,7 @@ import {
   Button,
   Text,
   HStack,
-  Box
+  Box,
 } from "native-base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -16,7 +16,7 @@ function LogoutScreen({ navigation }) {
       try {
         await AsyncStorage.removeItem("@JWTUSER");
 
-        navigation.navigate("Login");
+        navigation.navigate("/home");
       } catch (error) {
         console.log(error);
         // Error saving data
@@ -32,14 +32,22 @@ function LogoutScreen({ navigation }) {
         <HStack mt={3} space={4} w="100%" maxW="300px">
           <Box w="50%">
             <Center>
-              <Button w="150px"colorScheme="red" onPress={() => handlerCerrarSesion()}>
+              <Button
+                w="150px"
+                colorScheme="red"
+                onPress={() => handlerCerrarSesion()}
+              >
                 Si
               </Button>
             </Center>
           </Box>
           <Box w="50%">
             <Center>
-              <Button w="150px" colorScheme="green" onPress={() => navigation.navigate("Home")}>
+              <Button
+                w="150px"
+                colorScheme="green"
+                onPress={() => navigation.navigate("/home")}
+              >
                 No
               </Button>
             </Center>

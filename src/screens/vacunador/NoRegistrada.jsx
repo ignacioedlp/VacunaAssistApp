@@ -209,7 +209,7 @@ function NoRegistrada({ route, navigation }) {
 
                 <Button
                   colorScheme="green"
-                  onPress={() => navigation.navigate("Home")}
+                  onPress={() => navigation.navigate("/home")}
                 >
                   Volver
                 </Button>

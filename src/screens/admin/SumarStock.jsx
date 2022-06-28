@@ -13,18 +13,17 @@ import {
 } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 
-function CargarDatosScreen({ route, navigation }) {
-  const { dni, nombre, id_campania, idTurno } = route.params;
-  const [nro_lote, setNro_lote] = useState("");
-  const [marca, setMarca] = useState("");
+function SumarStockScreen({ route, navigation }) {
+  const { id_campania, id_vacunatorio } = route.params;
+  const [stock, setStock] = useState(0);
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const handlerNro_lote = (nro) => setNro_lote(nro);
-  const handlerMarca = (marca) => setMarca(marca);
+  const handlerStock = (nro) => setStock(nro);
+
   const userData = useSelector((state) => state.user);
 
   const cargarDatos = async () => {
-    if (marca != "" && nro_lote != "") {
+    if (stock > 0) {
       setIsLoading(true);
       var myHeaders = new Headers();
       const value = userData.token;
@@ -33,12 +32,9 @@ function CargarDatosScreen({ route, navigation }) {
       myHeaders.append("Content-Type", "application/json");
 
       var raw = JSON.stringify({
+        id_vacunatorio: id_vacunatorio,
+        stock: stock,
         id_campania: id_campania,
-        id_usuario: dni,
-        nro_lote: parseInt(nro_lote),
-        marca: marca,
-        desconocido: false,
-        id_turno: idTurno,
       });
 
       var requestOptions = {
@@ -49,48 +45,57 @@ function CargarDatosScreen({ route, navigation }) {
       };
 
       const result = await fetch(
-        "https://vacunassistservices-production.up.railway.app/vacunador/cargar_datos",
+        "https://vacunassistservices-production.up.railway.app/admin/sumar_stock",
         requestOptions
       ).catch((error) => console.log("error", error));
       const res = await result.json();
       setCargado(true);
       setIsLoading(false);
     } else {
-      alert("Faltan rellenar campos");
+      alert("No puede ingresar una cantidad inferior a 0");
     }
   };
 
+  const getVacunatorio = (data) => {
+    switch (data) {
+      case 1:
+        return "Hospital 9 de Julio";
+      case 2:
+        return "Corralon Municipal";
+      case 3:
+        return "Polideportivo";
+    }
+  };
+  const getCampania = (data) => {
+    switch (data) {
+      case 1:
+        return "Fiebre Amarilla";
+      case 2:
+        return "Gripe";
+      case 3:
+        return "Covid";
+    }
+  };
   return (
     <NativeBaseProvider>
       <Center>
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
             <Heading size="lg" ml="-1" p="10px">
-              Cargar datos del ciudadano {nombre}
+              Vacunatorio: {getVacunatorio(route.params.id_vacunatorio)}.
+              Campaña: {getCampania(route.params.id_campania)}
             </Heading>
           </Center>
+          <Input
+            onChangeText={handlerStock}
+            size="md"
+            value={stock}
+            placeholder="Ingrese el stock"
+          />
 
-          <Input
-            onChangeText={handlerNro_lote}
-            size="md"
-            value={nro_lote}
-            placeholder="Numero del lote"
-          />
-          <Input
-            onChangeText={handlerMarca}
-            size="md"
-            value={marca}
-            placeholder="Marca de la vacuna"
-          />
-          {!isLoading && (
-            <Button
-              colorScheme="green"
-              onPress={() => cargarDatos()}
-              isDisabled={cargado ? true : false}
-            >
-              Cargar datos
-            </Button>
-          )}
+          <Button colorScheme="green" onPress={() => cargarDatos()}>
+            Sumar Stock
+          </Button>
           {isLoading && (
             <HStack space={2} justifyContent="center" marginTop={5}>
               <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
@@ -108,7 +113,7 @@ function CargarDatosScreen({ route, navigation }) {
 
                 <Button
                   colorScheme="green"
-                  onPress={() => navigation.navigate("Home")}
+                  onPress={() => navigation.navigate("/home")}
                 >
                   Volver
                 </Button>
@@ -121,4 +126,4 @@ function CargarDatosScreen({ route, navigation }) {
   );
 }
 
-export default CargarDatosScreen;
+export default SumarStockScreen;

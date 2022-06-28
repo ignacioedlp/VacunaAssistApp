@@ -11,8 +11,8 @@ import {
   Select,
   CheckIcon,
   Checkbox,
-  HStack, 
-  Spinner
+  HStack,
+  Spinner,
 } from "native-base";
 import { Alert } from "react-native";
 
@@ -67,7 +67,7 @@ function RegisterScreen({ navigation }) {
         }
       ).then((response) => response.json());
       if (response.code == 200) {
-        navigation.navigate("Login");
+        navigation.navigate("/auth/signUp");
       } else {
         Alert.alert("VacunAssist", response.message);
       }

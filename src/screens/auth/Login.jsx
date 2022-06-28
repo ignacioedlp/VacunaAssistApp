@@ -14,8 +14,8 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import jwt_decode from "jwt-decode";
-import { initCampania } from "../context/slices/campaniasSlice";
-import { setUser } from "../context/slices/userSlice";
+import { initCampania } from "../../context/slices/campaniasSlice";
+import { setUser } from "../../context/slices/userSlice";
 
 function LoginScreen({ navigation }) {
   const [dni, setDni] = useState();
@@ -119,7 +119,7 @@ function LoginScreen({ navigation }) {
         storeData();
         const objCampania = await ObtenerPendientes();
         dispatch(initCampania(objCampania));
-        navigation.navigate("Home");
+        navigation.navigate("/home");
       } else {
         Alert.alert("VacunAssist", response.message);
       }
@@ -133,7 +133,7 @@ function LoginScreen({ navigation }) {
     <NativeBaseProvider>
       <Center py="15">
         <Image
-          source={require("../../assets/icon.png")}
+          source={require("../../../assets/icon.png")}
           width={100}
           height={100}
           alt="logo"
@@ -170,7 +170,7 @@ function LoginScreen({ navigation }) {
             </Button>
           )}
           <Button
-            onPress={() => navigation.navigate("Register")}
+            onPress={() => navigation.navigate("/auth/signUp")}
             colorScheme="green"
           >
             Registrarme

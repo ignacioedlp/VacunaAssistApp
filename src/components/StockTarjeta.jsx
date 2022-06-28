@@ -13,7 +13,7 @@ import { Pressable } from "react-native";
 
 function Stock({ data, navigation }) {
   const actualizarDatos = (campania, vacunatorio) => {
-      navigation.navigate("Sumar stock", {
+    navigation.navigate("/admin/sumarStock", {
       id_campania: campania,
       id_vacunatorio: vacunatorio,
     });
@@ -50,7 +50,9 @@ function Stock({ data, navigation }) {
           <Center>
             <HStack alignItems="space-between" space={4}>
               <Pressable
-                onPress={() => actualizarDatos(2, data.vacunatorio.id_vacunatorio)}
+                onPress={() =>
+                  actualizarDatos(2, data.vacunatorio.id_vacunatorio)
+                }
               >
                 <HStack alignItems="center">
                   <Stack>
@@ -64,7 +66,9 @@ function Stock({ data, navigation }) {
                 </HStack>
               </Pressable>
               <Pressable
-                onPress={() => actualizarDatos(1, data.vacunatorio.id_vacunatorio)}
+                onPress={() =>
+                  actualizarDatos(1, data.vacunatorio.id_vacunatorio)
+                }
               >
                 <HStack alignItems="center">
                   <Stack>
@@ -79,7 +83,9 @@ function Stock({ data, navigation }) {
                 </HStack>
               </Pressable>
               <Pressable
-                onPress={() => actualizarDatos(3, data.vacunatorio.id_vacunatorio)}
+                onPress={() =>
+                  actualizarDatos(3, data.vacunatorio.id_vacunatorio)
+                }
               >
                 <HStack alignItems="center">
                   <Stack>

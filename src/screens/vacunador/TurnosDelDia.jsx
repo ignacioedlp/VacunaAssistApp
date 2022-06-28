@@ -15,7 +15,7 @@ import {
   Pressable,
   Heading,
 } from "native-base";
-import TurnoDelDia from "../components/TurnoDeHoyTarjeta";
+import TurnoDelDia from "../../components/TurnoDeHoyTarjeta";
 import jwt_decode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -54,7 +54,7 @@ function TurnosDelDiaScreen({ navigation }) {
     ).catch((error) => console.log("error", error));
     const res = await result.json();
     if (res.code == 200) {
-      navigation.navigate("No registrada", {
+      navigation.navigate("/vacunador/noRegistrada", {
         id_campania: campania,
       });
     } else {
@@ -137,7 +137,7 @@ function TurnosDelDiaScreen({ navigation }) {
                   dni == null ? (
                     <Pressable
                       onPress={() =>
-                        navigation.navigate("Cargar datos", {
+                        navigation.navigate("/vacunador/cargarDatos", {
                           nombre: item.nombreYApellido,
                           id_campania: campania,
                           idTurno: item.nroTurno,
@@ -156,7 +156,7 @@ function TurnosDelDiaScreen({ navigation }) {
                     item.dni.toString().includes(dni.toString()) && (
                       <Pressable
                         onPress={() =>
-                          navigation.navigate("Cargar datos", {
+                          navigation.navigate("/vacunador/cargarDatos", {
                             nombre: item.nombreYApellido,
                             id_campania: campania,
                             idTurno: item.nroTurno,

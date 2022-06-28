@@ -21,7 +21,7 @@ import {
   desactivateCovid,
   desactivateGripe,
   desactivateFiebre,
-} from "../context/slices/campaniasSlice";
+} from "../../context/slices/campaniasSlice";
 
 function Perfil({ navigation }) {
   const stateFiebre = useSelector((state) => state.campanias.fiebre);
@@ -235,6 +235,31 @@ function Perfil({ navigation }) {
                 <Heading size="lg" ml="-1" p="10px">
                   {user.vacunatorio}
                 </Heading>
+              </HStack>
+
+              <HStack>
+                <Button
+                  margin={1}
+                  _text={{ fontSize: 12, textAlign: "center" }}
+                  w="90px"
+                  colorScheme={"green"}
+                  onPress={() => {
+                    navigation.navigate("/ciudadano/modificarDatos");
+                  }}
+                >
+                  Actualizar datos
+                </Button>
+                <Button
+                  margin={1}
+                  _text={{ fontSize: 12, textAlign: "center" }}
+                  w="90px"
+                  colorScheme={"green"}
+                  onPress={() => {
+                    navigation.navigate("/ciudadano/modificarVacunatorio");
+                  }}
+                >
+                  Modificar vacunatorio
+                </Button>
               </HStack>
 
               <HStack>

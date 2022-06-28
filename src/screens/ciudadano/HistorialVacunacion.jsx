@@ -9,7 +9,7 @@ import {
   HStack,
   Spinner,
 } from "native-base";
-import Historial from "../components/HistorialTarjeta";
+import Historial from "../../components/HistorialTarjeta";
 import { useDispatch, useSelector } from "react-redux";
 
 function HistorialVacunacion() {

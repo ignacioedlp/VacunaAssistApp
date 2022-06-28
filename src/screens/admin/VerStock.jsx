@@ -3,20 +3,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   NativeBaseProvider,
   Center,
-  FlatList,
-  HStack,
+  Spinner,
+  Stack,
   Heading,
   Text,
-  Spinner,
+  HStack,
 } from "native-base";
-import Pendiente from "../components/PendienteTarjeta";
+import Stock from "../../components/StockTarjeta";
 import { useDispatch, useSelector } from "react-redux";
 
-function TurnosPendientes() {
-  const [pendientes, setPendientes] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+function VerStockScreen({ navigation }) {
+  const [stocks, setStocks] = useState([]);
   const userData = useSelector((state) => state.user);
-  const ObtenerPendientes = async () => {
+
+  const ObtenerStocks = async () => {
     var myHeaders = new Headers();
     const value = userData.token;
     const token = "Bearer " + value;
@@ -31,44 +31,32 @@ function TurnosPendientes() {
     };
 
     const result = await fetch(
-      "https://vacunassistservices-production.up.railway.app/turnos/pendientes",
+      "https://vacunassistservices-production.up.railway.app/admin/ver_stock",
       requestOptions
     ).catch((error) => console.log("error", error));
     const res = await result.json();
-    setPendientes(res);
-    setIsLoading(false);
+    setStocks(res);
   };
 
   useEffect(() => {
-    ObtenerPendientes();
-  }, []);
+    ObtenerStocks();
+  });
 
   return (
     <NativeBaseProvider>
-      {isLoading != true ? (
+      <Center>
+        <Heading size="lg" ml="-1" p="10px">
+          Stocks cargados
+        </Heading>
+      </Center>
+      {stocks.length > 0 ? (
         <Center>
-          <Center>
-            <Heading size="lg" ml="-1" p="10px">
-              Turnos pendientes
-            </Heading>
-          </Center>
-          {pendientes.length > 0 ? (
-            <FlatList
-              data={pendientes}
-              renderItem={({ item }) => (
-                <Pendiente
-                  campania={item.campania}
-                  fecha={item.fecha}
-                  vacunatorio={item.vacunatorio}
-                  estado={item.estado}
-                />
-              )}
-            />
-          ) : (
-            <Center>
-              <Text>No posee turnos pendientes</Text>
-            </Center>
-          )}
+          <Stack mt={3} space={4} w="100%" maxW="100%">
+            <Center></Center>
+            <Stock data={stocks[0]} navigation={navigation} />
+            <Stock data={stocks[1]} navigation={navigation} />
+            <Stock data={stocks[2]} navigation={navigation} />
+          </Stack>
         </Center>
       ) : (
         <HStack space={2} justifyContent="center" marginTop={5}>
@@ -82,4 +70,4 @@ function TurnosPendientes() {
   );
 }
 
-export default TurnosPendientes;
+export default VerStockScreen;

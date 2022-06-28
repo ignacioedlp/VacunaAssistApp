@@ -67,7 +67,14 @@ function Campania({ campania, action, stateButton }) {
                 justifyContent="space-between"
               >
                 <HStack alignItems="center">
-                  <Text>Usted ya posee un turno</Text>
+                  <Button
+                    w="150px"
+                    colorScheme={"red"}
+                    size="md"
+                    onPress={action}
+                  >
+                    cancelar
+                  </Button>
                 </HStack>
               </HStack>
             </Center>

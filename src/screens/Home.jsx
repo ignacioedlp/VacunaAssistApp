@@ -8,10 +8,10 @@ import {
   Heading,
   FlatList,
   Spinner,
-  View,
+  Select,
+  CheckIcon,
 } from "native-base";
 import Campania from "../components/CampaniaTarjeta";
-import TarjetaAdmin from "../components/TarjetaAdmin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -26,7 +26,8 @@ function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const campaniasData = useSelector((state) => state.campanias);
   const userData = useSelector((state) => state.user);
-  const [rol, setRol] = useState("");
+  const [uiRol, setUiRol] = useState(userData.rol);
+  const handlerChangeUIRol = (uiRol) => setUiRol(uiRol);
 
   const handlerSolicitarFiebre = async () => {
     setIsLoading(true);
@@ -125,21 +126,30 @@ function HomeScreen({ navigation }) {
     setIsLoading(false);
   };
 
+  const handlerCancelarGripe = async () => {};
+
+  const handlerCancelarCovid = async () => {};
+
+  const handlerCancelarFiebre = async () => {};
+
   const campanias = [
     {
       id: 1,
       nombre: "Gripe",
-      action: handlerSolicitarGripe,
+      actionSolicitar: handlerSolicitarGripe,
+      actionCancelar: handlerCancelarGripe,
     },
     {
       id: 2,
       nombre: "Fiebre Amarilla",
-      action: handlerSolicitarFiebre,
+      actionSolicitar: handlerSolicitarFiebre,
+      actionCancelar: handlerCancelarFiebre,
     },
     {
       id: 3,
       nombre: "Covid-19",
-      action: handlerSolicitarCovid,
+      actionSolicitar: handlerSolicitarCovid,
+      actionCancelar: handlerCancelarCovid,
     },
   ];
 
@@ -147,88 +157,63 @@ function HomeScreen({ navigation }) {
     {
       id: 1,
       nombre: "Turnos pendientes",
-      action: () => navigation.navigate("Turnos pendientes"),
+      action: () => navigation.navigate("ciudadano/turnosPendientes"),
     },
     {
       nombre: "Mis vacunas",
       id: 2,
-      action: () => navigation.navigate("Historial"),
+      action: () => navigation.navigate("ciudadano/historial"),
     },
     {
       nombre: "Mi perfil",
       id: 3,
-      action: () => navigation.navigate("Mi perfil"),
+      action: () => navigation.navigate("/ciudadano/miPerfil"),
     },
     {
       id: 4,
       nombre: "Cerrar sesion",
-      action: () => navigation.navigate("Logout"),
+      action: () => navigation.navigate("/auth/logout"),
     },
   ];
 
   const nav_personal = [
     {
       id: 1,
-      nombre: "Turnos pendientes",
-      action: () => navigation.navigate("Turnos pendientes"),
-    },
-    {
-      nombre: "Mis vacunas",
-      id: 2,
-      action: () => navigation.navigate("Historial"),
-    },
-    {
-      id: 3,
       nombre: "Ver listado",
-      action: () => navigation.navigate("Listado de turnos"),
+      action: () => navigation.navigate("/vacunador/listadoTurnos"),
     },
     {
-      nombre: "Mi perfil",
-      id: 4,
-      action: () => navigation.navigate("Mi perfil"),
-    },
-    {
-      id: 5,
+      id: 2,
       nombre: "Cerrar sesion",
-      action: () => navigation.navigate("Logout"),
+      action: () => navigation.navigate("/auth/logout"),
     },
   ];
 
   const nav_admin = [
     {
       id: 1,
-      nombre: "Turnos pendientes",
-      action: () => navigation.navigate("Turnos pendientes"),
-    },
-    {
-      nombre: "Mis vacunas",
-      id: 2,
-      action: () => navigation.navigate("Historial"),
-    },
-    {
-      id: 3,
-      nombre: "Ver listado",
-      action: () => navigation.navigate("Listado de turnos"),
-    },
-    {
-      id: 4,
       nombre: "Ver stocks",
-      action: () => navigation.navigate("Ver stocks"),
-    },
-    {
-      nombre: "Mi perfil",
-      id: 5,
-      action: () => navigation.navigate("Mi perfil"),
+      action: () => navigation.navigate("/admin/verStock"),
     },
     {
       nombre: "Registrar personal",
-      id: 6,
-      action: () => navigation.navigate("Registrar personal"),
+      id: 2,
+      action: () => navigation.navigate("/admin/registrarPersonal"),
     },
     {
-      id: 7,
+      nombre: "Informes",
+      id: 3,
+      action: () => navigation.navigate("/admin/informes"),
+    },
+    {
+      nombre: "Ver personal",
+      id: 4,
+      action: () => navigation.navigate("/admin/verPersonal"),
+    },
+    {
+      id: 5,
       nombre: "Cerrar sesion",
-      action: () => navigation.navigate("Logout"),
+      action: () => navigation.navigate("/auth/logout"),
     },
   ];
 
@@ -246,13 +231,64 @@ function HomeScreen({ navigation }) {
     }
   };
 
+  const typeOfSelector = (rol) => {
+    var user = rol;
+    if (user.includes("Vacunador")) {
+      return (
+        <Center>
+          <Select
+            mx="5"
+            size="xl"
+            minWidth="200"
+            selectedValue={uiRol}
+            accessibilityLabel="UIRol"
+            onValueChange={(itemValue) => handlerChangeUIRol(itemValue)}
+            placeholder="Elegir rol"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size={5} />,
+            }}
+            mt="1"
+          >
+            <Select.Item label="Vacunador" value="Vacunador" />
+            <Select.Item label="Ciudadano" value="Ciudadano" />
+          </Select>
+        </Center>
+      );
+    } else {
+      return (
+        <Center>
+          <Select
+            mx="5"
+            size="xl"
+            minWidth="200"
+            selectedValue={uiRol}
+            accessibilityLabel="UIRol"
+            onValueChange={(itemValue) => handlerChangeUIRol(itemValue)}
+            placeholder="Elegir rol"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size={5} />,
+            }}
+            mt="1"
+          >
+            <Select.Item label="Vacunador" value="Vacunador" />
+            <Select.Item label="Administrador" value="Admin" />
+            <Select.Item label="Ciudadano" value="Ciudadano" />
+          </Select>
+        </Center>
+      );
+    }
+  };
+
   return (
     <NativeBaseProvider>
+      {userData.rol != "Ciudadano" && typeOfSelector(userData.rol)}
       <Center>
         <FlatList
           top={1}
           padding={"2px"}
-          data={typeofNav(userData.rol)}
+          data={typeofNav(uiRol)}
           horizontal={true}
           renderItem={({ item }) => (
             <Button
@@ -269,39 +305,52 @@ function HomeScreen({ navigation }) {
         />
       </Center>
 
-      <Center>
-        <Stack mt={3} space={4} w="100%" maxW="100%">
-          <Center>
-            <Heading pt="27px" size="md" ml="-1">
-              Campañas
-            </Heading>
-          </Center>
-          <Campania
-            campania={campanias[0].nombre}
-            action={campanias[0].action}
-            stateButton={campaniasData.gripe}
-          />
-          <Campania
-            campania={campanias[1].nombre}
-            action={campanias[1].action}
-            stateButton={campaniasData.fiebre}
-          />
-          <Campania
-            campania={campanias[2].nombre}
-            action={campanias[2].action}
-            stateButton={campaniasData.covid}
-          />
-          {userData.rol == "Admin" && <TarjetaAdmin />}
-        </Stack>
-        {isLoading && (
-          <HStack space={2} justifyContent="center">
-            <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
-            <Heading color="emerald.500" fontSize="md">
-              Solicitando
-            </Heading>
-          </HStack>
-        )}
-      </Center>
+      {uiRol == "Ciudadano" && (
+        <Center>
+          <Stack mt={3} space={4} w="100%" maxW="100%">
+            <Center>
+              <Heading pt="27px" size="md" ml="-1">
+                Campañas
+              </Heading>
+            </Center>
+            <Campania
+              campania={campanias[0].nombre}
+              action={
+                !campaniasData.gripe
+                  ? campanias[0].actionSolicitar
+                  : campanias[0].actionCancelar
+              }
+              stateButton={campaniasData.gripe}
+            />
+            <Campania
+              campania={campanias[1].nombre}
+              action={
+                !campaniasData.fiebre
+                  ? campanias[1].actionSolicitar
+                  : campanias[1].actionCancelar
+              }
+              stateButton={campaniasData.fiebre}
+            />
+            <Campania
+              campania={campanias[2].nombre}
+              action={
+                !campaniasData.covid
+                  ? campanias[2].actionSolicitar
+                  : campanias[2].actionCancelar
+              }
+              stateButton={campaniasData.covid}
+            />
+          </Stack>
+          {isLoading && (
+            <HStack space={2} justifyContent="center">
+              <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
+              <Heading color="emerald.500" fontSize="md">
+                Solicitando
+              </Heading>
+            </HStack>
+          )}
+        </Center>
+      )}
     </NativeBaseProvider>
   );
 }
