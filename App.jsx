@@ -24,7 +24,6 @@ import Informes from "./src/screens/admin/Informes";
 import TurnosCancelados from "./src/screens/admin/Informes/TurnosCancelados";
 import TurnosPendientes from "./src/screens/admin/Informes/TurnosPendientes";
 import VacunasDadas from "./src/screens/admin/Informes/VacunasDadas";
-import VacunasSobrantes from "./src/screens/admin/Informes/VacunasSobrantes";
 import HistorialTurnos from "./src/screens/admin/Informes/HistorialTurnos";
 import VerPersonal from "./src/screens/admin/VerPersonal";
 import ActualizarPersonal from "./src/screens/admin/ActualizarPersonal";
@@ -141,11 +140,6 @@ export default function App() {
             name="/admin/vacunasDadas"
             options={{ gestureEnabled: true }}
             component={VacunasDadas}
-          />
-          <Stack.Screen
-            name="/admin/vacunasSobrantes"
-            options={{ gestureEnabled: true }}
-            component={VacunasSobrantes}
           />
           <Stack.Screen
             name="/admin/historial"

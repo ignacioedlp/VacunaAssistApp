@@ -16,7 +16,7 @@ function LogoutScreen({ navigation }) {
       try {
         await AsyncStorage.removeItem("@JWTUSER");
 
-        navigation.navigate("/home");
+        navigation.navigate("/auth/login");
       } catch (error) {
         console.log(error);
         // Error saving data

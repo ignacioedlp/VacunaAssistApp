@@ -43,12 +43,6 @@ function Informes({ navigation }) {
           </Button>
           <Button
             colorScheme="green"
-            onPress={() => navigation.navigate("/admin/vacunasSobrantes")}
-          >
-            Vacunas sobrantes
-          </Button>
-          <Button
-            colorScheme="green"
             onPress={() => navigation.navigate("/admin/historial")}
           >
             Historial de turnos

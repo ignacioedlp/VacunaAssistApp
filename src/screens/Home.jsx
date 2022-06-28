@@ -284,26 +284,28 @@ function HomeScreen({ navigation }) {
   return (
     <NativeBaseProvider>
       {userData.rol != "Ciudadano" && typeOfSelector(userData.rol)}
-      <Center>
-        <FlatList
-          top={1}
-          padding={"2px"}
-          data={typeofNav(uiRol)}
-          horizontal={true}
-          renderItem={({ item }) => (
-            <Button
-              margin={1}
-              _text={{ fontSize: 12 }}
-              w="90px"
-              onPress={item.action}
-              colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
-            >
-              {item.nombre}
-            </Button>
-          )}
-          keyExtractor={(item) => item.id}
-        />
-      </Center>
+      {
+        <Center>
+          <FlatList
+            top={1}
+            padding={"2px"}
+            data={typeofNav(uiRol)}
+            horizontal={true}
+            renderItem={({ item }) => (
+              <Button
+                margin={1}
+                _text={{ fontSize: 12 }}
+                w="90px"
+                onPress={item.action}
+                colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
+              >
+                {item.nombre}
+              </Button>
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </Center>
+      }
 
       {uiRol == "Ciudadano" && (
         <Center>

@@ -16,16 +16,19 @@ import {
   Checkbox,
 } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
+import { Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Perfil({ navigation }) {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState("");
+  const [emailNuevo, setEmailNuevo] = useState("");
   const [password, setPassword] = useState("");
   const [riesgo, setRiesgo] = useState(false);
 
-  const handleChangeEmail = (email) => setEmail(email);
+  const handleChangeEmailNuevo = (email) => setEmailNuevo(email);
 
   const handleChangeRiesgo = (riesgo) => setRiesgo(riesgo);
 
@@ -51,39 +54,90 @@ function Perfil({ navigation }) {
     ).catch((error) => console.log("error", error));
     const res = await result.json();
 
-    setEmail(res.email), setPassword(""), setRiesgo(true), setIsLoading(false);
+    setEmail(res.email);
+    setEmailNuevo(res.email);
+    setPassword("");
+    setRiesgo(res.riesgo);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     VerPerfil();
   }, []);
 
+  const handlerCerrarSesion = () => {
+    _storeData = async () => {
+      try {
+        await AsyncStorage.removeItem("@JWTUSER");
+
+        navigation.navigate("/auth/login");
+      } catch (error) {
+        console.log(error);
+        // Error saving data
+      }
+    };
+    _storeData();
+  };
+
   const handlerActualizar = async () => {
     setIsLoading(true);
-    if (email != "" && password != "") {
-      // const response = await fetch(
-      //   "https://vacunassistservices-production.up.railway.app/auth/log_in",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       email: email,
-      //       riesgo: riesgo,
-      //       password: password,
-      //     }),
-      //   }
-      // ).then((response) => response.json());
-      // if (response.code == 200) {
-      //   /* con esta función guardamos y mantenemos el token
-      // del usuario*/
-      //   Alert.alert("VacunAssist", "Datos actualizados");
-      // } else {
-      //   Alert.alert("VacunAssist", response.message);
-      // }
+    let cerrar = false;
+    let raw = {
+      email: "",
+      password: "",
+      riesgo: riesgo,
+    };
+    if (emailNuevo == email) {
+      raw.email = emailNuevo;
     } else {
-      Alert.alert("VacunAssist", "Complete los campos");
+      if (emailNuevo != "") {
+        raw.email = emailNuevo;
+        cerrar = true;
+      } else {
+        raw.email = email;
+      }
+    }
+    if (password == "") {
+      raw.password = password;
+    } else {
+      if (password.length != 6) {
+        Alert.alert(
+          "VacunAssist",
+          "Si modifica la contraseña debe ser de 6 digitos"
+        );
+        setIsLoading(false);
+        return;
+      } else {
+        raw.password = password;
+      }
+    }
+
+    // const response = await fetch(
+    //   "https://vacunassistservices-production.up.railway.app/auth/log_in",
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       email: email,
+    //       riesgo: riesgo,
+    //       password: password,
+    //     }),
+    //   }
+    // ).then((response) => response.json());
+    // if (response.code == 200) {
+    //   /* con esta función guardamos y mantenemos el token
+    // del usuario*/
+    //   Alert.alert("VacunAssist", "Datos actualizados");
+    //
+    // } else {
+    //   Alert.alert("VacunAssist", response.message);
+    // }
+
+    if (cerrar) {
+      setIsLoading(false);
+      handlerCerrarSesion();
     }
     setIsLoading(false);
   };
@@ -108,9 +162,9 @@ function Perfil({ navigation }) {
                 <Text>Email</Text>
                 <Input
                   mb="5"
-                  onChangeText={handleChangeEmail}
+                  onChangeText={handleChangeEmailNuevo}
                   size="md"
-                  value={email}
+                  value={emailNuevo}
                   placeholder="Email"
                 />
                 <Text>Contraseña</Text>

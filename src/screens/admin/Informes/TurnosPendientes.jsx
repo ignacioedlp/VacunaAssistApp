@@ -50,13 +50,17 @@ function TurnosPendientes() {
 
   const handleConfirm = async (date) => {
     //Si la fecha seleccionada que hoy no inicializa la fecha y lanza un mensaje
-    const fecha = new Date(); //fecha de hoy
+    const fecha = new Date(); //fecha desde hoy sumados 7 dias
     // acomodar la fecha que seleccionada
+    fecha.setDate(fecha.getDate() + 7);
     if (
       date.getTime() < fecha.getTime() ||
       (fecha.getDay() == date.getDay() && fecha.getMonth() == date.getMonth())
     ) {
-      Alert.alert("Error", "Seleccione una fecha posterior a hoy");
+      Alert.alert(
+        "Error",
+        "Seleccione una fecha posterior a 7 dias apartir de hoy"
+      );
       hideDatePicker();
     } else {
       setDateSelected(date);
