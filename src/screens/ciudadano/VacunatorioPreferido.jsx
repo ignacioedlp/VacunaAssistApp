@@ -69,7 +69,9 @@ function VacunatorioPreferido() {
   return (
     <NativeBaseProvider>
       <Center>
-        <Heading my="2">Vacunatorio preferido</Heading>
+        <Heading my="3" fontSize="2xl" color="emerald.700">
+          Vacunatorio preferido
+        </Heading>
         <Select
           my="2"
           size="md"

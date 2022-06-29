@@ -81,7 +81,7 @@ function SumarStockScreen({ route, navigation }) {
       <Center>
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
-            <Heading size="lg" ml="-1" p="10px">
+            <Heading my="3" fontSize="2xl" color="emerald.700">
               Vacunatorio: {getVacunatorio(route.params.id_vacunatorio)}.
               Campaña: {getCampania(route.params.id_campania)}
             </Heading>
@@ -113,7 +113,7 @@ function SumarStockScreen({ route, navigation }) {
 
                 <Button
                   colorScheme="green"
-                  onPress={() => navigation.navigate("/home")}
+                  onPress={() => navigation.navigate("/admin/verStock")}
                 >
                   Volver
                 </Button>

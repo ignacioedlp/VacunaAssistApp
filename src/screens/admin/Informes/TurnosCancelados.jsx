@@ -44,19 +44,21 @@ function TurnosCancelados() {
 
   useEffect(() => {
     ObtenerTurnosCancelados();
-  });
+  }, []);
 
   return (
     <NativeBaseProvider>
       {isLoading != true ? (
-        <Center>
-          <Heading size="lg" ml="-1" p="10px">
+        <Center w="100%">
+          <Heading my="3" fontSize="2xl" color="emerald.700">
             Turnos cancelados
+          </Heading>
+          <Heading my="3" fontSize="2xl" color="emerald.700">
+            {turnosCancelados.length}
           </Heading>
           {turnosCancelados.length > 0 ? (
             <FlatList
-              w="75%"
-              maxW="300px"
+              w="100%"
               data={turnosCancelados}
               renderItem={({ item }) => (
                 <TurnoCanceladoTarjeta

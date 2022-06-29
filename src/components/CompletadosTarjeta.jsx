@@ -12,13 +12,13 @@ import {
 
 function CompletadosTarjeta({ data }) {
   return (
-    <Box mx="45px" p="2">
+    <Box mx="20px" p="1">
       <Box
         maxW="100%"
         rounded="lg"
         overflow="hidden"
-        borderColor="coolGray.200"
-        borderWidth="1"
+        borderColor="emerald.500"
+        borderWidth="3"
         _dark={{
           borderColor: "coolGray.600",
           backgroundColor: "gray.700",
@@ -34,7 +34,7 @@ function CompletadosTarjeta({ data }) {
         <Stack p="4" space={2}>
           <Stack space={2}>
             <Center>
-              <Heading size="md" ml="-1">
+              <Heading size="lg" ml="-1">
                 {data.vacunatorio.nombre}
               </Heading>
             </Center>
@@ -45,10 +45,12 @@ function CompletadosTarjeta({ data }) {
               <HStack alignItems="center">
                 <Stack>
                   <Center>
-                    <Heading pt="15px" size="md" ml="-1">
+                    <Heading size="lg" pt="5px" ml="-1">
                       {"Gripe"}
                     </Heading>
-                    <Text pt="10px">{data.completados_gripe.completados}</Text>
+                    <Text pt="5px" fontSize="2xl">
+                      {data.completados_gripe.completados}
+                    </Text>
                   </Center>
                 </Stack>
               </HStack>
@@ -56,11 +58,13 @@ function CompletadosTarjeta({ data }) {
               <HStack alignItems="center">
                 <Stack>
                   <Center>
-                    <Heading pt="15px" size="md" ml="-1">
+                    <Heading size="lg" pt="5px" ml="-1">
                       {"Fiebre"}
                     </Heading>
 
-                    <Text pt="10px">{data.completados_fiebre.completados}</Text>
+                    <Text pt="5px" fontSize="2xl">
+                      {data.completados_fiebre.completados}
+                    </Text>
                   </Center>
                 </Stack>
               </HStack>
@@ -68,10 +72,12 @@ function CompletadosTarjeta({ data }) {
               <HStack alignItems="center">
                 <Stack>
                   <Center>
-                    <Heading pt="15px" size="md" ml="-1">
+                    <Heading size="lg" pt="5px" ml="-1">
                       {"Covid"}
                     </Heading>
-                    <Text pt="10px">{data.completados_covid.completados}</Text>
+                    <Text pt="5px" fontSize="2xl">
+                      {data.completados_covid.completados}
+                    </Text>
                   </Center>
                 </Stack>
               </HStack>

@@ -19,7 +19,7 @@ function Informes({ navigation }) {
     <NativeBaseProvider>
       <Center>
         <Center>
-          <Heading size="xl" ml="-1" p="10px">
+          <Heading my="3" fontSize="2xl" color="emerald.700">
             Informes
           </Heading>
         </Center>

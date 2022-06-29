@@ -79,9 +79,13 @@ function RegisterScreen({ navigation }) {
 
   return (
     <NativeBaseProvider>
-      <Center>
-        <Stack mt={3} space={4} w="75%" maxW="300px">
-          <Heading fontSize="md">Bienvenido a VacunAssist</Heading>
+      <Center bg="white" h="100%">
+        <Stack mt={3} space={4} w="100%" maxW="300px">
+          <Center>
+            <Heading my="3" fontSize="2xl" color="emerald.700">
+              Bienvenido a VacunAssist
+            </Heading>
+          </Center>
           <Input
             onChangeText={handlerChangeDni}
             size="md"
@@ -153,6 +157,7 @@ function RegisterScreen({ navigation }) {
             accessibilityLabel="Riesgo"
             onChange={handlerChangeRiesgo}
             _text={{ fontSize: 12 }}
+            colorScheme="emerald"
           >
             ¿Tiene alguno de estos riesgos:(Paciente oncológico, Persona
             trasplantada, Diabetes, Enfermedad Renal Crónica, Enfermedades
@@ -163,7 +168,7 @@ function RegisterScreen({ navigation }) {
           </Button>
         </Stack>
         {isLoading && (
-          <HStack space={2} justifyContent="center" marginTop={5}>
+          <HStack bg="white" space={2} justifyContent="center" marginTop={5}>
             <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
             <Heading color="emerald.500" fontSize="md">
               Cargando datos

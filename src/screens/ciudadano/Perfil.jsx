@@ -178,7 +178,7 @@ function Perfil({ navigation }) {
         onCancel={hideDatePicker}
       />
       <Center>
-        <Stack mt={3} space={4} w="75%" maxW="300px">
+        <Stack mt={3} space={4} w="90%" maxW="300px">
           {isLoading ? (
             <HStack space={2} justifyContent="center" marginTop={5}>
               <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
@@ -188,7 +188,7 @@ function Perfil({ navigation }) {
             </HStack>
           ) : (
             <Center>
-              <Heading size="lg" ml="-1" p="10px">
+              <Heading my="3" fontSize="2xl" color="emerald.700">
                 Mi perfil
               </Heading>
               <Avatar
@@ -241,8 +241,8 @@ function Perfil({ navigation }) {
               <HStack>
                 <Button
                   margin={1}
-                  _text={{ fontSize: 12, textAlign: "center" }}
-                  w="90px"
+                  _text={{ fontSize: 20, textAlign: "center" }}
+                  w="120px"
                   colorScheme={"green"}
                   onPress={() => {
                     navigation.navigate("/ciudadano/modificarDatos");
@@ -252,8 +252,8 @@ function Perfil({ navigation }) {
                 </Button>
                 <Button
                   margin={1}
-                  _text={{ fontSize: 12, textAlign: "center" }}
-                  w="90px"
+                  _text={{ fontSize: 20, textAlign: "center" }}
+                  w="120px"
                   colorScheme={"green"}
                   onPress={() => {
                     navigation.navigate("/ciudadano/modificarVacunatorio");
@@ -266,8 +266,8 @@ function Perfil({ navigation }) {
               <HStack>
                 <Button
                   margin={1}
-                  _text={{ fontSize: 12, textAlign: "center" }}
-                  w="90px"
+                  _text={{ fontSize: 20, textAlign: "center" }}
+                  w="120px"
                   colorScheme={"green"}
                   onPress={() => {
                     setIdCampania(3);
@@ -281,8 +281,8 @@ function Perfil({ navigation }) {
                 {!stateFiebre && (
                   <Button
                     margin={1}
-                    _text={{ fontSize: 12, textAlign: "center" }}
-                    w="90px"
+                    _text={{ fontSize: 20, textAlign: "center" }}
+                    w="120px"
                     onPress={() => {
                       setIdCampania(1);
                       setCampania("fiebre");
@@ -296,8 +296,8 @@ function Perfil({ navigation }) {
 
                 <Button
                   margin={1}
-                  _text={{ fontSize: 12, textAlign: "center" }}
-                  w="90px"
+                  _text={{ fontSize: 20, textAlign: "center" }}
+                  w="120px"
                   onPress={() => {
                     setIdCampania(2);
                     setCampania("gripe");

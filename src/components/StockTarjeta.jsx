@@ -24,8 +24,8 @@ function Stock({ data, navigation }) {
         maxW="100%"
         rounded="lg"
         overflow="hidden"
-        borderColor="coolGray.200"
-        borderWidth="1"
+        borderColor="emerald.500"
+        borderWidth="3"
         _dark={{
           borderColor: "coolGray.600",
           backgroundColor: "gray.700",
@@ -41,7 +41,7 @@ function Stock({ data, navigation }) {
         <Stack p="4" space={2}>
           <Stack space={2}>
             <Center>
-              <Heading size="md" ml="-1">
+              <Heading ml="-1" size="lg">
                 {data.vacunatorio.nombre}
               </Heading>
             </Center>
@@ -57,10 +57,18 @@ function Stock({ data, navigation }) {
                 <HStack alignItems="center">
                   <Stack>
                     <Center>
-                      <Heading pt="15px" size="md" ml="-1">
+                      <Heading pt="15px" size="lg" ml="-1">
                         {"Gripe"}
                       </Heading>
-                      <Text pt="10px">{data.stock_gripe.stock}</Text>
+                      <Text
+                        pt="10px"
+                        fontSize="2xl"
+                        color={
+                          data.stock_gripe.stock == 0 ? "red.700" : "green.700"
+                        }
+                      >
+                        {data.stock_gripe.stock}
+                      </Text>
                     </Center>
                   </Stack>
                 </HStack>
@@ -73,11 +81,19 @@ function Stock({ data, navigation }) {
                 <HStack alignItems="center">
                   <Stack>
                     <Center>
-                      <Heading pt="15px" size="md" ml="-1">
+                      <Heading pt="15px" size="lg" ml="-1">
                         {"Fiebre"}
                       </Heading>
 
-                      <Text pt="10px">{data.stock_fiebre.stock}</Text>
+                      <Text
+                        pt="10px"
+                        fontSize="2xl"
+                        color={
+                          data.stock_fiebre.stock == 0 ? "red.700" : "green.700"
+                        }
+                      >
+                        {data.stock_fiebre.stock}
+                      </Text>
                     </Center>
                   </Stack>
                 </HStack>
@@ -90,10 +106,18 @@ function Stock({ data, navigation }) {
                 <HStack alignItems="center">
                   <Stack>
                     <Center>
-                      <Heading pt="15px" size="md" ml="-1">
+                      <Heading pt="15px" size="lg" ml="-1">
                         {"Covid"}
                       </Heading>
-                      <Text pt="10px">{data.stock_covid.stock}</Text>
+                      <Text
+                        pt="10px"
+                        fontSize="2xl"
+                        color={
+                          data.stock_covid.stock == 0 ? "red.700" : "green.700"
+                        }
+                      >
+                        {data.stock_covid.stock}
+                      </Text>
                     </Center>
                   </Stack>
                 </HStack>

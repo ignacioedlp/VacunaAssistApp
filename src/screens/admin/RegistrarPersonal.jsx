@@ -81,7 +81,7 @@ function RegistrarPersonal({ navigation }) {
       <Center>
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
-            <Heading size="lg" ml="-1" p="10px">
+            <Heading my="3" fontSize="2xl" color="emerald.700">
               Registrar personal
             </Heading>
           </Center>

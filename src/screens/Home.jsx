@@ -420,22 +420,14 @@ function HomeScreen({ navigation }) {
             )}
             keyExtractor={(item) => item.id}
           />
-
-          <Image
-            margin={4}
-            source={require("../../assets/icon.png")}
-            width={100}
-            height={100}
-            alt="logo"
-          />
         </Center>
       )}
 
       {uiRol == "Ciudadano" && (
         <Center bg="white">
-          <Stack mt={3} space={4} w="100%" maxW="100%">
-            <Center>
-              <Heading pt="27px" size="md" ml="-1">
+          <Stack mt={3} space={2} w="100%" maxW="100%">
+            <Center my={3}>
+              <Heading fontSize="2xl" color="emerald.700">
                 Campañas
               </Heading>
             </Center>
@@ -481,7 +473,7 @@ function HomeScreen({ navigation }) {
       )}
 
       <Center flex={1} bg="white">
-        <Heading fontSize="lg">Hecho por JATECH©</Heading>
+        <Heading fontSize="lg">🚀 Hecho por JATECH©</Heading>
         <Image
           margin={4}
           source={require("../../assets/jatech.png")}

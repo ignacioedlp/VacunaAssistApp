@@ -174,8 +174,13 @@ function TurnosPendientes() {
       />
       {isLoading != true ? (
         <Center w="100%">
-          <Heading size="lg" ml="-1" py="10px">
+          <Heading my="3" fontSize="2xl" color="emerald.700">
             Turnos pendientes
+          </Heading>
+          <Heading my="3" fontSize="2xl" color="emerald.700">
+            {turnosFiltrados != 0
+              ? turnosFiltrados.length
+              : turnosPendientes.length}
           </Heading>
           <Select
             minWidth="80%"
@@ -243,7 +248,6 @@ function TurnosPendientes() {
                     )}
                     <FlatList
                       w="100%"
-                      maxW="300px"
                       data={turnosFiltrados}
                       renderItem={({ item }) => (
                         <TurnoPendientesTarjeta
@@ -266,7 +270,6 @@ function TurnosPendientes() {
                 <Center w="100%">
                   <FlatList
                     w="100%"
-                    maxW="300px"
                     data={turnosPendientes}
                     renderItem={({ item }) => (
                       <TurnoPendientesTarjeta

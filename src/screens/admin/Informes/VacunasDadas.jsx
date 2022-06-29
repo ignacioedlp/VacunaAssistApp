@@ -65,24 +65,24 @@ function VacunasDadas() {
   return (
     <NativeBaseProvider>
       <Center>
-        <Heading size="lg" ml="-1" p="10px">
+        <Heading my="3" fontSize="2xl" color="emerald.700">
           Vacunas dadas
         </Heading>
       </Center>
       {!isLoading ? (
         <Center>
-          <Stack mt={3} space={4} w="100%" maxW="100%">
+          <Stack mt={3} space={2} w="100%" maxW="100%">
             <CompletadosTarjeta data={vacunasDadas[0]} />
             <CompletadosTarjeta data={vacunasDadas[1]} />
             <CompletadosTarjeta data={vacunasDadas[2]} />
             <CompletadosTotales vacunasPorCampania={vacunasPorCampania} />
-            <Box mx="45px" p="2">
+            <Box mx="20px" p="1">
               <Box
                 maxW="100%"
                 rounded="lg"
                 overflow="hidden"
-                borderColor="coolGray.200"
-                borderWidth="1"
+                borderColor="emerald.500"
+                borderWidth="3"
                 _dark={{
                   borderColor: "coolGray.600",
                   backgroundColor: "gray.700",
@@ -98,7 +98,7 @@ function VacunasDadas() {
                 <Stack p="4" space={2}>
                   <Stack space={2}>
                     <Center>
-                      <Heading size="md" ml="-1">
+                      <Heading pt="5px" size="lg" ml="-1">
                         Totales
                       </Heading>
                     </Center>
@@ -107,7 +107,7 @@ function VacunasDadas() {
                   <Center>
                     <HStack alignItems="space-between" space={4}>
                       <HStack alignItems="center">
-                        <Text pt="10px">
+                        <Text pt="5px" fontSize="2xl">
                           {vacunasPorCampania.gripe +
                             vacunasPorCampania.covid +
                             vacunasPorCampania.fiebre}

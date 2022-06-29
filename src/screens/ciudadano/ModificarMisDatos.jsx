@@ -157,7 +157,7 @@ function Perfil({ navigation }) {
             </HStack>
           ) : (
             <Center>
-              <Heading size="lg" ml="-1" p="10px">
+              <Heading my="3" fontSize="2xl" color="emerald.700">
                 Modificar datos
               </Heading>
               <VStack>
@@ -181,6 +181,7 @@ function Perfil({ navigation }) {
                 <Text>Riesgo</Text>
                 <Checkbox
                   mb="5"
+                  colorScheme="emerald"
                   defaultIsChecked={riesgo}
                   accessibilityLabel="Riesgo"
                   onChange={handleChangeRiesgo}

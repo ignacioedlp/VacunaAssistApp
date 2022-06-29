@@ -45,13 +45,13 @@ function VerPersonal({ navigation }) {
 
   useEffect(() => {
     ObtenerPersonal();
-  }, []);
+  });
 
   return (
     <NativeBaseProvider>
       {isLoading != true ? (
         <Center w="100%">
-          <Heading size="lg" ml="-1" p="10px">
+          <Heading my="3" fontSize="2xl" color="emerald.700">
             Lista de personal
           </Heading>
           <Input

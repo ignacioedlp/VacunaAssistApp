@@ -44,19 +44,21 @@ function HistorialTurnos() {
 
   useEffect(() => {
     ObtenerTurnos();
-  });
+  }, []);
 
   return (
     <NativeBaseProvider>
       {isLoading != true ? (
         <Center>
-          <Heading size="lg" ml="-1" p="10px">
-            Historial turnos
+          <Heading my="3" fontSize="2xl" color="emerald.700">
+            Turnos
+          </Heading>
+          <Heading my="3" fontSize="2xl" color="emerald.700">
+            {turnos.length}
           </Heading>
           {turnos.length > 0 ? (
             <FlatList
-              w="75%"
-              maxW="300px"
+              w="100%"
               data={turnos}
               renderItem={({ item }) => (
                 <TurnoTarjeta

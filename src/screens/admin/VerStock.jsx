@@ -45,27 +45,29 @@ function VerStockScreen({ navigation }) {
   return (
     <NativeBaseProvider>
       <Center>
-        <Heading size="lg" ml="-1" p="10px">
-          Stocks cargados
-        </Heading>
-      </Center>
-      {stocks.length > 0 ? (
         <Center>
-          <Stack mt={3} space={4} w="100%" maxW="100%">
-            <Center></Center>
-            <Stock data={stocks[0]} navigation={navigation} />
-            <Stock data={stocks[1]} navigation={navigation} />
-            <Stock data={stocks[2]} navigation={navigation} />
-          </Stack>
-        </Center>
-      ) : (
-        <HStack space={2} justifyContent="center" marginTop={5}>
-          <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
-          <Heading color="emerald.500" fontSize="md">
-            Cargando datos
+          <Heading mt="3" fontSize="2xl" color="emerald.700">
+            Stocks cargados
           </Heading>
-        </HStack>
-      )}
+        </Center>
+        {stocks.length > 0 ? (
+          <Center w="100%">
+            <Stack mt={3} space={4} w="100%" maxW="100%">
+              <Center></Center>
+              <Stock data={stocks[0]} navigation={navigation} />
+              <Stock data={stocks[1]} navigation={navigation} />
+              <Stock data={stocks[2]} navigation={navigation} />
+            </Stack>
+          </Center>
+        ) : (
+          <HStack space={2} justifyContent="center" marginTop={5}>
+            <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
+            <Heading color="emerald.500" fontSize="md">
+              Cargando datos
+            </Heading>
+          </HStack>
+        )}
+      </Center>
     </NativeBaseProvider>
   );
 }

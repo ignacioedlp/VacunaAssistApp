@@ -69,7 +69,6 @@ function TurnosDelDiaScreen({ navigation }) {
     const token = "Bearer " + value;
     var decoded = jwt_decode(value);
 
-
     myHeaders.append("Authorization", token);
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
@@ -97,7 +96,7 @@ function TurnosDelDiaScreen({ navigation }) {
     <NativeBaseProvider>
       <Center pt="150px">
         <Center>
-          <Heading size="lg" ml="-1" p="10px">
+          <Heading my="3" fontSize="2xl" color="emerald.700">
             Turnos del dia
           </Heading>
         </Center>

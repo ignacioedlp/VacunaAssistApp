@@ -48,8 +48,11 @@ function TurnosPendientes() {
       {isLoading != true ? (
         <Center w="100%">
           <Center>
-            <Heading size="lg" ml="-1" p="10px">
+            <Heading my="3" fontSize="2xl" color="emerald.700">
               Turnos pendientes
+            </Heading>
+            <Heading my="3" fontSize="2xl" color="emerald.700">
+              {pendientes.length}
             </Heading>
           </Center>
           {pendientes.length > 0 ? (

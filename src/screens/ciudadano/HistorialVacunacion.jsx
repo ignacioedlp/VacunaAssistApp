@@ -8,6 +8,7 @@ import {
   Text,
   HStack,
   Spinner,
+  Stack,
 } from "native-base";
 import Historial from "../../components/HistorialTarjeta";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,7 +38,6 @@ function HistorialVacunacion() {
     const res = await result.json();
     setHistorial(res);
     setIsLoading(false);
-    
   };
 
   useEffect(() => {
@@ -46,32 +46,75 @@ function HistorialVacunacion() {
 
   return (
     <NativeBaseProvider>
-      <Center w="100%">
-        <Center>
-          <Heading size="lg" ml="-1" p="10px">
-            Historial de vacunacion
+      {isLoading ? (
+        <HStack space={2} justifyContent="center" marginTop={5}>
+          <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
+          <Heading color="emerald.500" fontSize="md">
+            Cargando datos
           </Heading>
-        </Center>
-        {historial.length > 0 ? (
-          <FlatList
-            w="100%"
-            data={historial}
-            renderItem={({ item }) => (
-              <Historial
-                campania={item.campania}
-                fecha={item.fecha}
-                marca={item.marca}
-                lote={item.lote}
-                estado={item.estado}
-              />
-            )}
-          />
-        ) : (
+        </HStack>
+      ) : (
+        <Center w="100%">
           <Center>
-            <Text>No posee vacunas aplicadas</Text>
+            <Heading my="3" fontSize="2xl" color="emerald.700">
+              Historial de vacunacion
+            </Heading>
+            <HStack justifyContent="center" alignItems="center">
+              <Stack
+                mx="1"
+                p="2"
+                alignItems="center"
+                borderColor="emerald.700"
+                borderWidth={2}
+                borderRadius={3}
+              >
+                <Heading fontSize="lg" color="emerald.700">
+                  Aplicadas:{" "}
+                  {
+                    historial.filter((item) => item.estado != "Cancelado")
+                      .length
+                  }
+                </Heading>
+              </Stack>
+              <Stack
+                mx="1"
+                p="1"
+                alignItems="center"
+                borderColor="red.700"
+                borderWidth={2}
+                borderRadius={3}
+              >
+                <Heading my="1" fontSize="lg" color="red.700">
+                  Canceladas:{" "}
+                  {
+                    historial.filter((item) => item.estado == "Cancelado")
+                      .length
+                  }
+                </Heading>
+              </Stack>
+            </HStack>
           </Center>
-        )}
-      </Center>
+          {historial.length > 0 ? (
+            <FlatList
+              w="100%"
+              data={historial}
+              renderItem={({ item }) => (
+                <Historial
+                  campania={item.campania}
+                  fecha={item.fecha}
+                  marca={item.marca}
+                  lote={item.lote}
+                  estado={item.estado}
+                />
+              )}
+            />
+          ) : (
+            <Center>
+              <Text>No posee vacunas aplicadas</Text>
+            </Center>
+          )}
+        </Center>
+      )}
     </NativeBaseProvider>
   );
 }

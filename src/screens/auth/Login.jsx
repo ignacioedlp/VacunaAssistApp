@@ -167,7 +167,7 @@ function LoginScreen({ navigation }) {
 
   return (
     <NativeBaseProvider>
-      <Center py="15">
+      <Center py="15" bg="white" h="100%">
         <Image
           source={require("../../../assets/icon.png")}
           width={100}
@@ -176,7 +176,9 @@ function LoginScreen({ navigation }) {
         />
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
-            <Heading fontSize="lg">Bienvenido de nuevo</Heading>
+            <Heading my="3" fontSize="2xl" color="emerald.700">
+              Bienvenido de nuevo
+            </Heading>
           </Center>
 
           <Input
@@ -207,7 +209,9 @@ function LoginScreen({ navigation }) {
           )}
           <Button
             onPress={() => navigation.navigate("/auth/signUp")}
-            colorScheme="green"
+            colorScheme="emerald"
+            variant="outline"
+            borderColor="emerald.600"
           >
             Registrarme
           </Button>
@@ -220,9 +224,11 @@ function LoginScreen({ navigation }) {
             </Heading>
           </HStack>
         )}
-      </Center>
-      <Center flex={1}>
-        <Heading fontSize="lg">Hecho por JATECH©</Heading>
+        <Stack flex={1}>
+          <Center flex={1} bg="white">
+            <Heading fontSize="lg">🚀 Hecho por JATECH©</Heading>
+          </Center>
+        </Stack>
       </Center>
     </NativeBaseProvider>
   );

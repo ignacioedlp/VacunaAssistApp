@@ -50,12 +50,12 @@ function Historial({ campania, marca, fecha, lote, estado }) {
     await shareAsync(file.uri);
   };
   return (
-    <Box p="20px" w="100%">
+    <Box p="10px" w="100%">
       <Box
         maxW="100%"
         rounded="lg"
         overflow="hidden"
-        borderColor="emerald.500"
+        borderColor={estado !== "Cancelado" ? "emerald.500" : "red.500"}
         borderWidth="3"
         _dark={{
           borderColor: "coolGray.600",
@@ -69,13 +69,13 @@ function Historial({ campania, marca, fecha, lote, estado }) {
           backgroundColor: "gray.50",
         }}
       >
-        <Stack p="4" space={5} w="100%">
+        <Stack p="4" space={2} w="100%">
           <Stack space={2}>
             <Heading size="md" ml="-1">
               {campania}
             </Heading>
           </Stack>
-          <VStack space={4} justifyContent="space-between">
+          <VStack space={2} justifyContent="space-between">
             <Text>
               Fecha:
               {new Date(fecha).getUTCDate() +
