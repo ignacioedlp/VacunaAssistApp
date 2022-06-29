@@ -10,6 +10,7 @@ import {
   Spinner,
   Select,
   CheckIcon,
+  Image,
 } from "native-base";
 import Campania from "../components/CampaniaTarjeta";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -19,6 +20,9 @@ import {
   desactivateCovid,
   desactivateGripe,
   desactivateFiebre,
+  activateCovid,
+  activateGripe,
+  activateFiebre,
 } from "../context/slices/campaniasSlice";
 
 function HomeScreen({ navigation }) {
@@ -145,7 +149,12 @@ function HomeScreen({ navigation }) {
       requestOptions
     ).catch((error) => console.log("error", error));
     const res = await result.json();
-    setPendientes(res);
+    if ((res.code = 200)) {
+      alert(res.message);
+      dispatch(activateGripe());
+    } else {
+      alert(res.message);
+    }
     setIsLoading(false);
   };
 
@@ -168,7 +177,13 @@ function HomeScreen({ navigation }) {
       requestOptions
     ).catch((error) => console.log("error", error));
     const res = await result.json();
-    setPendientes(res);
+    if ((res.code = 200)) {
+      alert(res.message);
+      dispatch(activateCovid());
+    } else {
+      alert(res.message);
+    }
+
     setIsLoading(false);
   };
 
@@ -191,7 +206,13 @@ function HomeScreen({ navigation }) {
       requestOptions
     ).catch((error) => console.log("error", error));
     const res = await result.json();
-    setPendientes(res);
+    if ((res.code = 200)) {
+      alert(res.message);
+      dispatch(activateFiebre());
+    } else {
+      alert(res.message);
+    }
+
     setIsLoading(false);
   };
 
@@ -298,7 +319,7 @@ function HomeScreen({ navigation }) {
     var user = rol;
     if (user.includes("Vacunador")) {
       return (
-        <Center>
+        <Center bg="white">
           <Select
             mx="5"
             size="xl"
@@ -320,7 +341,7 @@ function HomeScreen({ navigation }) {
       );
     } else {
       return (
-        <Center>
+        <Center bg="white">
           <Select
             mx="5"
             size="xl"
@@ -344,12 +365,24 @@ function HomeScreen({ navigation }) {
     }
   };
 
+  useEffect(() => {
+    console.log();
+  }, []);
+
   return (
     <NativeBaseProvider>
       {userData.rol != "Ciudadano" && typeOfSelector(userData.rol)}
       {uiRol != "Ciudadano" ? (
-        <Center>
+        <Center w="100%" bg="white">
+          <Image
+            margin={4}
+            source={require("../../assets/icon.png")}
+            width={100}
+            height={100}
+            alt="logo"
+          />
           <FlatList
+            w="80%"
             top={1}
             padding={"2px"}
             data={typeofNav(uiRol)}
@@ -357,9 +390,7 @@ function HomeScreen({ navigation }) {
             renderItem={({ item }) => (
               <Button
                 margin={1}
-                _text={{ fontSize: 12 }}
-                w="100%"
-                h="80px"
+                _text={{ fontSize: 30 }}
                 onPress={item.action}
                 colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
               >
@@ -370,7 +401,7 @@ function HomeScreen({ navigation }) {
           />
         </Center>
       ) : (
-        <Center>
+        <Center bg="white">
           <FlatList
             top={1}
             padding={"2px"}
@@ -379,7 +410,7 @@ function HomeScreen({ navigation }) {
             renderItem={({ item }) => (
               <Button
                 margin={1}
-                _text={{ fontSize: 12 }}
+                _text={{ fontSize: 16 }}
                 w="90px"
                 onPress={item.action}
                 colorScheme={item.nombre == "Cerrar sesion" ? "red" : "green"}
@@ -389,11 +420,19 @@ function HomeScreen({ navigation }) {
             )}
             keyExtractor={(item) => item.id}
           />
+
+          <Image
+            margin={4}
+            source={require("../../assets/icon.png")}
+            width={100}
+            height={100}
+            alt="logo"
+          />
         </Center>
       )}
 
       {uiRol == "Ciudadano" && (
-        <Center>
+        <Center bg="white">
           <Stack mt={3} space={4} w="100%" maxW="100%">
             <Center>
               <Heading pt="27px" size="md" ml="-1">
@@ -409,15 +448,17 @@ function HomeScreen({ navigation }) {
               }
               stateButton={campaniasData.gripe}
             />
-            <Campania
-              campania={campanias[1].nombre}
-              action={
-                !campaniasData.fiebre
-                  ? campanias[1].actionSolicitar
-                  : campanias[1].actionCancelar
-              }
-              stateButton={campaniasData.fiebre}
-            />
+            {!campaniasData.fiebreCompletado && (
+              <Campania
+                campania={campanias[1].nombre}
+                action={
+                  !campaniasData.fiebre
+                    ? campanias[1].actionSolicitar
+                    : campanias[1].actionCancelar
+                }
+                stateButton={campaniasData.fiebre}
+              />
+            )}
             <Campania
               campania={campanias[2].nombre}
               action={
@@ -438,6 +479,17 @@ function HomeScreen({ navigation }) {
           )}
         </Center>
       )}
+
+      <Center flex={1} bg="white">
+        <Heading fontSize="lg">Hecho por JATECH©</Heading>
+        <Image
+          margin={4}
+          source={require("../../assets/jatech.png")}
+          width={100}
+          height={100}
+          alt="logo"
+        />
+      </Center>
     </NativeBaseProvider>
   );
 }

@@ -27,6 +27,7 @@ function TurnosDelDiaScreen({ navigation }) {
   const [dni, setDni] = useState();
   const handlerChangeDni = (dni) => setDni(dni);
   const userData = useSelector((state) => state.user);
+  const idvacunatorio = parseInt(userData.vacunatorio);
 
   const verificar_stock = async () => {
     var myHeaders = new Headers();
@@ -38,7 +39,7 @@ function TurnosDelDiaScreen({ navigation }) {
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
       campania: parseInt(campania),
-      vacunatorio: decoded.vacunatorio,
+      vacunatorio: idvacunatorio,
     });
 
     var requestOptions = {
@@ -68,11 +69,12 @@ function TurnosDelDiaScreen({ navigation }) {
     const token = "Bearer " + value;
     var decoded = jwt_decode(value);
 
+
     myHeaders.append("Authorization", token);
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
       campania: parseInt(campania),
-      vacunatorio: decoded.vacunatorio,
+      vacunatorio: idvacunatorio,
     });
 
     var requestOptions = {

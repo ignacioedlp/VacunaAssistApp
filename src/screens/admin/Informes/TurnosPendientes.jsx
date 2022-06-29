@@ -55,11 +55,8 @@ function TurnosPendientes() {
     //Si la fecha seleccionada que hoy no inicializa la fecha y lanza un mensaje
     const fecha = new Date(); //fecha desde hoy sumados 7 dias
     // acomodar la fecha que seleccionada
-    fecha.setDate(fecha.getDate() + 7);
-    if (
-      date.getTime() < fecha.getTime() ||
-      (fecha.getDay() == date.getDay() && fecha.getMonth() == date.getMonth())
-    ) {
+    const fechahoy = fecha.setDate(fecha.getDate() + 7);
+    if (date.getTime() < fecha.getTime()) {
       Alert.alert(
         "Error",
         "Seleccione una fecha posterior a 7 dias apartir de hoy"
@@ -83,6 +80,17 @@ function TurnosPendientes() {
     setTurnoMaximos(filtrado.length);
 
     setCampaniaSeleccionada(campania);
+  };
+
+  const nombreCampania = (id) => {
+    switch (id) {
+      case "1":
+        return "fiebre amarrilla";
+      case "2":
+        return "gripe";
+      case "3":
+        return "covid-19";
+    }
   };
 
   const enviarTurnos = async () => {
@@ -110,8 +118,14 @@ function TurnosPendientes() {
       requestOptions
     ).catch((error) => console.log("error", error));
     const res = await result.json();
-    setTurnosPendientes(res);
+    Alert.alert(
+      "VacunAssist",
+      `Se asignaron ${turnosADar} turno/s para la campania de ${nombreCampania(
+        campaniaSeleccionada
+      )}`
+    );
     setIsLoading(false);
+    setCampaniaSeleccionada(null);
   };
 
   const ObtenerTurnosPendientes = async () => {
@@ -143,6 +157,12 @@ function TurnosPendientes() {
   useEffect(() => {
     ObtenerTurnosPendientes();
   }, []);
+
+  useEffect(() => {
+    if (campaniaSeleccionada == null) {
+      ObtenerTurnosPendientes();
+    }
+  }, [campaniaSeleccionada]);
 
   return (
     <NativeBaseProvider>

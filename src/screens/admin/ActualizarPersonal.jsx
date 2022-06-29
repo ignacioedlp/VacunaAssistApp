@@ -27,63 +27,62 @@ function ActualizarPersonal({ route, navigation }) {
 
   const actualizarVacunatorio = async () => {
     setIsLoading(true);
-    // var myHeaders = new Headers();
-    // const value = userData.token;
-    // const token = "Bearer " + value;
-    // myHeaders.append("Authorization", token);
-    // myHeaders.append("Content-Type", "application/json");
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", "application/json");
 
-    // var raw = JSON.stringify({
-    //   dni: dni,
-    //   idVacunatorio: parseInt(idVacunatorio),
-    // });
+    var raw = JSON.stringify({
+      dni: dni,
+      id_vacunatorio: parseInt(idVacunatorio),
+    });
 
-    // var requestOptions = {
-    //   method: "POST",
-    //   headers: myHeaders,
-    //   body: raw,
-    //   redirect: "follow",
-    // };
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
 
-    // const result = await fetch(
-    //   "https://vacunassistservices-production.up.railway.app/vacunador/cargar_datos",
-    //   requestOptions
-    // ).catch((error) => console.log("error", error));
-    // const res = await result.json();
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/admin/cambiar_vacunatorio_personal",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
     setCargado(true);
     setIsLoading(false);
     // }
   };
 
-  // const actualizarRol = async () => {
-  //   setIsLoading(true);
-  //   // var myHeaders = new Headers();
-  //   // const value = userData.token;
-  //   // const token = "Bearer " + value;
-  //   // myHeaders.append("Authorization", token);
-  //   // myHeaders.append("Content-Type", "application/json");
+  const actualizarRol = async () => {
+    setIsLoading(true);
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", "application/json");
 
-  //   // var raw = JSON.stringify({
-  //   //   dni: dni,
-  //   //   personalRol: personalRol,
-  //   // });
+    var raw = JSON.stringify({
+      dni: dni,
+      rol: personalRol,
+    });
 
-  //   // var requestOptions = {
-  //   //   method: "POST",
-  //   //   headers: myHeaders,
-  //   //   body: raw,
-  //   //   redirect: "follow",
-  //   // };
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
 
-  //   // const result = await fetch(
-  //   //   "https://vacunassistservices-production.up.railway.app/vacunador/cargar_datos",
-  //   //   requestOptions
-  //   // ).catch((error) => console.log("error", error));
-  //   // const res = await result.json();
-  //   setCargado(true);
-  //   setIsLoading(false);
-  //   // }
-  // };
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/admin/cambiar_rol_personal",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    setCargado(true);
+    setIsLoading(false);
+  };
 
   return (
     <NativeBaseProvider>
@@ -98,7 +97,7 @@ function ActualizarPersonal({ route, navigation }) {
             my="2"
             size="md"
             minWidth="200"
-            selectedValue={idVacunatorio}
+            selectedValue={idVacunatorio.toString()}
             accessibilityLabel="Vacunatorio"
             onValueChange={(itemValue) => handlerVacunatorio(itemValue)}
             placeholder="Vacunatorio"

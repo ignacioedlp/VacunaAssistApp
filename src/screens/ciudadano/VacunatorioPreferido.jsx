@@ -11,45 +11,54 @@ import {
   Select,
   CheckIcon,
 } from "native-base";
-import jwt_decode from "jwt-decode";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Alert } from "react-native";
+import { setVacunatorio } from "../../context/slices/userSlice";
 
 function VacunatorioPreferido() {
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
-  const value = userData.token;
-  var decoded = jwt_decode(value);
-  const idvacunatorio = decoded.vacunatorio.toString();
+  const idvacunatorio = userData.vacunatorio;
   const [vacunatorioPreferido, setVacunatorioPreferido] =
     useState(idvacunatorio);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {}, []);
 
   const handleChangeVacunatorio = (vacunatorio) => {
     setVacunatorioPreferido(vacunatorio);
   };
 
   const modificarVacunatorio = async () => {
-    const idvacunatorio = decoded.vacunatorio.toString();
     if (idvacunatorio == vacunatorioPreferido) {
       Alert.alert("Vacunatorio", "Seleccione un vacunatorio diferente");
       setIsLoading(false);
       return;
     }
+    var myHeaders = new Headers();
+    const value = await AsyncStorage.getItem("@JWTUSER");
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      id_vacunatorio: parseInt(vacunatorioPreferido),
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
     const response = await fetch(
       "https://vacunassistservices-production.up.railway.app/user/cambiar_vacunatorio",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id_vacunatorio: parseInt(vacunatorioPreferido),
-        }),
-      }
+      requestOptions
     ).then((response) => response.json());
     if (response.code == 200) {
       /* con esta función guardamos y mantenemos el token
     del usuario*/
+      let vacunatorio = vacunatorioPreferido.toString();
+      dispatch(setVacunatorio({ vacunatorio: vacunatorio }));
       Alert.alert("VacunAssist", "Datos actualizados");
     } else {
       Alert.alert("VacunAssist", response.message);

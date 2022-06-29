@@ -20,16 +20,13 @@ export const campaniasSlice = createSlice({
         fiebreCompletado: action.payload.fiebreCompletado,
       };
     },
-    desactivateGripeCompletado: (state = initialState, action) => {
-      console.log("desactivando gripe");
+    desactivateFiebreCompletado: (state = initialState, action) => {
       return {
         ...state, //
-
         fiebreCompletado: true,
       };
     },
     desactivateGripe: (state = initialState, action) => {
-      console.log("desactivando gripe");
       return {
         ...state, //
         gripe: true,
@@ -47,6 +44,24 @@ export const campaniasSlice = createSlice({
         covid: true,
       };
     },
+    activateGripe: (state = initialState, action) => {
+      return {
+        ...state, //
+        gripe: false,
+      };
+    },
+    activateFiebre: (state = initialState, action) => {
+      return {
+        ...state, //
+        fiebre: false,
+      };
+    },
+    activateCovid: (state = initialState, action) => {
+      return {
+        ...state, //
+        covid: false,
+      };
+    },
   },
 });
 
@@ -54,7 +69,10 @@ export const {
   desactivateCovid,
   desactivateFiebre,
   desactivateGripe,
-  desactivateGripeCompletado,
+  activateCovid,
+  activateFiebre,
+  activateGripe,
+  desactivateFiebreCompletado,
   initCampania,
 } = campaniasSlice.actions;
 export default campaniasSlice.reducer;

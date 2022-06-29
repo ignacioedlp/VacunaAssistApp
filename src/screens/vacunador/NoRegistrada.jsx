@@ -18,6 +18,8 @@ import jwt_decode from "jwt-decode";
 
 function NoRegistrada({ route, navigation }) {
   const { id_campania } = route.params;
+  const userData = useSelector((state) => state.user);
+  const idvacunatorio = parseInt(userData.vacunatorio);
 
   const [dni, setDni] = useState("");
   const [nro_lote, setNro_lote] = useState("");
@@ -31,7 +33,6 @@ function NoRegistrada({ route, navigation }) {
   const handlerEmail = (email) => setEmail(email);
   const handlerNro_lote = (nro) => setNro_lote(nro);
   const handlerMarca = (marca) => setMarca(marca);
-  const userData = useSelector((state) => state.user);
 
   const rutaCampania = (id) => {
     switch (id) {
@@ -74,7 +75,7 @@ function NoRegistrada({ route, navigation }) {
         requestOptions
       ).catch((error) => console.log("error", error));
       const res = await result.json();
-      console.log(res);
+
       if (res.code == 200) {
         /* con esta función guardamos y mantenemos el token
       del usuario*/
@@ -105,7 +106,7 @@ function NoRegistrada({ route, navigation }) {
         campania: id_campania.toString(),
         lote: nro_lote,
         marca: marca,
-        vacunatorio: parseInt(decoded.vacunatorio),
+        vacunatorio: idvacunatorio,
       });
 
       var requestOptions = {
@@ -114,7 +115,7 @@ function NoRegistrada({ route, navigation }) {
         body: raw,
         redirect: "follow",
       };
-      console.log(typeof id_campania);
+
       const result = await fetch(
         rutaCampania(id_campania),
         requestOptions

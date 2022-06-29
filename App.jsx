@@ -37,14 +37,14 @@ export default function App() {
   const isLoggedIn = async () => {
     try {
       const value = await AsyncStorage.getItem("@JWTUSER");
-      console.log(value);
+  
       if (value != null) {
         return true;
       }
 
       return false;
     } catch (error) {
-      console.log(error);
+      
       return false;
     }
   };
@@ -53,7 +53,7 @@ export default function App() {
     if (isLoggedIn) {
       const value = await AsyncStorage.getItem("@JWTUSER");
       var decoded = jwt_decode(value);
-      console.log(decoded);
+     
     }
   };
 

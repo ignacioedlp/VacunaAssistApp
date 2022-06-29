@@ -37,7 +37,7 @@ function HistorialVacunacion() {
     const res = await result.json();
     setHistorial(res);
     setIsLoading(false);
-    console.log(res);
+    
   };
 
   useEffect(() => {

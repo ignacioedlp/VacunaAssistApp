@@ -13,7 +13,7 @@ import {
 
 function PersonalTarjeta({ dni, nombre, apellido, rol, vacunatorio }) {
   const nombreDeVacunatorio = (id) => {
-    switch (id) {
+    switch (id.toString()) {
       case "1":
         return "Hospital 9 de Julio";
       case "2":
@@ -24,7 +24,7 @@ function PersonalTarjeta({ dni, nombre, apellido, rol, vacunatorio }) {
   };
 
   return (
-    <Box p="20px">
+    <Box p="10px" maxW="100%">
       <Box
         maxW="100%"
         rounded="lg"

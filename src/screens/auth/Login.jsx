@@ -14,7 +14,10 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import jwt_decode from "jwt-decode";
-import { initCampania } from "../../context/slices/campaniasSlice";
+import {
+  initCampania,
+  desactivateFiebreCompletado,
+} from "../../context/slices/campaniasSlice";
 import { setUser } from "../../context/slices/userSlice";
 
 function LoginScreen({ navigation }) {
@@ -76,6 +79,36 @@ function LoginScreen({ navigation }) {
     return initialState;
   };
 
+  const ObtenerHistorial = async () => {
+    var myHeaders = new Headers();
+    const value = await AsyncStorage.getItem("@JWTUSER");
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    var raw = "";
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/turnos/historial",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+
+    for (const turno in res) {
+      if (
+        res[turno].campania == "Fiebre amarilla" &&
+        res[turno].estado == "Completado"
+      ) {
+        dispatch(desactivateFiebreCompletado());
+      }
+    }
+  };
+
   const handlerLogin = async () => {
     setIsLoading(true);
     if (code != "" && pass != "" && dni != "") {
@@ -97,11 +130,13 @@ function LoginScreen({ navigation }) {
         /* con esta función guardamos y mantenemos el token
       del usuario*/
 
-        const token = jwt_decode(response.message).rol;
+        const rol = jwt_decode(response.message).rol;
+        const vacunatorio = jwt_decode(response.message).vacunatorio;
         dispatch(
           setUser({
             token: response.message,
-            rol: token,
+            rol: rol,
+            vacunatorio: vacunatorio.toString(),
           })
         );
 
@@ -119,6 +154,7 @@ function LoginScreen({ navigation }) {
         storeData();
         const objCampania = await ObtenerPendientes();
         dispatch(initCampania(objCampania));
+        await ObtenerHistorial();
         navigation.navigate("/home");
       } else {
         Alert.alert("VacunAssist", response.message);
@@ -184,6 +220,9 @@ function LoginScreen({ navigation }) {
             </Heading>
           </HStack>
         )}
+      </Center>
+      <Center flex={1}>
+        <Heading fontSize="lg">Hecho por JATECH©</Heading>
       </Center>
     </NativeBaseProvider>
   );

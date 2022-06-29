@@ -21,10 +21,12 @@ import {
   desactivateCovid,
   desactivateGripe,
   desactivateFiebre,
+  desactivateFiebreCompletado,
 } from "../../context/slices/campaniasSlice";
 
 function Perfil({ navigation }) {
-  const stateFiebre = useSelector((state) => state.campanias.fiebre);
+  const stateFiebre = useSelector((state) => state.campanias.fiebreCompletado);
+  const campaniasData = useSelector((state) => state.campanias);
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
@@ -58,12 +60,13 @@ function Perfil({ navigation }) {
     const res = await result.json();
 
     for (const turno in res) {
-      if (res[turno].campania == "Fiebre amarilla") {
+      if (
+        res[turno].campania == "Fiebre amarilla" &&
+        res[turno].estado == "Completado"
+      ) {
         setFiebreActive(false);
       }
     }
-
-    console.log(res);
   };
 
   const VerPerfil = async () => {
@@ -96,7 +99,6 @@ function Perfil({ navigation }) {
   }, []);
 
   const cargarVacunaPropia = async () => {
-    console.log("Cargando datos");
     if (dateSelected != null && dateSelected != undefined) {
       var myHeaders = new Headers();
       const value = userData.token;
@@ -125,8 +127,7 @@ function Perfil({ navigation }) {
         Alert.alert("VacunAssist", res.message);
         if (campania.includes("fiebre")) {
           dispatch(desactivateFiebre());
-          setFiebreActive(false);
-          console.log("Desactivando fiebre");
+          dispatch(desactivateFiebreCompletado());
         } else {
           if (campania.includes("gripe")) {
             dispatch(desactivateGripe());
@@ -277,7 +278,7 @@ function Perfil({ navigation }) {
                   Cargar vacuna covid
                 </Button>
 
-                {fiebreActive && (
+                {!stateFiebre && (
                   <Button
                     margin={1}
                     _text={{ fontSize: 12, textAlign: "center" }}

@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   rol: "",
   token: "",
+  vacunatorio: "",
+  riesgo: "",
 };
 
 export const userSlice = createSlice({
@@ -13,18 +15,25 @@ export const userSlice = createSlice({
       return {
         ...state, //
         rol: action.payload.rol,
-        token: action.payload.token
+        token: action.payload.token,
+        vacunatorio: action.payload.vacunatorio,
       };
     },
     logout: (state = initialState, action) => {
       return {
         ...state, //
         rol: "",
-        token: ""
+        token: "",
+      };
+    },
+    setVacunatorio: (state = initialState, action) => {
+      return {
+        ...state, //
+        vacunatorio: action.payload.vacunatorio,
       };
     },
   },
 });
 
-export const { setUser, logout } = userSlice.actions;
+export const { setUser, logout, setVacunatorio } = userSlice.actions;
 export default userSlice.reducer;

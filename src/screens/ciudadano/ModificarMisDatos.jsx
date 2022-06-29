@@ -26,7 +26,7 @@ function Perfil({ navigation }) {
   const [email, setEmail] = useState("");
   const [emailNuevo, setEmailNuevo] = useState("");
   const [password, setPassword] = useState("");
-  const [riesgo, setRiesgo] = useState(false);
+  const [riesgo, setRiesgo] = useState();
 
   const handleChangeEmailNuevo = (email) => setEmailNuevo(email);
 
@@ -57,6 +57,7 @@ function Perfil({ navigation }) {
     setEmail(res.email);
     setEmailNuevo(res.email);
     setPassword("");
+    console.log(res.riesgo);
     setRiesgo(res.riesgo);
     setIsLoading(false);
   };
@@ -81,6 +82,7 @@ function Perfil({ navigation }) {
 
   const handlerActualizar = async () => {
     setIsLoading(true);
+
     let cerrar = false;
     let raw = {
       email: "",
@@ -111,16 +113,21 @@ function Perfil({ navigation }) {
         raw.password = password;
       }
     }
+    var myHeaders = new Headers();
+    const value = await AsyncStorage.getItem("@JWTUSER");
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify(raw),
+      redirect: "follow",
+    };
 
     const response = await fetch(
       "https://vacunassistservices-production.up.railway.app/user/modificar_perfil",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(raw),
-      }
+      requestOptions
     ).then((response) => response.json());
     if (response.code == 200) {
       /* con esta función guardamos y mantenemos el token
@@ -174,7 +181,7 @@ function Perfil({ navigation }) {
                 <Text>Riesgo</Text>
                 <Checkbox
                   mb="5"
-                  value={riesgo}
+                  defaultIsChecked={riesgo}
                   accessibilityLabel="Riesgo"
                   onChange={handleChangeRiesgo}
                   _text={{ fontSize: 12 }}

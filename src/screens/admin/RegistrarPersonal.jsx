@@ -48,7 +48,7 @@ function RegistrarPersonal({ navigation }) {
         vacunatorio: parseInt(vacunatorio),
       });
 
-      console.log(raw);
+     
 
       var requestOptions = {
         method: "POST",

@@ -17,54 +17,40 @@ import { useDispatch, useSelector } from "react-redux";
 import PersonalTarjeta from "../../components/PersonalTarjeta";
 
 function VerPersonal({ navigation }) {
-  const [personal, setPersonal] = useState([
-    {
-      nombre: "Juan",
-      apellido: "Perez",
-      rol: "Admin",
-      dni: "43738921",
-      vacunatorio: "1",
-    },
-  ]);
+  const [personal, setPersonal] = useState([]);
   const [dniBuscado, setDniBuscado] = useState();
   const userData = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
 
-  const ObtenerPersonal = () => {
-    // var myHeaders = new Headers();
-    // const value = userData.token;
-    // const token = "Bearer " + value;
-    // myHeaders.append("Authorization", token);
-    // var raw = "";
-    // var requestOptions = {
-    //   method: "GET",
-    //   headers: myHeaders,
-    //   body: raw,
-    //   redirect: "follow",
-    // };
-    // const result = await fetch(
-    //   "https://vacunassistservices-production.up.railway.app/admin/ver_stock",
-    //   requestOptions
-    // ).catch((error) => console.log("error", error));
-    // const res = await result.json();
-    // setPersonal([
-    //   {
-    //     nombre: "jaun",
-    //     rol: "Admin",
-    //     dni: "43738921",
-    //   },
-    // ]);
-    // setIsLoading(false);
+  const ObtenerPersonal = async () => {
+    var myHeaders = new Headers();
+    const value = userData.token;
+    const token = "Bearer " + value;
+    myHeaders.append("Authorization", token);
+    var raw = "";
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    const result = await fetch(
+      "https://vacunassistservices-production.up.railway.app/admin/ver_personal",
+      requestOptions
+    ).catch((error) => console.log("error", error));
+    const res = await result.json();
+    setPersonal(res);
+    setIsLoading(false);
   };
 
-  // useEffect(() => {
-  //   ObtenerPersonal();
-  // });
+  useEffect(() => {
+    ObtenerPersonal();
+  }, []);
 
   return (
     <NativeBaseProvider>
       {isLoading != true ? (
-        <Center>
+        <Center w="100%">
           <Heading size="lg" ml="-1" p="10px">
             Lista de personal
           </Heading>
@@ -79,6 +65,7 @@ function VerPersonal({ navigation }) {
           />
           {personal.length > 0 ? (
             <FlatList
+              w="100%"
               data={personal}
               renderItem={({ item }) =>
                 dniBuscado == null ? (
@@ -124,7 +111,7 @@ function VerPersonal({ navigation }) {
             />
           ) : (
             <Center>
-              <Text>No posee vacunas aplicadas</Text>
+              <Text>No posee personal</Text>
             </Center>
           )}
         </Center>
