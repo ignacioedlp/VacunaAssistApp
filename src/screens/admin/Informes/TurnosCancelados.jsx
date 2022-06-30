@@ -56,21 +56,7 @@ function TurnosCancelados() {
           <Heading my="3" fontSize="2xl" color="emerald.700">
             {turnosCancelados.length}
           </Heading>
-          {turnosCancelados.length > 0 ? (
-            <FlatList
-              w="100%"
-              data={turnosCancelados}
-              renderItem={({ item }) => (
-                <TurnoCanceladoTarjeta
-                  nroTurno={item.id_turno}
-                  fecha={item.fecha}
-                  vacunatorio={item.vacunatorio}
-                  dni={item.dni}
-                  campania={item.campania}
-                />
-              )}
-            />
-          ) : (
+          {turnosCancelados.length == 0  && (
             <Center>
               <Text>No posee turnos cancelados</Text>
             </Center>

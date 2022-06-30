@@ -178,7 +178,7 @@ function TurnosPendientes() {
             Turnos pendientes
           </Heading>
           <Heading my="3" fontSize="2xl" color="emerald.700">
-            {turnosFiltrados != 0
+            {(turnosFiltrados == 0) && (campaniaSeleccionada != null)
               ? turnosFiltrados.length
               : turnosPendientes.length}
           </Heading>
@@ -246,20 +246,6 @@ function TurnosPendientes() {
                         </Button>
                       </Stack>
                     )}
-                    <FlatList
-                      w="100%"
-                      data={turnosFiltrados}
-                      renderItem={({ item }) => (
-                        <TurnoPendientesTarjeta
-                          nombreYApellido={item.nombreYApellido}
-                          nroTurno={item.id_turno}
-                          fecha={item.fecha}
-                          vacunatorio={item.vacunatorio}
-                          dni={item.dni}
-                          campania={item.campania}
-                        />
-                      )}
-                    />
                   </Center>
                 ) : (
                   <Center>
@@ -267,22 +253,7 @@ function TurnosPendientes() {
                   </Center>
                 )
               ) : (
-                <Center w="100%">
-                  <FlatList
-                    w="100%"
-                    data={turnosPendientes}
-                    renderItem={({ item }) => (
-                      <TurnoPendientesTarjeta
-                        nombreYApellido={item.nombreYApellido}
-                        nroTurno={item.id_turno}
-                        fecha={item.fecha}
-                        vacunatorio={item.vacunatorio}
-                        dni={item.dni}
-                        campania={item.campania}
-                      />
-                    )}
-                  />
-                </Center>
+                null
               )}
             </Stack>
           ) : (

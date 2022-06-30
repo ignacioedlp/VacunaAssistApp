@@ -56,23 +56,9 @@ function HistorialTurnos() {
           <Heading my="3" fontSize="2xl" color="emerald.700">
             {turnos.length}
           </Heading>
-          {turnos.length > 0 ? (
-            <FlatList
-              w="100%"
-              data={turnos}
-              renderItem={({ item }) => (
-                <TurnoTarjeta
-                  nroTurno={item.id_turno}
-                  fecha={item.fecha}
-                  vacunatorio={item.vacunatorio}
-                  dni={item.dni}
-                  campania={item.campania}
-                />
-              )}
-            />
-          ) : (
+          {turnos.length == 0  && (
             <Center>
-              <Text>No posee vacunas aplicadas</Text>
+              <Text>No posee turnos </Text>
             </Center>
           )}
         </Center>
