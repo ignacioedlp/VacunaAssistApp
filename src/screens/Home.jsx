@@ -30,7 +30,7 @@ function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const campaniasData = useSelector((state) => state.campanias);
   const userData = useSelector((state) => state.user);
-  const [uiRol, setUiRol] = useState(userData.rol);
+  const [uiRol, setUiRol] = useState("Ciudadano");
   const handlerChangeUIRol = (uiRol) => setUiRol(uiRol);
 
   const handlerSolicitarFiebre = async () => {
@@ -316,53 +316,87 @@ function HomeScreen({ navigation }) {
   };
 
   const typeOfSelector = (rol) => {
-    var user = rol;
-    if (user.includes("Vacunador")) {
-      return (
-        <Center bg="white">
-          <Select
-            mx="5"
-            size="xl"
-            w="100%"
-            selectedValue={uiRol}
-            accessibilityLabel="UIRol"
-            onValueChange={(itemValue) => handlerChangeUIRol(itemValue)}
-            placeholder="Elegir rol"
-            _selectedItem={{
-              bg: "teal.600",
-              endIcon: <CheckIcon size={5} />,
-            }}
-            mt="1"
-          >
-            <Select.Item label="Vacunador" value="Vacunador" />
-            <Select.Item label="Ciudadano" value="Ciudadano" />
-          </Select>
-        </Center>
-      );
-    } else {
-      return (
-        <Center bg="white">
-          <Select
-            mx="5"
-            size="xl"
-            w="100%"
-            selectedValue={uiRol}
-            accessibilityLabel="UIRol"
-            onValueChange={(itemValue) => handlerChangeUIRol(itemValue)}
-            placeholder="Elegir rol"
-            _selectedItem={{
-              bg: "teal.600",
-              endIcon: <CheckIcon size={5} />,
-            }}
-            mt="1"
-          >
-            <Select.Item label="Vacunador" value="Vacunador" />
-            <Select.Item label="Administrador" value="Admin" />
-            <Select.Item label="Ciudadano" value="Ciudadano" />
-          </Select>
-        </Center>
-      );
-    }
+    return (
+      <Center bg="white">
+        <Heading fontSize="2xl" top={1} color="emerald.700">
+          Cambiar a rol:
+        </Heading>
+        <HStack
+          w="100%"
+          top={1}
+          padding={"2px"}
+          justifyContent="center"
+          alignItems="center"
+        >
+          {rol.includes("Ciudadano") && (
+            <Button
+              margin={1}
+              _text={{ fontSize: 14 }}
+              onPress={() => setUiRol("Ciudadano")}
+              colorScheme={"green"}
+              variant={uiRol == "Ciudadano" ? "outline" : "solid"}
+              isDisabled={uiRol == "Ciudadano"}
+              borderColor={uiRol == "Ciudadano" ? "green.600" : null}
+              textAlign="center"
+            >
+              Ciudadano
+            </Button>
+          )}
+          {rol.includes("Admin") && (
+            <Button
+              margin={1}
+              _text={{ fontSize: 14 }}
+              onPress={() => setUiRol("Admin")}
+              colorScheme={"green"}
+              variant={uiRol == "Admin" ? "outline" : "solid"}
+              isDisabled={uiRol == "Admin"}
+              borderColor={uiRol == "Admin" ? "green.600" : null}
+              textAlign="center"
+            >
+              Administrador
+            </Button>
+          )}
+          {rol.includes("Vacunador") && (
+            <Button
+              margin={1}
+              _text={{ fontSize: 14 }}
+              onPress={() => setUiRol("Vacunador")}
+              colorScheme={"green"}
+              variant={uiRol == "Vacunador" ? "outline" : "solid"}
+              isDisabled={uiRol == "Vacunador"}
+              borderColor={uiRol == "Vacunador" ? "green.600" : null}
+              textAlign="center"
+            >
+              Vacunador
+            </Button>
+          )}
+        </HStack>
+      </Center>
+      // <Center bg="white">
+      //   <Select
+      //     mx="5"
+      //     size="xl"
+      //     w="100%"
+      //     selectedValue={"Ciudadano"}
+      //     accessibilityLabel="UIRol"
+      //     onValueChange={(itemValue) => handlerChangeUIRol(itemValue)}
+      //     placeholder="Elegir rol"
+      //     _selectedItem={{
+      //       bg: "teal.600",
+      //       endIcon: <CheckIcon size={5} />,
+      //     }}
+      //     mt="1"
+      //   >
+      //     {rol.includes("Vacunador") ? (
+      //       <Select.Item label="Vacunador" value="Vacunador" />
+      //     ) : null}
+      //     {rol.includes("Admin") ? (
+      //       <Select.Item label="Administrador" value="Admin" />
+      //     ) : null}
+      //     <Select.Item label="Ciudadano" value="Ciudadano" />
+      //   </Select>
+      // </Center>
+    );
   };
 
   useEffect(() => {
@@ -371,7 +405,7 @@ function HomeScreen({ navigation }) {
 
   return (
     <NativeBaseProvider>
-      {userData.rol != "Ciudadano" && typeOfSelector(userData.rol)}
+      {typeOfSelector(userData.rol)}
       {uiRol != "Ciudadano" ? (
         <Center w="100%" bg="white">
           <Image
