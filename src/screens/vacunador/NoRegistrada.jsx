@@ -19,7 +19,7 @@ import jwt_decode from "jwt-decode";
 function NoRegistrada({ route, navigation }) {
   const { id_campania } = route.params;
   const userData = useSelector((state) => state.user);
-  const idvacunatorio = parseInt(userData.vacunatorio);
+  const idvacunatorio = parseInt(userData.vacunatorio_personal);
 
   const [dni, setDni] = useState("");
   const [nro_lote, setNro_lote] = useState("");

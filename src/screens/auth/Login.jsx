@@ -132,11 +132,13 @@ function LoginScreen({ navigation }) {
 
         const rol = jwt_decode(response.message).rol;
         const vacunatorio = jwt_decode(response.message).vacunatorio;
+        const vacunatorio_personal = jwt_decode(response.message).vacunatorio_personal;
         dispatch(
           setUser({
             token: response.message,
             rol: rol,
             vacunatorio: vacunatorio.toString(),
+            vacunatorio_personal: vacunatorio_personal.toString(),
           })
         );
 

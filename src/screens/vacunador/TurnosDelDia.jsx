@@ -27,7 +27,7 @@ function TurnosDelDiaScreen({ navigation }) {
   const [dni, setDni] = useState();
   const handlerChangeDni = (dni) => setDni(dni);
   const userData = useSelector((state) => state.user);
-  const idvacunatorio = parseInt(userData.vacunatorio);
+  const idvacunatorio = parseInt(userData.vacunatorio_personal);
 
   const verificar_stock = async () => {
     var myHeaders = new Headers();
