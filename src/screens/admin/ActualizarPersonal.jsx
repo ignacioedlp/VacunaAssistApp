@@ -12,6 +12,7 @@ import {
   Box,
   Select,
   CheckIcon,
+  Checkbox,
 } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -19,8 +20,12 @@ function ActualizarPersonal({ route, navigation }) {
   const { dni, vacunatorio, rol } = route.params;
   const [idVacunatorio, setIdVacunatorio] = useState(vacunatorio);
   const [personalRol, setPersonalRol] = useState(rol);
+  const [rolAdmin, setRolAdmin] = useState(personalRol.includes("Admin"));
+  const [rolVacunador, setRolVacunador] = useState(personalRol.includes("Vacunador"));
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const handlerRolVacunador = (rol) => setRolVacunador(rol);
+  const handlerRolAdmin = (rol) => setRolAdmin(rol);
   const handlerVacunatorio = (vacun) => setIdVacunatorio(vacun);
   const handlerRol = (rolpersonal) => setPersonalRol(rolpersonal);
   const userData = useSelector((state) => state.user);
@@ -65,7 +70,8 @@ function ActualizarPersonal({ route, navigation }) {
 
     var raw = JSON.stringify({
       dni: dni,
-      rol: personalRol,
+      rolAdmin: rolAdmin,
+      rolVacunador: rolVacunador
     });
 
     var requestOptions = {
@@ -74,7 +80,6 @@ function ActualizarPersonal({ route, navigation }) {
       body: raw,
       redirect: "follow",
     };
-
     const result = await fetch(
       "https://vacunassistservices-production.up.railway.app/admin/cambiar_rol_personal",
       requestOptions
@@ -116,21 +121,33 @@ function ActualizarPersonal({ route, navigation }) {
               Actualizar vacunatorio
             </Button>
           )}
-          <Select
-            minWidth="200"
-            selectedValue={personalRol}
-            accessibilityLabel="Rol"
-            onValueChange={(itemValue) => handlerRol(itemValue)}
-            placeholder="Rol"
-            _selectedItem={{
-              bg: "teal.600",
-              endIcon: <CheckIcon size={5} />,
-            }}
-            mt="1"
+          <Heading my="3" fontSize="2xl" color="emerald.700">
+            Seleccionar roles:
+          </Heading>
+          <Checkbox
+            value={rolAdmin}
+            accessibilityLabel="RolAdmin"
+            onChange={handlerRolAdmin}
+            _text={{ fontSize: 12 }}
+            colorScheme="emerald"
+            defaultIsChecked = {
+              personalRol.includes("Admin")
+            }
           >
-            <Select.Item label="Vacunador" value="Vacunador" />
-            <Select.Item label="Administrador" value="Admin" />
-          </Select>
+            Administrador
+          </Checkbox>
+          <Checkbox
+            value={rolVacunador}
+            accessibilityLabel="RolVacunador"
+            onChange={handlerRolVacunador}
+            _text={{ fontSize: 12 }}
+            colorScheme="emerald"
+            defaultIsChecked = {
+              personalRol.includes("Vacunador")
+            }
+          >
+            Vacunador
+          </Checkbox>
           {!isLoading && (
             <Button colorScheme="green" onPress={() => actualizarRol()}>
               Actualizar rol

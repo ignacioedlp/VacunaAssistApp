@@ -12,6 +12,7 @@ import {
   Box,
   Select,
   CheckIcon,
+  Checkbox,
 } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 import jwt_decode from "jwt-decode";
@@ -19,12 +20,14 @@ import jwt_decode from "jwt-decode";
 function RegistrarPersonal({ navigation }) {
   const [dni, setDni] = useState("");
   const [vacunatorio, setVacunatorio] = useState("");
-  const [rol, setRol] = useState("");
+  const [rolVacunador, setRolVacunador] = useState(false);
+  const [rolAdmin, setRolAdmin] = useState(false);
   const [email, setEmail] = useState("");
 
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const handlerRol = (rol) => setRol(rol);
+  const handlerRolVacunador = (rol) => setRolVacunador(rol);
+  const handlerRolAdmin = (rol) => setRolAdmin(rol);
   const handlerDni = (dni) => setDni(dni);
   const handlerEmail = (email) => setEmail(email);
   const handlerVacunatorio = (nro) => setVacunatorio(nro);
@@ -44,7 +47,8 @@ function RegistrarPersonal({ navigation }) {
       var raw = JSON.stringify({
         dni: dni,
         email: email,
-        rol: rol,
+        rolVacunador: rolVacunador,
+        rolAdmin: rolAdmin,
         vacunatorio: parseInt(vacunatorio),
       });
 
@@ -97,22 +101,29 @@ function RegistrarPersonal({ navigation }) {
             value={email}
             placeholder="Email"
           />
-          <Select
-            minWidth="200"
-            selectedValue={rol}
-            accessibilityLabel="Rol"
-            onValueChange={(itemValue) => handlerRol(itemValue)}
-            placeholder="Rol"
-            _selectedItem={{
-              bg: "teal.600",
-              endIcon: <CheckIcon size={5} />,
-            }}
-            mt="1"
+          <Heading my="3" fontSize="2xl" color="emerald.700">
+            Seleccionar roles:
+          </Heading>
+          <Checkbox
+            value={rolAdmin}
+            accessibilityLabel="RolAdmin"
+            onChange={handlerRolAdmin}
+            _text={{ fontSize: 12 }}
+            colorScheme="emerald"
           >
-            <Select.Item label="Vacunador" value="Vacunador" />
-            <Select.Item label="Administrador" value="Admin" />
-          </Select>
+            Administrador
+          </Checkbox>
+          <Checkbox
+            value={rolVacunador}
+            accessibilityLabel="RolVacunador"
+            onChange={handlerRolVacunador}
+            _text={{ fontSize: 12 }}
+            colorScheme="emerald"
+          >
+            Vacunador
+          </Checkbox>
           <Select
+            isDisabled = {!rolVacunador}
             size="md"
             minWidth="200"
             selectedValue={vacunatorio}
