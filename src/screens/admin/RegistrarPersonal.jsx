@@ -23,19 +23,75 @@ function RegistrarPersonal({ navigation }) {
   const [rolVacunador, setRolVacunador] = useState(false);
   const [rolAdmin, setRolAdmin] = useState(false);
   const [email, setEmail] = useState("");
+  const [existe, setExiste] = useState(true);
+  const [verificado, setVerificado] = useState(false);
+  const [permitido, setPermitido] = useState(false);
 
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const handlerRolVacunador = (rol) => setRolVacunador(rol);
   const handlerRolAdmin = (rol) => setRolAdmin(rol);
-  const handlerDni = (dni) => setDni(dni);
+  const handlerDni = (dni) => {
+    setDni(dni);
+    setVerificado(false);
+    setExiste(false);
+    setRolVacunador(false);
+    setRolAdmin(false);
+    setVacunatorio("");
+    setEmail("");
+  };
   const handlerEmail = (email) => setEmail(email);
   const handlerVacunatorio = (nro) => setVacunatorio(nro);
 
   const userData = useSelector((state) => state.user);
 
+  const verificarDatos = async () => {
+    if (dni != "") {
+      setIsLoading(true);
+      var myHeaders = new Headers();
+      const value = userData.token;
+      const token = "Bearer " + value;
+      myHeaders.append("Authorization", token);
+      myHeaders.append("Content-Type", "application/json");
+      var decoded = jwt_decode(value);
+
+      var dniAux = parseInt(dni);
+
+      var raw = JSON.stringify({
+        dni: dniAux,
+      });
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      const result = await fetch(
+        "https://vacunassistservices-production.up.railway.app/admin/verificar_persona",
+        requestOptions
+      ).catch((error) => console.log("error", error));
+      const res = await result.json();
+
+      if (res.code == 200) {
+        /* El usuario no existe y se registra de 0 */
+        setExiste(false);
+      } else {
+        /* El usuario existe y se le cargan sus roles*/
+        setExiste(true);
+        setRolAdmin(res.message.includes("Admin"));
+        setRolVacunador(res.message.includes("Vacunador"));
+      }
+      setIsLoading(false);
+      setVerificado(true);
+    } else {
+      Alert.alert("VacunAssist", "Faltan rellenar campos");
+    }
+  };
+
   const cargarDatos = async () => {
-    if (dni != "" && rol != "" && vacunatorio != "" && email != "") {
+    if (dni != "") {
       setIsLoading(true);
       var myHeaders = new Headers();
       const value = userData.token;
@@ -52,8 +108,6 @@ function RegistrarPersonal({ navigation }) {
         vacunatorio: parseInt(vacunatorio),
       });
 
-     
-
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
@@ -67,7 +121,7 @@ function RegistrarPersonal({ navigation }) {
       ).catch((error) => console.log("error", error));
       const res = await result.json();
       if (res.code == 200) {
-        /* con esta función guardamos y mantenemos el token
+        /* con esta funciÃ³n guardamos y mantenemos el token
       del usuario*/
         Alert.alert("VacunAssist", "Carga y registro exitoso");
         setCargado(true);
@@ -86,7 +140,7 @@ function RegistrarPersonal({ navigation }) {
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
             <Heading my="3" fontSize="2xl" color="emerald.700">
-              Registrar personal
+              Asignar roles
             </Heading>
           </Center>
           <Input
@@ -95,12 +149,20 @@ function RegistrarPersonal({ navigation }) {
             value={dni}
             placeholder="Dni"
           />
-          <Input
-            onChangeText={handlerEmail}
-            size="md"
-            value={email}
-            placeholder="Email"
-          />
+          {dni.length >= 7 && (
+            <Button colorScheme="green" onPress={() => verificarDatos()}>
+              Verificar persona
+            </Button>
+          )}
+          {!existe && verificado && (
+            <Input
+              onChangeText={handlerEmail}
+              size="md"
+              value={email}
+              placeholder="Email"
+              isDisabled={existe}
+            />
+          )}
           <Heading my="3" fontSize="2xl" color="emerald.700">
             Seleccionar roles:
           </Heading>
@@ -110,6 +172,8 @@ function RegistrarPersonal({ navigation }) {
             onChange={handlerRolAdmin}
             _text={{ fontSize: 12 }}
             colorScheme="emerald"
+            isChecked={rolAdmin}
+            isDisabled={!verificado}
           >
             Administrador
           </Checkbox>
@@ -119,11 +183,13 @@ function RegistrarPersonal({ navigation }) {
             onChange={handlerRolVacunador}
             _text={{ fontSize: 12 }}
             colorScheme="emerald"
+            isChecked={rolVacunador}
+            isDisabled={!verificado}
           >
             Vacunador
           </Checkbox>
           <Select
-            isDisabled = {!rolVacunador}
+            isDisabled={!rolVacunador}
             size="md"
             minWidth="200"
             selectedValue={vacunatorio}
@@ -144,9 +210,9 @@ function RegistrarPersonal({ navigation }) {
             <Button
               colorScheme="green"
               onPress={() => cargarDatos()}
-              isDisabled={cargado ? true : false}
+              isDisabled={cargado || !verificado}
             >
-              Continuar
+              Asignar
             </Button>
           )}
           {isLoading && (

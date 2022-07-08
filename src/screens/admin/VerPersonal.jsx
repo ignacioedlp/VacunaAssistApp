@@ -75,6 +75,8 @@ function VerPersonal({ navigation }) {
                         vacunatorio: item.vacunatorio,
                         rol: item.rol,
                         dni: item.dni,
+                        nombre: item.nombre,
+                        apellido: item.apellido,
                       })
                     }
                   >

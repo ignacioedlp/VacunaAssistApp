@@ -17,11 +17,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 function ActualizarPersonal({ route, navigation }) {
-  const { dni, vacunatorio, rol } = route.params;
+  const { dni, vacunatorio, rol, nombre, apellido } = route.params;
   const [idVacunatorio, setIdVacunatorio] = useState(vacunatorio);
   const [personalRol, setPersonalRol] = useState(rol);
   const [rolAdmin, setRolAdmin] = useState(personalRol.includes("Admin"));
-  const [rolVacunador, setRolVacunador] = useState(personalRol.includes("Vacunador"));
+  const [rolVacunador, setRolVacunador] = useState(
+    personalRol.includes("Vacunador")
+  );
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const handlerRolVacunador = (rol) => setRolVacunador(rol);
@@ -71,7 +73,7 @@ function ActualizarPersonal({ route, navigation }) {
     var raw = JSON.stringify({
       dni: dni,
       rolAdmin: rolAdmin,
-      rolVacunador: rolVacunador
+      rolVacunador: rolVacunador,
     });
 
     var requestOptions = {
@@ -95,7 +97,7 @@ function ActualizarPersonal({ route, navigation }) {
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
             <Heading my="3" fontSize="2xl" color="emerald.700">
-              Acualizar datos para la persona con dni {dni}
+              Acualizar datos para {nombre} {apellido}
             </Heading>
           </Center>
           <Select
@@ -130,9 +132,7 @@ function ActualizarPersonal({ route, navigation }) {
             onChange={handlerRolAdmin}
             _text={{ fontSize: 12 }}
             colorScheme="emerald"
-            defaultIsChecked = {
-              personalRol.includes("Admin")
-            }
+            defaultIsChecked={personalRol.includes("Admin")}
           >
             Administrador
           </Checkbox>
@@ -142,9 +142,7 @@ function ActualizarPersonal({ route, navigation }) {
             onChange={handlerRolVacunador}
             _text={{ fontSize: 12 }}
             colorScheme="emerald"
-            defaultIsChecked = {
-              personalRol.includes("Vacunador")
-            }
+            defaultIsChecked={personalRol.includes("Vacunador")}
           >
             Vacunador
           </Checkbox>

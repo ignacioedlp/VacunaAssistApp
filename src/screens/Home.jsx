@@ -280,7 +280,7 @@ function HomeScreen({ navigation }) {
       action: () => navigation.navigate("/admin/verStock"),
     },
     {
-      nombre: "Registrar personal",
+      nombre: "Asignar roles",
       id: 2,
       action: () => navigation.navigate("/admin/registrarPersonal"),
     },

@@ -1,35 +1,80 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import DatePicker from "react-native-neat-date-picker";
 import {
   NativeBaseProvider,
   Center,
   Spinner,
   Stack,
   Heading,
-  Text,
-  HStack,
   Box,
+  HStack,
+  ScrollView,
+  Button,
+  View,
 } from "native-base";
-import CompletadosTarjeta from "../../../components/CompletadosTarjeta";
-import CompletadosTotales from "../../../components/CompletadosTotales";
+// import CompletadosTarjeta from "../../../components/CompletadosTarjeta";
+// import CompletadosTotales from "../../../components/CompletadosTotales";
 import { useDispatch, useSelector } from "react-redux";
+import ChartBar from "../../../components/ChartBar";
+import moment from "moment";
+import { Alert } from "react-native";
 
 function VacunasDadas() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [vacunasObtenidas, setVacunasObtenidas] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [vacunasDadas, setVacunasDadas] = useState([]);
   const [vacunasPorCampania, setVacunasPorCampania] = useState();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [correcto, setCorrecto] = useState(false);
+  const [vacunatorios, setVacunatorios] = useState([]);
+    
+
+  const openDatePicker = () => {
+    setShowDatePicker(true);
+    setVacunasDadas([]);
+    setVacunasObtenidas(false);
+  };
+
+  const onCancel = () => {
+    // You should close the modal in here
+    setShowDatePicker(false);
+  };
+
+  const onConfirm = (output) => {
+    // You should close the modal in here
+    if (moment(output.endDate).diff(moment(output.startDate), "days") < 6) {
+      Alert.alert(
+        "VacunAssist",
+        "La cantidad minima de dias debe de ser una semana"
+      );
+    } else {
+      setShowDatePicker(false);
+      // The parameter 'output' is an object containing date and dateString (for single mode).
+      // For range mode, the output contains startDate, startDateString, endDate, and EndDateString
+      setStartDate(output.startDateString);
+      setEndDate(output.endDateString);
+      setCorrecto(true);
+    }
+  };
 
   const userData = useSelector((state) => state.user);
 
-  const ObtenerStocks = async () => {
+  const ObtenerVacunasDadas = async () => {
     var myHeaders = new Headers();
     const value = userData.token;
     const token = "Bearer " + value;
     myHeaders.append("Authorization", token);
-    var raw = "";
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      fecha_ini: startDate,
+      fecha_fin: endDate,
+    });
 
     var requestOptions = {
-      method: "GET",
+      method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow",
@@ -40,86 +85,156 @@ function VacunasDadas() {
       requestOptions
     ).catch((error) => console.log("error", error));
     const res = await result.json();
+    console.log("vacunatorios traidos:", res.length);
+    for (let i = 0; i < res.length; i++) {
+      crearDatos(res[i].dias, i);
+    }
+    setVacunasObtenidas(true);
     setVacunasDadas(res);
-    setVacunasPorCampania(CalcularTotalesCampania(res));
-    setIsLoading(false);
   };
 
-  const CalcularTotalesCampania = (res) => {
-    let gripe = 0;
-    let covid = 0;
-    let fiebre = 0;
-    for (let index = 0; index < res.length; index++) {
-      fiebre += res[index].completados_fiebre.completados;
-      gripe += res[index].completados_gripe.completados;
-      covid += res[index].completados_covid.completados;
+  const crearDatos = (datos, index) => {
+    const dias = [];
+    const vacunatoriosAux = vacunatorios;
+
+    for (let i = 0; i < datos.length; i++) {
+      var dia = [];
+
+      dia.push(datos[i].prom_fiebre);
+      dia.push(datos[i].prom_gripe);
+      dia.push(datos[i].prom_covid);
+
+      dias.push(dia);
     }
 
-    return { gripe, covid, fiebre };
+    const data = {
+      labels: ["L", "M", "M", "J", "V"],
+      legend: ["Fiebre", "Gripe", "Covid"],
+      data: dias,
+      barColors: ["#8ad972", "#b3e6a1", "#daf3d0"],
+    };
+
+    vacunatoriosAux.push(data);
+    setVacunatorios(vacunatoriosAux);
   };
 
-  useEffect(() => {
-    ObtenerStocks();
-  }, []);
+  const obtenerDatosCampania = (datos, index) => {
+    const semana = {
+      data: [],
+    };
+
+    for (let i = 0; i < datos.length; i++) {
+      semana.data.push(datos[i][index]);
+    }
+
+    return {
+      labels: ["L", "M", "M", "J", "V"],
+      datasets: [semana],
+    };
+  };
+
+  useEffect(() => {}, []);
 
   return (
-    <NativeBaseProvider>
-      <Center>
-        <Heading my="3" fontSize="2xl" color="emerald.700">
-          Vacunas dadas
-        </Heading>
-      </Center>
+    <NativeBaseProvider bg="white">
       {!isLoading ? (
-        <Center>
-          <Stack mt={3} space={2} w="100%" maxW="100%">
-            <CompletadosTarjeta data={vacunasDadas[0]} />
-            <CompletadosTarjeta data={vacunasDadas[1]} />
-            <CompletadosTarjeta data={vacunasDadas[2]} />
-            <CompletadosTotales vacunasPorCampania={vacunasPorCampania} />
-            <Box mx="20px" p="1">
-              <Box
-                maxW="100%"
-                rounded="lg"
-                overflow="hidden"
-                borderColor="emerald.500"
-                borderWidth="3"
-                _dark={{
-                  borderColor: "coolGray.600",
-                  backgroundColor: "gray.700",
-                }}
-                _web={{
-                  shadow: 2,
-                  borderWidth: 0,
-                }}
-                _light={{
-                  backgroundColor: "gray.50",
-                }}
-              >
-                <Stack p="4" space={2}>
-                  <Stack space={2}>
-                    <Center>
-                      <Heading pt="5px" size="lg" ml="-1">
-                        Totales
-                      </Heading>
-                    </Center>
-                  </Stack>
+        <ScrollView
+          bg="white"
+          h="100%"
+          _contentContainerStyle={{
+            mb: "4",
+            minW: "72",
+          }}
+        >
+          <Center>
+            <Heading my="3" fontSize="2xl" color="emerald.700">
+              Vacunas dadas
+            </Heading>
+          </Center>
 
-                  <Center>
-                    <HStack alignItems="space-between" space={4}>
-                      <HStack alignItems="center">
-                        <Text pt="5px" fontSize="2xl">
-                          {vacunasPorCampania.gripe +
-                            vacunasPorCampania.covid +
-                            vacunasPorCampania.fiebre}
-                        </Text>
-                      </HStack>
-                    </HStack>
-                  </Center>
-                </Stack>
-              </Box>
-            </Box>
-          </Stack>
-        </Center>
+          <Center>
+            <Button
+              mt="3"
+              w="150px"
+              h="50px"
+              colorScheme="green"
+              onPress={openDatePicker}
+            >
+              Elegir fecha inicio
+            </Button>
+          </Center>
+
+          <DatePicker
+            isVisible={showDatePicker}
+            mode={"range"}
+            onCancel={onCancel}
+            onConfirm={onConfirm}
+            maxDate={new Date()}
+          />
+
+          {endDate != null && correcto && (
+            <Center>
+              <Button
+                mt="3"
+                w="150px"
+                h="50px"
+                colorScheme="green"
+                onPress={ObtenerVacunasDadas}
+              >
+                Obtener informe
+              </Button>
+            </Center>
+          )}
+          {vacunasObtenidas && vacunasDadas.length > 0 && (
+            <Stack>
+              <ChartBar
+                vacunatorio={vacunasDadas[0].nombre}
+                campania={"Fiebre"}
+                datos={obtenerDatosCampania(vacunatorios[0].data, 0)}
+              />
+              <ChartBar
+                vacunatorio={vacunasDadas[0].nombre}
+                campania={"Gripe"}
+                datos={obtenerDatosCampania(vacunatorios[0].data, 1)}
+              />
+              <ChartBar
+                vacunatorio={vacunasDadas[0].nombre}
+                campania={"Covid"}
+                datos={obtenerDatosCampania(vacunatorios[0].data, 2)}
+              />
+              <ChartBar
+                vacunatorio={vacunasDadas[1].nombre}
+                campania={"Fiebre"}
+                datos={obtenerDatosCampania(vacunatorios[1].data, 0)}
+              />
+              <ChartBar
+                vacunatorio={vacunasDadas[1].nombre}
+                campania={"Gripe"}
+                datos={obtenerDatosCampania(vacunatorios[1].data, 1)}
+              />
+              <ChartBar
+                vacunatorio={vacunasDadas[1].nombre}
+                campania={"Covid"}
+                datos={obtenerDatosCampania(vacunatorios[1].data, 2)}
+              />
+              <ChartBar
+                vacunatorio={vacunasDadas[2].nombre}
+                campania={"Fiebre"}
+                datos={obtenerDatosCampania(vacunatorios[2].data, 0)}
+              />
+              <ChartBar
+                vacunatorio={vacunasDadas[2].nombre}
+                campania={"Gripe"}
+                datos={obtenerDatosCampania(vacunatorios[2].data, 1)}
+              />
+              <ChartBar
+                vacunatorio={vacunasDadas[2].nombre}
+                campania={"Covid"}
+                datos={obtenerDatosCampania(vacunatorios[2].data, 2)}
+              />
+            </Stack>
+          )}
+        </ScrollView>
       ) : (
         <HStack space={2} justifyContent="center" marginTop={5}>
           <Spinner color="emerald.500" accessibilityLabel="Loading posts" />

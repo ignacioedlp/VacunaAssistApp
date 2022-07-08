@@ -31,6 +31,7 @@ function TurnosPendientes() {
   const [campaniaSeleccionada, setCampaniaSeleccionada] = useState(null);
   const [turnosADar, setTurnosADar] = useState(0);
   const [turnoMaximos, setTurnoMaximos] = useState(0);
+  const [vacunatorioSeleccionado, setVacunatorioSeleccionado] = useState(null);
 
   const getRouteCampania = (data) => {
     switch (data) {
@@ -68,6 +69,21 @@ function TurnosPendientes() {
     }
   };
 
+  const handleChangeVacunatorio = (vac) => {
+    //obtener la cantidad de turnos de la campania seleccionada
+
+    let filtrado = turnosPendientes.filter(
+      (item) => item.id_vacunatorio.toString() == vac
+    );
+
+    setTurnosFiltrados(filtrado);
+
+    setTurnoMaximos(filtrado.length);
+
+    setVacunatorioSeleccionado(vac);
+    console.log(turnosFiltrados);
+  };
+
   const handleChangeCampania = (campania) => {
     //obtener la cantidad de turnos de la campania seleccionada
 
@@ -80,6 +96,8 @@ function TurnosPendientes() {
     setTurnoMaximos(filtrado.length);
 
     setCampaniaSeleccionada(campania);
+
+    console.log(turnosFiltrados);
   };
 
   const nombreCampania = (id) => {
@@ -178,7 +196,7 @@ function TurnosPendientes() {
             Turnos pendientes
           </Heading>
           <Heading my="3" fontSize="2xl" color="emerald.700">
-            {(turnosFiltrados == 0) && (campaniaSeleccionada != null)
+            {turnosFiltrados == 0 && campaniaSeleccionada != null
               ? turnosFiltrados.length
               : turnosPendientes.length}
           </Heading>
@@ -197,6 +215,22 @@ function TurnosPendientes() {
             <Select.Item label="Fiebre amarilla" value="1" />
             <Select.Item label="Gripe" value="2" />
             <Select.Item label="Covid-19" value="3" />
+          </Select>
+          <Select
+            minWidth="80%"
+            selectedValue={vacunatorioSeleccionado}
+            accessibilityLabel="Vacunatorio"
+            onValueChange={(itemValue) => handleChangeVacunatorio(itemValue)}
+            placeholder="Vacunatorio"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size={5} />,
+            }}
+            mt="1"
+          >
+            <Select.Item label="Hospital 9 de Julio" value="1" />
+            <Select.Item label="Corralón municipal" value="2" />
+            <Select.Item label="Polideportivo-19" value="3" />
           </Select>
           {turnosPendientes.length > 0 ? (
             <Stack w="100%">
@@ -252,9 +286,7 @@ function TurnosPendientes() {
                     <Text>No hay turnos pendientes</Text>
                   </Center>
                 )
-              ) : (
-                null
-              )}
+              ) : null}
             </Stack>
           ) : (
             <Text>No hay turnos pendientes</Text>
