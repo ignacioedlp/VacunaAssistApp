@@ -75,16 +75,22 @@ function RegistrarPersonal({ navigation }) {
       const res = await result.json();
 
       if (res.code == 200) {
-        /* El usuario no existe y se registra de 0 */
-        setExiste(false);
-      } else {
         /* El usuario existe y se le cargan sus roles*/
         setExiste(true);
         setRolAdmin(res.message.includes("Admin"));
         setRolVacunador(res.message.includes("Vacunador"));
+        setVerificado(true);
+      } else {
+        if (res.code == 201){
+          /* El usuario no existe y se registra de 0 */
+          setExiste(false);
+          setVerificado(true);
+        }
+        else {
+          Alert.alert("VacunAssist", "Ocurrio un error al verificar el DNI");
+        }
       }
       setIsLoading(false);
-      setVerificado(true);
     } else {
       Alert.alert("VacunAssist", "Faltan rellenar campos");
     }
