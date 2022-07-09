@@ -23,7 +23,7 @@ function HistorialTurnos() {
   const [turnos, setTurnos] = useState([]);
   const userData = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
-  const [semana, setSemana] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [semana, setSemana] = useState([0, 0, 0, 0, 0]);
 
   const ObtenerTurnos = async () => {
     var myHeaders = new Headers();
@@ -54,11 +54,13 @@ function HistorialTurnos() {
   };
 
   const armarArreglo = (data) => {
-    const semana = [0, 0, 0, 0, 0, 0, 0];
+    const semana = [0, 0, 0, 0, 0];
 
     for (let i = 0; i < data.length; i++) {
       let dia = obtenerDiaDeLaSemana(data[i].fecha);
-      semana[dia - 1] += 1;
+      if (dia != 6 && dia != 7) {
+        semana[dia - 1] += 1;
+      }
     }
 
     setSemana(semana);
@@ -94,7 +96,7 @@ function HistorialTurnos() {
           <Stack>
             <LineChart
               data={{
-                labels: ["L", "M", "M", "J", "V", "S", "D"],
+                labels: ["L", "M", "M", "J", "V"],
                 datasets: [
                   {
                     data: semana,

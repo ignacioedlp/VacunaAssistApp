@@ -13,11 +13,15 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import TurnoCanceladoTarjeta from "../../../components/TurnoCanceladoTarjeta";
+const screenWidth = Dimensions.get("window").width - 20;
+import { LineChart, StackedBarChart, BarChart } from "react-native-chart-kit";
+import { Dimensions } from "react-native";
 
 function TurnosCancelados() {
   const [turnosCancelados, setTurnosCancelados] = useState([]);
   const userData = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
+  const [cancelados, setCancelados] = useState([0, 0, 0]);
 
   const ObtenerTurnosCancelados = async () => {
     var myHeaders = new Headers();
@@ -39,12 +43,35 @@ function TurnosCancelados() {
     ).catch((error) => console.log("error", error));
     const res = await result.json();
     setTurnosCancelados(res);
+    armarArreglo(res);
     setIsLoading(false);
   };
 
   useEffect(() => {
     ObtenerTurnosCancelados();
   }, []);
+
+  const obtenerNumeroCamp = (turno) => {
+    switch (turno.campania) {
+      case "Gripe":
+        return 1;
+      case "Covid-19":
+        return 0;
+      case "Fiebre amarilla":
+        return 2;
+    }
+  };
+
+  const armarArreglo = (data) => {
+    const cancelados = [0, 0, 0]; //covid , fiebre, gripe
+
+    for (let i = 0; i < data.length; i++) {
+      let index = obtenerNumeroCamp(data[i]);
+      cancelados[index] += 1;
+    }
+
+    setCancelados(cancelados);
+  };
 
   return (
     <NativeBaseProvider>
@@ -56,7 +83,37 @@ function TurnosCancelados() {
           <Heading my="3" fontSize="2xl" color="emerald.700">
             {turnosCancelados.length}
           </Heading>
-          {turnosCancelados.length == 0  && (
+          <Stack>
+            <BarChart
+              data={{
+                labels: ["Covid", "Fiebre", "Gripe"],
+                datasets: [
+                  {
+                    data: cancelados,
+                  },
+                ],
+              }}
+              width={screenWidth}
+              height={220}
+              chartConfig={{
+                backgroundColor: "#24ad25",
+                backgroundGradientFrom: "#24ad25",
+                backgroundGradientTo: "#24ad25",
+                decimalPlaces: 1, // optional, defaults to 2dp
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                style: {
+                  borderRadius: 16,
+                },
+              }}
+              style={{
+                marginVertical: 8,
+
+                borderRadius: 16,
+              }}
+            />
+          </Stack>
+          {turnosCancelados.length == 0 && (
             <Center>
               <Text>No posee turnos cancelados</Text>
             </Center>
