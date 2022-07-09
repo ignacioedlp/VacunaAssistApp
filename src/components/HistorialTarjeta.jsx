@@ -15,6 +15,7 @@ import {
 import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
 import jwt_decode from "jwt-decode";
+import moment from "moment";
 
 function Historial({ campania, marca, fecha, lote, estado }) {
   const fechaTurno = new Date(fecha);
@@ -76,14 +77,7 @@ function Historial({ campania, marca, fecha, lote, estado }) {
             </Heading>
           </Stack>
           <VStack space={2} justifyContent="space-between">
-            <Text>
-              Fecha:
-              {new Date(fecha).getUTCDate() +
-                "/" +
-                fechaTurno.getMonth() +
-                "/" +
-                new Date(fecha).getUTCFullYear()}
-            </Text>
+            <Text>Fecha: {moment(fecha).format("DD/MM/YYYY")}</Text>
             {estado !== "Cancelado" ? (
               <Stack>
                 <Text>Marca: {marca}</Text>

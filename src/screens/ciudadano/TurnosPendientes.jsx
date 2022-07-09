@@ -8,6 +8,7 @@ import {
   Heading,
   Text,
   Spinner,
+  ScrollView
 } from "native-base";
 import Pendiente from "../../components/PendienteTarjeta";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,34 +47,36 @@ function TurnosPendientes() {
   return (
     <NativeBaseProvider>
       {isLoading != true ? (
-        <Center w="100%">
-          <Center>
-            <Heading my="3" fontSize="2xl" color="emerald.700">
-              Turnos pendientes
-            </Heading>
-            <Heading my="3" fontSize="2xl" color="emerald.700">
-              {pendientes.length}
-            </Heading>
-          </Center>
-          {pendientes.length > 0 ? (
-            <FlatList
-              w="100%"
-              data={pendientes}
-              renderItem={({ item }) => (
-                <Pendiente
-                  campania={item.campania}
-                  fecha={item.fecha}
-                  vacunatorio={item.vacunatorio}
-                  estado={item.estado}
-                />
-              )}
-            />
-          ) : (
+        <ScrollView>
+          <Center w="100%">
             <Center>
-              <Text>No posee turnos pendientes</Text>
+              <Heading my="3" fontSize="2xl" color="emerald.700">
+                Turnos pendientes
+              </Heading>
+              <Heading my="3" fontSize="2xl" color="emerald.700">
+                {pendientes.length}
+              </Heading>
             </Center>
-          )}
-        </Center>
+            {pendientes.length > 0 ? (
+              <FlatList
+                w="100%"
+                data={pendientes}
+                renderItem={({ item }) => (
+                  <Pendiente
+                    campania={item.campania}
+                    fecha={item.fecha}
+                    vacunatorio={item.vacunatorio}
+                    estado={item.estado}
+                  />
+                )}
+              />
+            ) : (
+              <Center>
+                <Text>No posee turnos pendientes</Text>
+              </Center>
+            )}
+          </Center>
+        </ScrollView>
       ) : (
         <HStack space={2} justifyContent="center" marginTop={5}>
           <Spinner color="emerald.500" accessibilityLabel="Loading posts" />
