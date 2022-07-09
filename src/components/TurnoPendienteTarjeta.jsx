@@ -10,6 +10,7 @@ import {
   HStack,
   Box,
 } from "native-base";
+import moment from "moment";
 
 function TurnoPendientesTarjeta({
   dni,
@@ -44,14 +45,7 @@ function TurnoPendientesTarjeta({
       >
         <Stack p="4" space={5} w="100%">
           <VStack space={4} justifyContent="space-between">
-            <Text>
-              Fecha:{" "}
-              {new Date(fecha).getUTCDate() +
-                "/" +
-                fechaTurno.getMonth() +
-                "/" +
-                new Date(fecha).getUTCFullYear()}
-            </Text>
+            <Text>Fecha: {moment(fecha).format("DD/MM/YYYY")}</Text>
             <Text>Dni: {dni}</Text>
             <Text>Turno: {nroTurno}</Text>
             <Text>Vacunatorio: {vacunatorio}</Text>

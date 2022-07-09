@@ -15,7 +15,7 @@ import {
   VStack,
 } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
-
+import moment from "moment";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   desactivateCovid,
@@ -156,6 +156,7 @@ function Perfil({ navigation }) {
   const handleConfirm = async (date) => {
     //Si la fecha seleccionada que hoy no inicializa la fecha y lanza un mensaje
     const fecha = new Date(); //fecha de hoy
+    console.log(moment(fecha));
     // acomodar la fecha que seleccionada
     if (
       date.getTime() > fecha.getTime() ||
@@ -216,7 +217,7 @@ function Perfil({ navigation }) {
                   Nacimiento:{" "}
                 </Heading>
                 <Heading size="lg" ml="-1" p="10px">
-                  {user.fecha_nacimiento}
+                  {moment(user.fecha_nacimiento).format("DD/MM/YYYY")}
                 </Heading>
               </HStack>
 
@@ -335,14 +336,7 @@ function Perfil({ navigation }) {
               {dateSelected && (
                 <Heading mt={1}>
                   Fecha seleccionada:{" "}
-                  {
-                    /* {Muestro la fecha si selecciono una fecha} */
-                    dateSelected.getUTCDate() +
-                      " - " +
-                      (dateSelected.getMonth() + 1) +
-                      " - " +
-                      dateSelected.getFullYear()
-                  }
+                  {moment(dateSelected).format("DD/MM/YYYY")}
                 </Heading>
               )}
             </Modal.Body>
