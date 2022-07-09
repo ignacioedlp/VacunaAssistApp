@@ -107,6 +107,8 @@ function TurnosPendientes() {
     setTurnoMaximos(filtrado.length);
 
     setCampaniaSeleccionada(campania);
+
+    console.log(filtrado);
   };
 
   const nombreCampania = (id) => {
@@ -117,6 +119,17 @@ function TurnosPendientes() {
         return "gripe";
       case "3":
         return "covid-19";
+    }
+  };
+
+  const nombreDeVacunatorio = (id) => {
+    switch (id.toString()) {
+      case "1":
+        return "Hospital 9 de Julio";
+      case "2":
+        return "Corralon municipal";
+      case "3":
+        return "Polideportivo";
     }
   };
 
@@ -131,6 +144,7 @@ function TurnosPendientes() {
     var raw = JSON.stringify({
       num_turnos: turnosADar,
       fecha: dateSelected,
+      id_vacunatorio: parseInt(vacunatorioSeleccionado),
     });
 
     var requestOptions = {
@@ -147,12 +161,13 @@ function TurnosPendientes() {
     const res = await result.json();
     Alert.alert(
       "VacunAssist",
-      `Se asignaron ${turnosADar} turno/s para la campania de ${nombreCampania(
+      `Se asignaron turnos para la campania de ${nombreCampania(
         campaniaSeleccionada
-      )}`
+      )} para el vacunatorio ${nombreDeVacunatorio(vacunatorioSeleccionado)}`
     );
     setIsLoading(false);
     setCampaniaSeleccionada(null);
+    setVacunatorioSeleccionado(null);
   };
 
   const ObtenerTurnosPendientes = async () => {
@@ -243,7 +258,8 @@ function TurnosPendientes() {
           </Select>
           {turnosPendientes.length > 0 ? (
             <Stack w="100%">
-              {campaniaSeleccionada != null ? (
+              {campaniaSeleccionada != null &&
+              vacunatorioSeleccionado != null ? (
                 turnosFiltrados.length > 0 ? (
                   <Center w="100%">
                     <Heading mt="3">Turnos a dar : {turnosADar}</Heading>
