@@ -83,7 +83,7 @@ function Perfil({ navigation }) {
   const handlerActualizar = async () => {
     setIsLoading(true);
 
-    let cerrar = false;
+ 
     let raw = {
       email: "",
       password: "",
@@ -94,7 +94,7 @@ function Perfil({ navigation }) {
     } else {
       if (emailNuevo != "") {
         raw.email = emailNuevo;
-        cerrar = true;
+ 
       } else {
         raw.email = email;
       }
@@ -137,10 +137,6 @@ function Perfil({ navigation }) {
       Alert.alert("VacunAssist", response.message);
     }
 
-    if (cerrar) {
-      setIsLoading(false);
-      handlerCerrarSesion();
-    }
     setIsLoading(false);
   };
 

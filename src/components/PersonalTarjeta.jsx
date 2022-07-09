@@ -52,7 +52,9 @@ function PersonalTarjeta({ dni, nombre, apellido, rol, vacunatorio }) {
           <VStack space={4} justifyContent="space-between">
             <Text>Dni: {dni}</Text>
             <Text>Rol: {rol}</Text>
-            <Text>Vacunatorio: {nombreDeVacunatorio(vacunatorio)}</Text>
+            {rol.includes("Vacunador") && (
+              <Text>Vacunatorio: {nombreDeVacunatorio(vacunatorio)}</Text>
+            )}
           </VStack>
         </Stack>
       </Box>
