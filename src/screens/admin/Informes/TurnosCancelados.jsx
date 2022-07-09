@@ -84,7 +84,7 @@ function TurnosCancelados() {
             {turnosCancelados.length}
           </Heading>
           <Stack>
-            <BarChart
+            {/* <BarChart
               data={{
                 labels: ["Covid", "Fiebre", "Gripe"],
                 datasets: [
@@ -111,7 +111,7 @@ function TurnosCancelados() {
 
                 borderRadius: 16,
               }}
-            />
+            /> */}
           </Stack>
           {turnosCancelados.length == 0 && (
             <Center>

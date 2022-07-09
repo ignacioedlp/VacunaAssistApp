@@ -94,7 +94,7 @@ function HistorialTurnos() {
             {turnos.length}
           </Heading>
           <Stack>
-            <LineChart
+            {/* <LineChart
               data={{
                 labels: ["L", "M", "M", "J", "V"],
                 datasets: [
@@ -129,7 +129,7 @@ function HistorialTurnos() {
 
                 borderRadius: 16,
               }}
-            />
+            /> */}
           </Stack>
           {turnos.length == 0 && (
             <Center>
