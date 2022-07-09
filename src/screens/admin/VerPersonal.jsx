@@ -11,6 +11,7 @@ import {
   FlatList,
   Pressable,
   Input,
+  ScrollView,
 } from "native-base";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -50,52 +51,35 @@ function VerPersonal({ navigation }) {
   return (
     <NativeBaseProvider>
       {isLoading != true ? (
-        <Center w="100%">
-          <Heading my="3" fontSize="2xl" color="emerald.700">
-            Lista de personal
-          </Heading>
-          <Input
-            w="75%"
-            maxW="300px"
-            mb={5}
-            size={"lg"}
-            placeholder="Buscar por dni"
-            value={dniBuscado}
-            onChangeText={(dni) => setDniBuscado(dni)}
-          />
-          {personal.length > 0 ? (
-            <FlatList
-              w="100%"
-              data={personal}
-              renderItem={({ item }) =>
-                dniBuscado == null ? (
-                  <Pressable
-                    onPress={() =>
-                      navigation.navigate("/admin/actualizarPersonal", {
-                        vacunatorio: item.vacunatorio,
-                        rol: item.rol,
-                        dni: item.dni,
-                        nombre: item.nombre,
-                        apellido: item.apellido,
-                      })
-                    }
-                  >
-                    <PersonalTarjeta
-                      nombre={item.nombre}
-                      apellido={item.apellido}
-                      rol={item.rol}
-                      vacunatorio={item.vacunatorio}
-                      dni={item.dni}
-                    />
-                  </Pressable>
-                ) : (
-                  item.dni.toString().includes(dniBuscado.toString()) && (
+        <ScrollView>
+          <Center w="100%">
+            <Heading my="3" fontSize="2xl" color="emerald.700">
+              Lista de personal
+            </Heading>
+            <Input
+              w="75%"
+              maxW="300px"
+              mb={5}
+              size={"lg"}
+              placeholder="Buscar por dni"
+              value={dniBuscado}
+              onChangeText={(dni) => setDniBuscado(dni)}
+            />
+            {personal.length > 0 ? (
+              <FlatList
+                w="100%"
+                scrollEnabled={false}
+                data={personal}
+                renderItem={({ item }) =>
+                  dniBuscado == null ? (
                     <Pressable
                       onPress={() =>
                         navigation.navigate("/admin/actualizarPersonal", {
                           vacunatorio: item.vacunatorio,
                           rol: item.rol,
                           dni: item.dni,
+                          nombre: item.nombre,
+                          apellido: item.apellido,
                         })
                       }
                     >
@@ -107,16 +91,36 @@ function VerPersonal({ navigation }) {
                         dni={item.dni}
                       />
                     </Pressable>
+                  ) : (
+                    item.dni.toString().includes(dniBuscado.toString()) && (
+                      <Pressable
+                        onPress={() =>
+                          navigation.navigate("/admin/actualizarPersonal", {
+                            vacunatorio: item.vacunatorio,
+                            rol: item.rol,
+                            dni: item.dni,
+                          })
+                        }
+                      >
+                        <PersonalTarjeta
+                          nombre={item.nombre}
+                          apellido={item.apellido}
+                          rol={item.rol}
+                          vacunatorio={item.vacunatorio}
+                          dni={item.dni}
+                        />
+                      </Pressable>
+                    )
                   )
-                )
-              }
-            />
-          ) : (
-            <Center>
-              <Text>No posee personal</Text>
-            </Center>
-          )}
-        </Center>
+                }
+              />
+            ) : (
+              <Center>
+                <Text>No posee personal</Text>
+              </Center>
+            )}
+          </Center>
+        </ScrollView>
       ) : (
         <HStack space={2} justifyContent="center" marginTop={5}>
           <Spinner color="emerald.500" accessibilityLabel="Loading posts" />

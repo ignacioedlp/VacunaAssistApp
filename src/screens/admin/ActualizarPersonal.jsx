@@ -91,6 +91,17 @@ function ActualizarPersonal({ route, navigation }) {
     setIsLoading(false);
   };
 
+  const nombreDeVacunatorio = (id) => {
+    switch (id.toString()) {
+      case "1":
+        return "Hospital 9 de Julio";
+      case "2":
+        return "Corralon municipal";
+      case "3":
+        return "Polideportivo";
+    }
+  };
+
   return (
     <NativeBaseProvider>
       <Center>
@@ -146,6 +157,11 @@ function ActualizarPersonal({ route, navigation }) {
           >
             Vacunador
           </Checkbox>
+          {rolVacunador && (
+            <Heading color="emerald.500" fontSize="md">
+              Vacunatorio a asignar: {nombreDeVacunatorio(vacunatorio)}
+            </Heading>
+          )}
           {!isLoading && (
             <Button colorScheme="green" onPress={() => actualizarRol()}>
               Actualizar rol

@@ -30,7 +30,6 @@ function VacunasDadas() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [correcto, setCorrecto] = useState(false);
   const [vacunatorios, setVacunatorios] = useState([]);
-    
 
   const openDatePicker = () => {
     setShowDatePicker(true);
@@ -186,7 +185,7 @@ function VacunasDadas() {
             </Center>
           )}
           {vacunasObtenidas && vacunasDadas.length > 0 && (
-            <Stack>
+            <Stack >
               <ChartBar
                 vacunatorio={vacunasDadas[0].nombre}
                 campania={"Fiebre"}

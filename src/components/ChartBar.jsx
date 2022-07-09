@@ -11,7 +11,7 @@ import {
   Box,
 } from "native-base";
 
-const screenWidth = Dimensions.get("window").width;
+const screenWidth = Dimensions.get("window").width - 20;
 
 function ChartBar({ vacunatorio, datos, campania }) {
   const chartConfig = {
@@ -37,19 +37,8 @@ function ChartBar({ vacunatorio, datos, campania }) {
   });
 
   useEffect(() => {
-    // const datas = [];
-    // for (let i = 0; i < datos.length; i++) {
-    //   datas.push(datos[i]);
-    // }
-    // const semana = {
-    //   data: [datos[0][1], datos[0][0], datos[0][2], datos[0][1], datos[0][2]],
-    // };
-    // setData({
-    //   labels: ["L", "M", "M", "J", "V"],
-    //   datasets: [semana],
-    // });
     setData(datos);
-  }, []);
+  }, [data]);
 
   return (
     <NativeBaseProvider>
@@ -79,12 +68,14 @@ function ChartBar({ vacunatorio, datos, campania }) {
               propsForDots: {
                 r: "6",
                 strokeWidth: "2",
+
                 stroke: "#68c7c8",
               },
             }}
             bezier
             style={{
               marginVertical: 8,
+
               borderRadius: 16,
             }}
           />

@@ -76,12 +76,17 @@ function TurnosPendientes() {
       (item) => item.id_vacunatorio.toString() == vac
     );
 
+    if (campaniaSeleccionada != null) {
+      filtrado = filtrado.filter(
+        (item) => item.id_campania.toString() == campaniaSeleccionada
+      );
+    }
+
     setTurnosFiltrados(filtrado);
 
     setTurnoMaximos(filtrado.length);
 
     setVacunatorioSeleccionado(vac);
-    console.log(turnosFiltrados);
   };
 
   const handleChangeCampania = (campania) => {
@@ -91,13 +96,17 @@ function TurnosPendientes() {
       (item) => item.id_campania.toString() == campania
     );
 
+    if (vacunatorioSeleccionado != null) {
+      filtrado = filtrado.filter(
+        (item) => item.id_vacunatorio.toString() == vacunatorioSeleccionado
+      );
+    }
+
     setTurnosFiltrados(filtrado);
 
     setTurnoMaximos(filtrado.length);
 
     setCampaniaSeleccionada(campania);
-
-    console.log(turnosFiltrados);
   };
 
   const nombreCampania = (id) => {
@@ -196,7 +205,7 @@ function TurnosPendientes() {
             Turnos pendientes
           </Heading>
           <Heading my="3" fontSize="2xl" color="emerald.700">
-            {turnosFiltrados == 0 && campaniaSeleccionada != null
+            {vacunatorioSeleccionado != null || campaniaSeleccionada != null
               ? turnosFiltrados.length
               : turnosPendientes.length}
           </Heading>
