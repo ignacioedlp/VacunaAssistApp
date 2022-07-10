@@ -81,12 +81,11 @@ function RegistrarPersonal({ navigation }) {
         setRolVacunador(res.message.includes("Vacunador"));
         setVerificado(true);
       } else {
-        if (res.code == 201){
+        if (res.code == 201) {
           /* El usuario no existe y se registra de 0 */
           setExiste(false);
           setVerificado(true);
-        }
-        else {
+        } else {
           Alert.alert("VacunAssist", "Ocurrio un error al verificar el DNI");
         }
       }
@@ -212,7 +211,7 @@ function RegistrarPersonal({ navigation }) {
             <Select.Item label="Corralon municipal" value="2" />
             <Select.Item label="Polideportivo" value="3" />
           </Select>
-          {!isLoading && (
+          {!isLoading && ((rolVacunador && vacunatorio != "") || rolAdmin) && (
             <Button
               colorScheme="green"
               onPress={() => cargarDatos()}
