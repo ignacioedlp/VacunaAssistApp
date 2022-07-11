@@ -35,12 +35,12 @@ function CargarDatosScreen({ route, navigation }) {
       var raw = JSON.stringify({
         id_campania: id_campania,
         id_usuario: dni,
-        nro_lote: parseInt(nro_lote),
+        nro_lote: nro_lote,
         marca: marca,
         desconocido: false,
         id_turno: idTurno,
       });
-
+      console.log(raw);
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
