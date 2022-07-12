@@ -94,7 +94,7 @@ function Perfil({ navigation }) {
       if (password.length != 6) {
         Alert.alert(
           "VacunAssist",
-          "Si modifica la contraseña debe ser de 6 digitos"
+          "Si modifica la contraseña debe ser de 6 caracteres"
         );
         setIsLoading(false);
         return;
