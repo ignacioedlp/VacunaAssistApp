@@ -14,18 +14,6 @@ import {
 const screenWidth = Dimensions.get("window").width - 20;
 
 function ChartBar({ vacunatorio, datos, campania }) {
-  const chartConfig = {
-    backgroundColor: "#ffffff",
-    backgroundGradientFrom: "#ffffff",
-    backgroundGradientTo: "#ffffff",
-    decimalPlaces: 0, // optional, defaults to 2dp
-    color: (opacity = 1) => `#000000`,
-    labelColor: (opacity = 1) => `#000000`,
-    style: {
-      borderRadius: 16,
-      p: 2,
-    },
-  };
 
   const [data, setData] = useState({
     labels: ["L", "M", "M", "J", "V"],

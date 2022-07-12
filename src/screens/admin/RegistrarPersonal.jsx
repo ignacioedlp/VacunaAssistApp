@@ -104,15 +104,24 @@ function RegistrarPersonal({ navigation }) {
       myHeaders.append("Authorization", token);
       myHeaders.append("Content-Type", "application/json");
       var decoded = jwt_decode(value);
-
-      var raw = JSON.stringify({
-        dni: dni,
-        email: email,
-        rolVacunador: rolVacunador,
-        rolAdmin: rolAdmin,
-        vacunatorio: parseInt(vacunatorio),
-      });
-
+      if (vacunatorio != ""){
+        var raw = JSON.stringify({
+          dni: dni,
+          email: email,
+          rolVacunador: rolVacunador,
+          rolAdmin: rolAdmin,
+          vacunatorio: parseInt(vacunatorio),
+        });
+      }
+      else {
+        var raw = JSON.stringify({
+          dni: dni,
+          email: email,
+          rolVacunador: rolVacunador,
+          rolAdmin: rolAdmin,
+          vacunatorio: 1,
+        });
+      }
       var requestOptions = {
         method: "POST",
         headers: myHeaders,

@@ -147,11 +147,11 @@ function VacunasDadas() {
         >
           <Center>
             <Heading my="3" fontSize="2xl" color="emerald.700">
-              Vacunas dadas
+              Promedio de vacunas dadas
             </Heading>
           </Center>
 
-          <Center>
+          {vacunatorios.length == 0 && <Center>
             <Button
               mt="3"
               w="150px"
@@ -161,7 +161,7 @@ function VacunasDadas() {
             >
               Elegir fecha inicio
             </Button>
-          </Center>
+          </Center>}
 
           <DatePicker
             isVisible={showDatePicker}
@@ -172,7 +172,7 @@ function VacunasDadas() {
           />
 
           {endDate != null && correcto && (
-            <Center>
+            vacunatorios.length == 0 && <Center>
               <Button
                 mt="3"
                 w="150px"
