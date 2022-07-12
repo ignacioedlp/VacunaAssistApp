@@ -15,6 +15,7 @@ import {
   Checkbox,
 } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
+import { Alert } from "react-native";
 
 function ActualizarPersonal({ route, navigation }) {
   const { dni, vacunatorio, rol, nombre, apellido } = route.params;

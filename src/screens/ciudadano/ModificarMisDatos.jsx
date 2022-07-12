@@ -26,6 +26,7 @@ function Perfil({ navigation }) {
   const [email, setEmail] = useState("");
   const [emailNuevo, setEmailNuevo] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordActual, setPasswordActual] = useState("");
   const [riesgo, setRiesgo] = useState();
 
   const handleChangeEmailNuevo = (email) => setEmailNuevo(email);
@@ -33,6 +34,8 @@ function Perfil({ navigation }) {
   const handleChangeRiesgo = (riesgo) => setRiesgo(riesgo);
 
   const handleChangePassword = (password) => setPassword(password);
+
+  const handleChangePasswordActual = (password) => setPasswordActual(password);
 
   const VerPerfil = async () => {
     var myHeaders = new Headers();
@@ -66,27 +69,14 @@ function Perfil({ navigation }) {
     VerPerfil();
   }, []);
 
-  const handlerCerrarSesion = () => {
-    _storeData = async () => {
-      try {
-        await AsyncStorage.removeItem("@JWTUSER");
-
-        navigation.navigate("/auth/login");
-      } catch (error) {
-        console.log(error);
-        // Error saving data
-      }
-    };
-    _storeData();
-  };
 
   const handlerActualizar = async () => {
     setIsLoading(true);
 
- 
     let raw = {
       email: "",
       password: "",
+      passwordActual: "",
       riesgo: riesgo,
     };
     if (emailNuevo == email) {
@@ -94,7 +84,6 @@ function Perfil({ navigation }) {
     } else {
       if (emailNuevo != "") {
         raw.email = emailNuevo;
- 
       } else {
         raw.email = email;
       }
@@ -105,11 +94,12 @@ function Perfil({ navigation }) {
       if (password.length != 6) {
         Alert.alert(
           "VacunAssist",
-          "Si modifica la contraseña debe ser de 6 digitos"
+          "Si modifica la contraseña debe ser de 6 caracteres"
         );
         setIsLoading(false);
         return;
       } else {
+        raw.passwordActual = raw.passwordActual;
         raw.password = password;
       }
     }
@@ -173,6 +163,15 @@ function Perfil({ navigation }) {
                   type="password"
                   value={password}
                   placeholder="Contraseña"
+                />
+                <Text>Contraseña actual</Text>
+                <Input
+                  mb="5"
+                  onChangeText={handleChangePasswordActual}
+                  size="md"
+                  type="password"
+                  value={passwordActual}
+                  placeholder="Contraseña actual"
                 />
                 <Text>Riesgo</Text>
                 <Checkbox
