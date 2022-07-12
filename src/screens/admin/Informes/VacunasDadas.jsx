@@ -159,7 +159,7 @@ function VacunasDadas() {
               colorScheme="green"
               onPress={openDatePicker}
             >
-              Elegir fecha inicio
+              Elegir rango
             </Button>
           </Center>
 

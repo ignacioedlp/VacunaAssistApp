@@ -113,11 +113,6 @@ function TurnosCancelados() {
               }}
             /> */}
           </Stack>
-          {turnosCancelados.length == 0 && (
-            <Center>
-              <Text>No posee turnos cancelados</Text>
-            </Center>
-          )}
         </Center>
       ) : (
         <HStack space={2} justifyContent="center" marginTop={5}>
