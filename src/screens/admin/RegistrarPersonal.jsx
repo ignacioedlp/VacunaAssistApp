@@ -26,6 +26,7 @@ function RegistrarPersonal({ navigation }) {
   const [existe, setExiste] = useState(true);
   const [verificado, setVerificado] = useState(false);
   const [permitido, setPermitido] = useState(false);
+  const [nommbreCompleto, setNombreCompleto] =  useState("");
 
   const [cargado, setCargado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,16 +74,18 @@ function RegistrarPersonal({ navigation }) {
         requestOptions
       ).catch((error) => console.log("error", error));
       const res = await result.json();
-
+      console.log(res)
       if (res.code == 200) {
         /* El usuario existe y se le cargan sus roles*/
+        setNombreCompleto(res.nombre + " " + res.apellido);
         setExiste(true);
-        setRolAdmin(res.message.includes("Admin"));
-        setRolVacunador(res.message.includes("Vacunador"));
+        setRolAdmin(res.rol.includes("Admin"));
+        setRolVacunador(res.rol.includes("Vacunador"));
         setVerificado(true);
       } else {
         if (res.code == 201) {
           /* El usuario no existe y se registra de 0 */
+          setNombreCompleto(res.nombre + " " + res.apellido);
           setExiste(false);
           setVerificado(true);
         } else {
@@ -134,10 +137,11 @@ function RegistrarPersonal({ navigation }) {
         requestOptions
       ).catch((error) => console.log("error", error));
       const res = await result.json();
+
       if (res.code == 200) {
         /* con esta funciÃ³n guardamos y mantenemos el token
       del usuario*/
-        Alert.alert("VacunAssist", "Carga y registro exitoso");
+        Alert.alert("VacunAssist", res.message);
         setCargado(true);
       } else {
         Alert.alert("VacunAssist", res.message);
@@ -154,8 +158,11 @@ function RegistrarPersonal({ navigation }) {
         <Stack mt={3} space={4} w="75%" maxW="300px">
           <Center>
             <Heading my="3" fontSize="2xl" color="emerald.700">
-              Asignar roles
+              Asignar roles 
             </Heading>
+            { nommbreCompleto != "" && <Heading my="3" fontSize="lg" color="emerald.700">
+              {nommbreCompleto}
+            </Heading>}
           </Center>
           <Input
             onChangeText={handlerDni}

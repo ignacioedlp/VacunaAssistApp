@@ -112,7 +112,7 @@ function ActualizarPersonal({ route, navigation }) {
               Acualizar datos para {nombre} {apellido}
             </Heading>
           </Center>
-          <Select
+          {rolVacunador && (<><Select
             my="2"
             size="md"
             minWidth="200"
@@ -130,11 +130,13 @@ function ActualizarPersonal({ route, navigation }) {
             <Select.Item label="Corralon municipal" value="2" />
             <Select.Item label="Polideportivo" value="3" />
           </Select>
-          {!isLoading && (
+          {!isLoading && 
             <Button colorScheme="green" onPress={() => actualizarVacunatorio()}>
               Actualizar vacunatorio
-            </Button>
-          )}
+            </Button>}
+          </>
+        )} 
+          
           <Heading my="3" fontSize="2xl" color="emerald.700">
             Seleccionar roles:
           </Heading>

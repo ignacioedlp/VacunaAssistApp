@@ -115,7 +115,7 @@ function NoRegistrada({ route, navigation }) {
         body: raw,
         redirect: "follow",
       };
-
+      console.log(raw)
       const result = await fetch(
         rutaCampania(id_campania),
         requestOptions

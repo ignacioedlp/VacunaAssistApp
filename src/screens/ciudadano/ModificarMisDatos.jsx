@@ -99,7 +99,7 @@ function Perfil({ navigation }) {
         setIsLoading(false);
         return;
       } else {
-        raw.passwordActual = raw.passwordActual;
+        raw.passwordActual = passwordActual;
         raw.password = password;
       }
     }
