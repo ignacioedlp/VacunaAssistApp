@@ -161,9 +161,7 @@ function TurnosPendientes() {
     const res = await result.json();
     Alert.alert(
       "VacunAssist",
-      `Se asignaron turnos para la campania de ${nombreCampania(
-        campaniaSeleccionada
-      )} para el vacunatorio ${nombreDeVacunatorio(vacunatorioSeleccionado)}`
+      res.message + ` para el vacunatorio ${nombreDeVacunatorio(vacunatorioSeleccionado)}`
     );
     setIsLoading(false);
     setCampaniaSeleccionada(null);

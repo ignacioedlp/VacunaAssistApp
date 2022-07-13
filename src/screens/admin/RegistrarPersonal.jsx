@@ -74,13 +74,15 @@ function RegistrarPersonal({ navigation }) {
         requestOptions
       ).catch((error) => console.log("error", error));
       const res = await result.json();
-      console.log(res)
       if (res.code == 200) {
         /* El usuario existe y se le cargan sus roles*/
         setNombreCompleto(res.nombre + " " + res.apellido);
         setExiste(true);
         setRolAdmin(res.rol.includes("Admin"));
         setRolVacunador(res.rol.includes("Vacunador"));
+        if (res.rol.includes("Vacunador")) {
+          setVacunatorio(res.vacunatorio);
+        }
         setVerificado(true);
       } else {
         if (res.code == 201) {
