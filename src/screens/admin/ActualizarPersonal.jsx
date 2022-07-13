@@ -112,7 +112,7 @@ function ActualizarPersonal({ route, navigation }) {
               Acualizar datos para {nombre} {apellido}
             </Heading>
           </Center>
-          {rolVacunador && (<><Select
+          {personalRol.includes("Vacunador") && (<><Select
             my="2"
             size="md"
             minWidth="200"
